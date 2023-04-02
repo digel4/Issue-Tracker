@@ -5,10 +5,14 @@
     <projectFile profileName="https">IssueTracker/IssueTracker.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="Add data models">
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" afterDir="false" />
+    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="add controllers and views">
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Services/ITCompanyInfoService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Services/ITRolesService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITCompanyInfoService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITRolesService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +97,10 @@
       <workItem from="1679907461336" duration="5518000" />
       <workItem from="1680083487315" duration="1547000" />
       <workItem from="1680091101117" duration="4325000" />
+      <workItem from="1680115785582" duration="2013000" />
+      <workItem from="1680174726037" duration="1873000" />
+      <workItem from="1680190729548" duration="4549000" />
+      <workItem from="1680266695661" duration="668000" />
     </task>
     <task id="LOCAL-00001" summary="Add data models">
       <created>1679907887407</created>
@@ -108,7 +116,21 @@
       <option name="project" value="LOCAL" />
       <updated>1680083539419</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="update db">
+      <created>1680115815788</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1680115815788</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add controllers and views">
+      <created>1680115835209</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1680115835209</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,6 +141,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Add data models" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add data models" />
+    <MESSAGE value="update db" />
+    <MESSAGE value="add controllers and views" />
+    <option name="LAST_COMMIT_MESSAGE" value="add controllers and views" />
   </component>
 </project>

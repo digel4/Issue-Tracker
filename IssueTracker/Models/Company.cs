@@ -28,6 +28,6 @@ public class Company
 
     public virtual ICollection<ITUser> Members { get; set; }= new HashSet<ITUser>();
     
-    // Create relationship table to Invites
+    public virtual ICollection<Invite> Invites { get; set; }= new HashSet<Invite>();
     
 }

@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Data;
 using IssueTracker.Models;
+using IssueTracker.Services.Interfaces;
+using IssueTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,11 @@ builder.Services.AddIdentity<ITUser, IdentityRole>(options => options.SignIn.Req
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
+
+///custom Services
+builder.Services.AddScoped<IITRolesService, ITRolesService>();
+builder.Services.AddScoped<IITCompanyInfoService, ITCompanyInfoService>();
+
 
 var app = builder.Build();
 
