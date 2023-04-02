@@ -13,9 +13,11 @@ namespace IssueTracker.Controllers
     public class CompanyController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        
+        // contructur
         public CompanyController(ApplicationDbContext context)
         {
+            // Dependency Injection /  service layer
             _context = context;
         }
 
