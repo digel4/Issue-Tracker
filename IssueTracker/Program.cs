@@ -24,6 +24,7 @@ builder.Services.AddControllersWithViews();
 ///custom Services
 builder.Services.AddScoped<IITRolesService, ITRolesService>();
 builder.Services.AddScoped<IITCompanyInfoService, ITCompanyInfoService>();
+builder.Services.AddScoped<IITProjectService, ITProjectService>();
 
 
 var app = builder.Build();

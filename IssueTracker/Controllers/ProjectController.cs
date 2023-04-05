@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Data;
 using IssueTracker.Models;
+using IssueTracker.Services;
 
 namespace IssueTracker.Controllers
 {
     public class ProjectController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITProjectService _ITProjectService;
 
-        public ProjectController(ApplicationDbContext context)
+        public ProjectController(ApplicationDbContext context, ITProjectService ITProjectService)
         {
             _context = context;
+            _ITProjectService = ITProjectService;
         }
 
         // GET: Project
@@ -63,8 +66,9 @@ namespace IssueTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(project);
-                await _context.SaveChangesAsync();
+                // _context.Add(project);
+                // await _context.SaveChangesAsync();
+                await _ITProjectService.AddNewProjectAsync(project);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
@@ -106,8 +110,9 @@ namespace IssueTracker.Controllers
             {
                 try
                 {
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
+                    // _context.Update(project);
+                    // await _context.SaveChangesAsync();
+                    await _ITProjectService.UpdateProjectAsync(project);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
