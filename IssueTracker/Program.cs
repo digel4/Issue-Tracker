@@ -26,6 +26,7 @@ builder.Services.AddScoped<IITRolesService, ITRolesService>();
 builder.Services.AddScoped<IITCompanyInfoService, ITCompanyInfoService>();
 builder.Services.AddScoped<IITProjectService, ITProjectService>();
 builder.Services.AddScoped<IITTicketService, ITTicketService>();
+builder.Services.AddScoped<IITTicketHistoryService, ITTicketHistoryService>();
 
 
 var app = builder.Build();
