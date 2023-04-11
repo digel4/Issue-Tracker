@@ -1,9 +1,11 @@
+using System.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Services.Interfaces;
 using IssueTracker.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +29,12 @@ builder.Services.AddScoped<IITCompanyInfoService, ITCompanyInfoService>();
 builder.Services.AddScoped<IITProjectService, ITProjectService>();
 builder.Services.AddScoped<IITTicketService, ITTicketService>();
 builder.Services.AddScoped<IITTicketHistoryService, ITTicketHistoryService>();
+builder.Services.AddScoped<IEmailSender, ITEmailService>();
+builder.Services.AddScoped<IITNotificationService, ITNotificationService>();
+builder.Services.AddScoped<IITInviteService, ITInviteService>();
 
+// Configure mail settings
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 var app = builder.Build();
 
