@@ -5,6 +5,7 @@ using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Services.Interfaces;
 using IssueTracker.Services;
+using IssueTracker.Services.Factories;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // default database connection
 // var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
 //                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 //custom database connection using dataUtility
 // Because DataUtility is a static class we don't have to instantiate it. We immediately have access to its properties
 var connectionString = DataUtility.GetConnectionString(builder.Configuration);
@@ -26,6 +28,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ITUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>()
+    //Adding the ClaimsPrincipalFactory
+    .AddClaimsPrincipalFactory<ITUserClaimsPrincipalFactory>()
     // AddDefaultUi and AddDefaultTokenProviders do come with AddIdentity so we have to add them
     .AddDefaultUI()
     .AddDefaultTokenProviders();
