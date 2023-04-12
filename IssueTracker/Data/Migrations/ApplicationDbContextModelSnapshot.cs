@@ -69,15 +69,12 @@ namespace IssueTracker.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("AvatarContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<byte[]>("AvatarFileData")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<string>("AvatarFileName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("CompanyId")
@@ -270,22 +267,19 @@ namespace IssueTracker.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
 
                     b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FileContentType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<byte[]>("FileData")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<string>("FileName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -344,11 +338,9 @@ namespace IssueTracker.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("DeveloperUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("OwnerUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("ProjectId")
@@ -715,7 +707,7 @@ namespace IssueTracker.Migrations
             modelBuilder.Entity("IssueTracker.Models.Invite", b =>
                 {
                     b.HasOne("IssueTracker.Models.Company", "Company")
-                        .WithMany()
+                        .WithMany("Invites")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -791,15 +783,11 @@ namespace IssueTracker.Migrations
                 {
                     b.HasOne("IssueTracker.Models.ITUser", "DeveloperUser")
                         .WithMany()
-                        .HasForeignKey("DeveloperUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DeveloperUserId");
 
                     b.HasOne("IssueTracker.Models.ITUser", "OwnerUser")
                         .WithMany()
-                        .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerUserId");
 
                     b.HasOne("IssueTracker.Models.Project", "Project")
                         .WithMany("Tickets")
@@ -948,6 +936,8 @@ namespace IssueTracker.Migrations
 
             modelBuilder.Entity("IssueTracker.Models.Company", b =>
                 {
+                    b.Navigation("Invites");
+
                     b.Navigation("Members");
 
                     b.Navigation("Projects");

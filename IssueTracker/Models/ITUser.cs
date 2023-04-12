@@ -30,12 +30,12 @@ public class ITUser : IdentityUser
     public IFormFile AvatarFormFile { get; set; }
 
     [Display(Name= "Avatar")]
-    public string AvatarFileName { get; set; }
+    public string? AvatarFileName { get; set; }
     
-    public byte[] AvatarFileData { get; set; }
+    public byte[]? AvatarFileData { get; set; }
     
     [Display(Name = "File Extension")]
-    public string AvatarContentType { get; set; }
+    public string? AvatarContentType { get; set; }
     
     // This is a foreign key in the database.  This corresponds to another table on the database. This corresponds to another table on the database. This refers to a  look up table since we are literally just looking for a few properties.
     public int? CompanyId { get; set; }
