@@ -15,7 +15,7 @@ public class Project
     [DisplayName("Project Name ")]
     public string? Name { get; set; }
     
-    [StringLength(50,ErrorMessage = "The {0} must be at least {2} and a max {1} characters."),MinLength(2)]
+    [StringLength(400,ErrorMessage = "The {0} must be at least {2} and a max {1} characters."),MinLength(2)]
     [DisplayName("Description ")]
     public string? Description { get; set; }
     
@@ -36,12 +36,12 @@ public class Project
     public IFormFile FormFile { get; set; }
 
     [DisplayName("File Name")]
-    public string FileName { get; set; }
+    public string? FileName { get; set; }
     
-    public byte[] FileData { get; set; }
+    public byte[]? FileData { get; set; }
     
     [DisplayName("File Extension")]
-    public string FileContentType { get; set; }
+    public string? FileContentType { get; set; }
 
     // This is a foreign key in the database.  This corresponds to another table on the database. This corresponds to another table on the database. This refers to a  look up table since we are literally just looking for a few properties.
     [DisplayName("Company")]
