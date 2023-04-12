@@ -48,11 +48,11 @@ public class Ticket
     
     // This is a foreign key in the database. This corresponds to another table on the database
     [DisplayName("Ticket Owner")]
-    public string OwnerUserId { get; set; }
+    public string? OwnerUserId { get; set; }
     
     // This is a foreign key in the database. This corresponds to another table on the database
     [DisplayName("Ticket Developer")]
-    public string DeveloperUserId { get; set; }
+    public string? DeveloperUserId { get; set; }
 
     // Virtuals
     // When entity framework sees virtuals it allows easy loading and change tracking. This is opposed to eager loading. Essentially we get the foreign keys above and then the virtual objects below
