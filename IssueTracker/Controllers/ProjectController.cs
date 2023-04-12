@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Data;
 using IssueTracker.Models;
-using IssueTracker.Services;
+using IssueTracker.Services.Interfaces;
 
 namespace IssueTracker.Controllers
 {
     public class ProjectController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ITProjectService _ITProjectService;
+        private readonly IITProjectService _ITProjectService;
 
-        public ProjectController(ApplicationDbContext context, ITProjectService ITProjectService)
+        public ProjectController(ApplicationDbContext context, IITProjectService IITProjectService)
         {
             _context = context;
-            _ITProjectService = ITProjectService;
+            _ITProjectService = IITProjectService;
         }
 
         // GET: Project
