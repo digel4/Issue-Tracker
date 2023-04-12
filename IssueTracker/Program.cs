@@ -6,14 +6,22 @@ using IssueTracker.Models;
 using IssueTracker.Services.Interfaces;
 using IssueTracker.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// default database connection
+// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+//                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//custom database connection using dataUtility
+// Because DataUtility is a static class we don't have to instantiate it. We immediately have access to its properties
+var connectionString = DataUtility.GetConnectionString(builder.Configuration);
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString, 
+        // adding option to allow query splitting.
+        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ITUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -38,6 +46,8 @@ builder.Services.AddScoped<IITFileService, ITFileService>();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 var app = builder.Build();
+
+await DataUtility.ManageDataAsync(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
