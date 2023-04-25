@@ -33,7 +33,7 @@ public class Project
     
     [NotMapped]
     [DataType(DataType.Upload)]
-    public IFormFile FormFile { get; set; }
+    public IFormFile? FormFile { get; set; }
 
     [DisplayName("File Name")]
     public string? FileName { get; set; }

@@ -6,41 +6,110 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Data;
+using IssueTracker.Extensions;
 using IssueTracker.Models;
+using IssueTracker.Models.Enums;
+using IssueTracker.Models.ViewModels;
 using IssueTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace IssueTracker.Controllers
 {
     public class ProjectController : Controller
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
-        private readonly IITProjectService _ITProjectService;
+        private readonly IITProjectService _projectService;
+        private readonly IITRolesService _rolesService;
+        private readonly IITLookUpService _lookUpService;
+        private readonly IITFileService _fileService;
+        private readonly UserManager<ITUser> _userManager;
+        private readonly IITCompanyInfoService _companyInfoService;
+        #endregion
 
-        public ProjectController(ApplicationDbContext context, IITProjectService IITProjectService)
+        #region Constructor
+        public ProjectController(ApplicationDbContext context, IITProjectService IITProjectService, IITRolesService IITRolesService, IITLookUpService IITLookUpService, IITFileService IITFileService, UserManager<ITUser> userManager, IITCompanyInfoService IITCompanyInfoService)
         {
             _context = context;
-            _ITProjectService = IITProjectService;
+            _projectService = IITProjectService;
+            _rolesService = IITRolesService;
+            _lookUpService = IITLookUpService;
+            _fileService = IITFileService;
+            _userManager = userManager;
+            _companyInfoService = IITCompanyInfoService;
         }
-
+        #endregion
+        
+        #region Index
         // GET: Project
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
             return View(await applicationDbContext.ToListAsync());
         }
+        #endregion
+        
+        #region Get My Projects
+        // GET: MyProjects
+        public async Task<IActionResult> MyProjects()
+        {
+            // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            string userId = _userManager.GetUserId(User);
+            
+            List<Project> projects = await _projectService.GetUserProjectsAsync(userId);
 
+            return View(projects);
+        }
+        #endregion
+        
+        #region Get All Projects
+        // GET: AllProjects
+        public async Task<IActionResult> AllProjects()
+        {
+
+            List<Project> projects = new();
+            // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            if ( User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)) )
+            {
+                projects = await _companyInfoService.GetAllProjectsAsync(companyId);
+            }
+            else
+            {
+                // This doesn't include archived projects
+                projects = await _projectService.GetAllProjectsByCompany(companyId);
+            }
+            return View(projects);
+        }
+        #endregion
+        
+        #region Get Archived Projects
+        // GET: ArchivedProjects
+        public async Task<IActionResult> ArchivedProjects()
+        {
+            // We haven't created the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            List<Project> projects = await _projectService.GetArchivedProjectsByCompany(companyId);
+
+            return View(projects);
+        }
+        #endregion
+        
+        #region Get Details
         // GET: Project/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Projects == null)
+            if (id == null)
             {
                 return NotFound();
             }
+            
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            Project project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
                 return NotFound();
@@ -48,102 +117,155 @@ namespace IssueTracker.Controllers
 
             return View(project);
         }
-
+        #endregion
+        
+        #region Get Create
         // GET: Project/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id");
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
-            return View();
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            // Add ViewModel instance
+            AddProjectWithPMViewModel model = new();
+            
+            // Load SelectLists with data ie. PMList & PriorityList
+            model.PMList =
+                new SelectList( await _rolesService.GetManyUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName" );
+            model.PriorityList = new SelectList( await _lookUpService.GetProjectPrioritiesAsync(), "Id", "Name" );
+            
+            // Another way it could be done with a "viewBag"
+            // ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
+            return View(model);
         }
-
+        #endregion
+        
+        #region Post Create
         // POST: Project/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,Archived,FileName,FileData,FileContentType,CompanyId,ProjectPriorityId")] Project project)
+        public async Task<IActionResult> Create( AddProjectWithPMViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model != null)
             {
-                // _context.Add(project);
-                // await _context.SaveChangesAsync();
-                await _ITProjectService.AddNewProjectAsync(project);
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return View(project);
-        }
+                //Returns a nullable value so add .Value
+                int companyId = User.Identity.GetCompanyId().Value;
+                try
+                {
+                    if (model.Project.FormFile != null)
+                    {
+                        model.Project.FileData = await _fileService.ConvertFileToByteArrayAsync(model.Project.FormFile);
+                        model.Project.FileName = model.Project.FormFile.FileName;
+                        model.Project.FileContentType = model.Project.FormFile.ContentType;
+                        
+                        
+                    }
 
+                    model.Project.CompanyId = companyId;
+                    
+                    await _projectService.AddNewProjectAsync(model.Project);
+                    
+                    // Add PM if one was chosen
+                    if (!string.IsNullOrEmpty(model.PMId))
+                    {
+                        await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"****ERROR**** - Error post create on ProjectController. --->  {e.Message}");
+                    throw;
+                }
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Create");
+        }
+        #endregion
+        
+        #region Get Edit
         // GET: Project/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Projects == null)
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            // Add ViewModel instance
+            AddProjectWithPMViewModel model = new();
+
+            model.Project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
+            
+            // Get current PM
+            ITUser currentPM = await _projectService.GetProjectManagerAsync(id.Value);
+            
+            // Load SelectLists with data ie. PMList & PriorityList
+            if (currentPM != null)
             {
-                return NotFound();
+                model.PMList =
+                    new SelectList( await _rolesService.GetManyUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName", currentPM.Id);
+            }
+            else
+            {
+                model.PMList =
+                    new SelectList( await _rolesService.GetManyUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
             }
 
-            var project = await _context.Projects.FindAsync(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return View(project);
+            model.PriorityList = new SelectList( await _lookUpService.GetProjectPrioritiesAsync(), "Id", "Name" );
+            
+            // Another way it could be done with a "viewBag"
+            // ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
+            return View(model);
         }
-
+        #endregion
+        
+        #region Post Edit
         // POST: Project/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,Archived,FileName,FileData,FileContentType,CompanyId,ProjectPriorityId")] Project project)
+        public async Task<IActionResult> Edit(AddProjectWithPMViewModel model)
         {
-            if (id != project.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
+            if (model != null)
             {
                 try
                 {
-                    // _context.Update(project);
-                    // await _context.SaveChangesAsync();
-                    await _ITProjectService.UpdateProjectAsync(project);
+                    if (model.Project.FormFile != null)
+                    {
+                        model.Project.FileData = await _fileService.ConvertFileToByteArrayAsync(model.Project.FormFile);
+                        model.Project.FileName = model.Project.FormFile.FileName;
+                        model.Project.FileContentType = model.Project.FormFile.ContentType;
+                    }
+                    await _projectService.UpdateProjectAsync(model.Project);
+                    
+                    // Add PM if one was chosen
+                    if (!string.IsNullOrEmpty(model.PMId))
+                    {
+                        await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
-                    if (!ProjectExists(project.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Console.WriteLine($"****ERROR**** - Error post Edit on ProjectController. --->  {e.Message}");
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return View(project);
+            return RedirectToAction("Index");
         }
-
-        // GET: Project/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        #endregion
+        
+        #region Get Archive
+        // GET: Project/Archive/5
+        public async Task<IActionResult> Archive(int? id)
         {
-            if (id == null || _context.Projects == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            Project project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
             if (project == null)
             {
                 return NotFound();
@@ -151,29 +273,66 @@ namespace IssueTracker.Controllers
 
             return View(project);
         }
-
-        // POST: Project/Delete/5
-        [HttpPost, ActionName("Delete")]
+        #endregion
+        
+        #region Post Archive
+        // POST: Project/Archive/5
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> ArchiveConfirmed(int id)
         {
-            if (_context.Projects == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
-            }
-            var project = await _context.Projects.FindAsync(id);
-            if (project != null)
-            {
-                _context.Projects.Remove(project);
-            }
+
+            int companyId = User.Identity.GetCompanyId().Value;
             
-            await _context.SaveChangesAsync();
+            Project project = await _projectService.GetProjectByIdAsync(id, companyId);
+            await _projectService.ArchiveProjectAsync(project);
+
             return RedirectToAction(nameof(Index));
         }
+        #endregion
+        
+        #region Get Restore
+        // GET: Project/Restore/5
+        public async Task<IActionResult> Restore(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            Project project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(project);
+        }
+        #endregion
+        
+        #region Post Restore
+        // POST: Project/Restore/5
+        [HttpPost, ActionName("Restore")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreConfirmed(int id)
+        {
+
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            Project project = await _projectService.GetProjectByIdAsync(id, companyId);
+            await _projectService.RestoreProjectAsync(project);
+
+            return RedirectToAction(nameof(Index));
+        }
+        #endregion
+        
+        #region Does Project Exist
         private bool ProjectExists(int id)
         {
           return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        #endregion
     }
 }

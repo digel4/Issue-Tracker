@@ -23,8 +23,7 @@ public class ITUser : IdentityUser
     // Getters and Setters allow the public values to be got or set. e.g. in this one we're telling runtime how to set the full name by combining the first and last name with string interpolation
     // Sometimes you might only set a get so that it can only be got and not set. Here the application is getting FullName from combining First and LastName.
     public string? FullName { get { return $"{FirstName } {LastName}"; } }
-    
-    
+
     [NotMapped]
     [DataType(DataType.Upload)]
     public IFormFile AvatarFormFile { get; set; }
@@ -38,7 +37,7 @@ public class ITUser : IdentityUser
     public string? AvatarContentType { get; set; }
     
     // This is a foreign key in the database.  This corresponds to another table on the database. This corresponds to another table on the database. This refers to a  look up table since we are literally just looking for a few properties.
-    public int? CompanyId { get; set; }
+    public int CompanyId { get; set; }
     
     // Virtuals
     // When entity framework sees virtuals it allows easy loading and change tracking. This is opposed to eager loading. Essentially we get the foreign keys above and then the virtual objects below
@@ -49,5 +48,5 @@ public class ITUser : IdentityUser
     
     // This is a one-to-many relationship tables. 
 
-    public virtual ICollection<Project> Projects { get; set; }= new HashSet<Project>();
+    public virtual ICollection<Project> Projects { get; set; }
 }

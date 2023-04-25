@@ -51,6 +51,7 @@ public class ITCompanyInfoService : IITCompanyInfoService
         // We need to make sure we get all the other tables associated with projects like project priority. We do this with .Include. This is called eager loading information. We do not get the virtual props by default only the local ones.
         result = await _context.Projects
             .Where(p => p.CompanyId == companyId)
+            .Include(p => p.Company)
             .Include(p => p.Members)
             .Include(p => p.Tickets)
                 //.Then is chained to the previous include. It's operating on Tickets

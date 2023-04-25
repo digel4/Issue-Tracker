@@ -45,6 +45,7 @@ builder.Services.AddScoped<IEmailSender, ITEmailService>();
 builder.Services.AddScoped<IITNotificationService, ITNotificationService>();
 builder.Services.AddScoped<IITInviteService, ITInviteService>();
 builder.Services.AddScoped<IITFileService, ITFileService>();
+builder.Services.AddScoped<IITLookUpService, ITLookUpService>();
 
 // Configure mail settings
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));

@@ -214,9 +214,7 @@ public static class DataUtility
                 throw;
             }
         }
-
-
-
+        
         public static async Task SeedDefaultUsersAsync(UserManager<ITUser> userManager)
         {
             //Seed Default Admin User

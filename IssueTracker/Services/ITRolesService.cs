@@ -2,6 +2,7 @@ using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
@@ -31,7 +32,24 @@ public class ITRolesService : IITRolesService
 
         return result;
     }
+    
+    public async Task<List<IdentityRole>> GetRolesAsync()
+    {
+        try
+        {
+            List<IdentityRole> result = new();
 
+            result = await _context.Roles.ToListAsync();
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error getting roles. --->  {e.Message}");
+            throw;
+        }
+    }
+    
     public async Task<IEnumerable<string>> GetSingleUserRolesAsync(ITUser user)
     {
         IEnumerable<string> result = await _userManager.GetRolesAsync(user);
@@ -41,7 +59,7 @@ public class ITRolesService : IITRolesService
 
     public async Task<bool> AddUserToRoleAsync(ITUser user, string roleName)
     {
-        // We wrao AttTiRikeAsync because its basically order of operation. We want it complete before moving on to .Succeeded
+        // We wrap AddToRoleAsync in () because its basically order of operation. We want it complete before moving on to .Succeeded
         bool result = (await _userManager.AddToRoleAsync(user, roleName)).Succeeded;
 
         return result;

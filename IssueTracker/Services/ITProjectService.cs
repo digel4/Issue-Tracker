@@ -8,10 +8,12 @@ namespace IssueTracker.Services;
 
 public class ITProjectService : IITProjectService
 {
-    
+    #region Properties
     private readonly ApplicationDbContext _context;
     private readonly IITRolesService  _rolesService;
-    // Constructor
+    #endregion
+    
+    #region Contructor
     public ITProjectService(
         ApplicationDbContext context,
         IITRolesService rolesService
@@ -21,15 +23,19 @@ public class ITProjectService : IITProjectService
         _context = context;
         _rolesService = rolesService;
     }
+    #endregion
     
-    
+    #region Add New Project 
     // CRUD - Create
     public async Task AddNewProjectAsync(Project project)
     {
         _context.Add(project);
         await _context.SaveChangesAsync();
     }
+    #endregion
 
+    #region Add Project Manager 
+    // I don't think this is working. May start a recursive loop
     public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
     {
         ITUser currentPM = await GetProjectManagerAsync(projectId);
@@ -63,7 +69,9 @@ public class ITProjectService : IITProjectService
         
         
     }
-
+    #endregion
+    
+    #region Add User To Project 
     public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
     {
         ITUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -88,15 +96,34 @@ public class ITProjectService : IITProjectService
         }
         return false;  
     }
+    #endregion
     
+    #region Archive Project 
     // CRUD - Archive (Delete)
     public async Task ArchiveProjectAsync(Project project)
     {
-        project.Archived = true;
-        _context.Update(project);
-        await _context.SaveChangesAsync();
+        try
+        {
+            project.Archived = true;
+            await UpdateProjectAsync(project);
+        
+            // Archive the Tickets for the Project
+            foreach (Ticket ticket in project.Tickets)
+            {
+                ticket.ArchivedByProject = true;
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error archiving project. --->  {e.Message}");
+            throw;
+        }
     }
-
+    #endregion
+    
+    #region Get All Projects By Company
     // CRUD - Read 
     public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
     {
@@ -106,6 +133,7 @@ public class ITProjectService : IITProjectService
         projects = await _context.Projects
             .Where(p => p.CompanyId == companyId && p.Archived == false)
             .Include(p => p.Members)
+            .Include(p => p.Company)
             .Include(p => p.Tickets)
                 //.Then is chained to the previous include. It's operating on Tickets
                 .ThenInclude(t => t.Comments)
@@ -138,7 +166,9 @@ public class ITProjectService : IITProjectService
         
         return projects;
     }
-
+    #endregion
+    
+    #region Get All Projects By Priority
     // CRUD - Read 
     public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
     {
@@ -151,7 +181,9 @@ public class ITProjectService : IITProjectService
 
         return projects.Where(p => p.ProjectPriorityId == priorityId).ToList();
     }
-
+    #endregion
+    
+    #region Get All Project Members Except PM
     public async Task<List<ITUser>> GetAllProjectMembersExceptPMAsync(int projectId)
     {
         List<ITUser> developers = await GetProjectMembersByRoleAsync(projectId, Roles.Developer.ToString());
@@ -162,22 +194,60 @@ public class ITProjectService : IITProjectService
 
         return teamMembers;
     }
-
+    #endregion
+    
+    #region Get Archived Projects By Company
     public async Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
     {
         // This is the same as writing List<Project> result = new List<Project>();
         List<Project> projects = new();
+        // We need to make sure we get all the other tables associated with projects like project priority. We do this with .Include. This is called eager loading information. We do not get the virtual props by default only the local ones.
+        projects = await _context.Projects
+            .Where(p => p.CompanyId == companyId && p.Archived == true)
+            .Include(p => p.Members)
+            .Include(p => p.Tickets)
+                //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.Comments)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.Attachments)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.History)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.Notifications)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.DeveloperUser)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.OwnerUser)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.TicketStatus)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.TicketPriority)
+            .Include(p => p.Tickets)
+            //.Then is chained to the previous include. It's operating on Tickets
+                .ThenInclude(t => t.TicketType)
+            .Include(p => p.ProjectPriority)
+            .ToListAsync();
+        
 
-        projects = await GetAllProjectsByCompany(companyId);
-
-        return projects.Where(p => p.Archived == true).ToList();
+        return projects;
     }
-
+    #endregion
+    
+    #region Get Developers On Project 
     public async Task<List<ITUser>> GetDevelopersOnProjectAsync(int projectId)
     {
         throw new NotImplementedException();
     }
-
+    #endregion
+    
+    #region Get Project Manager
     public async Task<ITUser> GetProjectManagerAsync(int projectId)
     {
         Project project = await _context.Projects
@@ -194,7 +264,9 @@ public class ITProjectService : IITProjectService
         }
         return null;
     }
-
+    #endregion
+    
+    #region Get Project Members By Role
     public async Task<List<ITUser>> GetProjectMembersByRoleAsync(int projectId, string role)
     {
         Project project = await _context.Projects
@@ -213,55 +285,74 @@ public class ITProjectService : IITProjectService
 
         return members;
     }
-
+    #endregion
+    
+    #region Get Project By Id
     // CRUD - Read 
     public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
     {
         Project project = await _context.Projects
             .Include(p => p.Tickets)
+                .ThenInclude(t => t.TicketPriority)
+            .Include(p => p.Tickets)
+                .ThenInclude(t => t.TicketType)
+            .Include(p => p.Tickets)
+                .ThenInclude(t => t.TicketStatus)
+            .Include(p => p.Tickets)
+                .ThenInclude(t => t.DeveloperUser)
+            .Include(p => p.Tickets)
+                .ThenInclude(t => t.OwnerUser)
             .Include(p => p.Members)
             .Include(p => p.ProjectPriority)
             .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
         
         return project;
     }
-
+    #endregion
+    
+    #region Get Submitters On Project
     public async Task<List<ITUser>> GetSubmittersOnProjectAsync(int projectId)
     {
         throw new NotImplementedException();
     }
-
+    #endregion
+    
+    #region Get Users Not On Project 
     public async Task<List<ITUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
     {
         List<ITUser> users = await _context.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToListAsync();
 
         return users.Where(u => u.CompanyId == companyId).ToList();
     }
-
+    #endregion
+    
+    #region Get User Projects
     public async Task<List<Project>> GetUserProjectsAsync(string userId)
     {
         try
         {
             List<Project> userProjects = (await _context.Users
                 .Include(u => u.Projects)
-                .ThenInclude(p => p.Company)
+                    .ThenInclude(p => p.ProjectPriority)
                 .Include(u => u.Projects)
-                .ThenInclude(p => p.Members)
+                    .ThenInclude(p => p.Company)
                 .Include(u => u.Projects)
-                .ThenInclude(p => p.Tickets)
-                .ThenInclude(t => t.DeveloperUser)
+                    .ThenInclude(p => p.Members)
                 .Include(u => u.Projects)
-                .ThenInclude(p => p.Tickets)
-                .ThenInclude(t => t.OwnerUser)
+                    .ThenInclude(p => p.Tickets)
+                        .ThenInclude(t => t.DeveloperUser)
                 .Include(u => u.Projects)
-                .ThenInclude(p => p.Tickets)
-                .ThenInclude(t => t.TicketPriority)
+                    .ThenInclude(p => p.Tickets)
+                        .ThenInclude(t => t.OwnerUser)
                 .Include(u => u.Projects)
-                .ThenInclude(p => p.Tickets)
-                .ThenInclude(t => t.TicketStatus)
+                    .ThenInclude(p => p.Tickets)
+                        .ThenInclude(t => t.TicketPriority)
                 .Include(u => u.Projects)
-                .ThenInclude(p => p.Tickets)
-                .ThenInclude(t => t.TicketType)
+                    .ThenInclude(p => p.Tickets)
+                        .ThenInclude(t => t.TicketStatus)
+                .Include(u => u.Projects)
+                    .ThenInclude(p => p.Tickets)
+                        .ThenInclude(t => t.TicketType)
                 .FirstOrDefaultAsync(u => u.Id == userId))
                 // This returns a user and then we access the projects property of that user through dot notation
                 .Projects.ToList();
@@ -275,7 +366,9 @@ public class ITProjectService : IITProjectService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Is User On Project
     public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
     {
         Project project = await _context.Projects
@@ -291,7 +384,9 @@ public class ITProjectService : IITProjectService
 
         return result;
     }
-
+    #endregion
+    
+    #region Lookup Project Priority Id
     public async Task<int> LookupProjectPriorityId(string priorityName)
     {
         // parenthesis means the first await is done and returns a project. Then simply use dot notation to access the id property on the returned project.
@@ -299,7 +394,9 @@ public class ITProjectService : IITProjectService
 
         return priorityId;
     }
-
+    #endregion
+    
+    #region Remove Project Manager
     // CRUD - Delete 
     public async Task RemoveProjectManagerAsync(int projectId)
     {
@@ -326,8 +423,10 @@ public class ITProjectService : IITProjectService
         }
 
     }
-
-    // CRUD - Delete 
+    #endregion
+    
+    #region Remove Users From Project By Role
+    // CRUD - Delete  
     public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
     {
 
@@ -356,7 +455,9 @@ public class ITProjectService : IITProjectService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Remove User From Project
     // CRUD - Delete 
     public async Task RemoveUserFromProjectAsync(string userId, int projectId)
     {
@@ -384,11 +485,40 @@ public class ITProjectService : IITProjectService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Restore Project
+    public async Task RestoreProjectAsync(Project project)
+    {
+        try
+        {
+            project.Archived = false;
+            await UpdateProjectAsync(project);
+        
+            // Archive the Tickets for the Project
+            foreach (Ticket ticket in project.Tickets)
+            {
+                ticket.ArchivedByProject = false;
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error restoring project. --->  {e.Message}");
+            throw;
+        }
+    }
+    #endregion
+    
+    
+    //TODO Do I need Update project method. If I do I need to update to use projectService
+    #region Update Project
     // CRUD - Update
     public async Task UpdateProjectAsync(Project project)
     {
         _context.Update(project);
         await _context.SaveChangesAsync();
     }
+    #endregion
 }
