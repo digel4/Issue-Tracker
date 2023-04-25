@@ -9,11 +9,14 @@ namespace IssueTracker.Services;
 
 public class ITTicketService : IITTicketService
 {
+    #region Properties
     private readonly ApplicationDbContext _context;
     private readonly IITRolesService  _rolesService;
     private readonly IITProjectService  _projectService;
+    #endregion
 
-     // Constructor
+
+    #region Constructor
      public ITTicketService(
          ApplicationDbContext context,
          IITRolesService rolesService,
@@ -25,7 +28,9 @@ public class ITTicketService : IITTicketService
          _rolesService = rolesService;
          _projectService = projectService;
      }
+     #endregion
      
+    #region Add New Ticket
     public async Task AddNewTicketAsync(Ticket ticket)
     {
         try
@@ -39,7 +44,41 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    
+    #region Add New Ticket Comment
+    public async Task AddNewTicketCommentAsync(TicketComment ticketComment)
+    {
+        try
+        {
+            _context.Add(ticketComment);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    #endregion
+    
+    #region Add Ticket Attachment 
+    public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+    {
+        try
+        {
+            await _context.AddAsync(ticketAttachment);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+    #endregion
+    
+    #region Update Ticket
     public async Task UpdateTicketAsync(Ticket ticket)
     {
         try
@@ -53,12 +92,80 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get Ticket By Id
     public async Task<Ticket> GetTicketByIdAsync(int ticketId)
     {
-        return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
-    }
+        try
+        {
+            Ticket ticket = await _context.Tickets
+                .Include(t => t.DeveloperUser)
+                .Include(t => t.OwnerUser)
+                .Include(t => t.Project)
+                .Include(t => t.TicketPriority)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketType)
+                .Include(t => t.Comments)
+                .Include(t => t.Attachments)
+                .Include(t => t.History)
+                .FirstOrDefaultAsync(t => t.Id == ticketId);
 
+            return ticket;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+    }
+    #endregion
+    
+    // No tracking means entity framework doesn't track the changes or stops it from tracking the entity. We're not changing anything with this method. We're using this method for ticket histories so we just want to check the state of the ticket.
+    #region GetTicketAsNoTrackingAsync
+    public async Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId)
+    {
+        try
+        {
+            Ticket ticket = await _context.Tickets
+                .Include(t => t.DeveloperUser)
+                .Include(t => t.Project)
+                .Include(t => t.TicketPriority)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketType)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == ticketId);
+
+            return ticket;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error getting ticket As No Tracking  --->  {e.Message}");
+            throw;
+        }
+    }
+    #endregion
+    
+    #region Get Ticket Attachment By Id
+    public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
+    {
+        try
+        {
+            TicketAttachment ticketAttachment = await _context.TicketAttachments
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(t => t.Id == ticketAttachmentId);
+            return ticketAttachment;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+    #endregion
+
+    #region Archive Ticket
     public async Task ArchiveTicketAsync(Ticket ticket)
     {
         try
@@ -73,7 +180,26 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Restore Ticket
+    public async Task RestoreTicketAsync(Ticket ticket)
+    {
+        try
+        {
+            ticket.Archived = false;
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    #endregion
+    
+    #region Assign Ticket
     public async Task AssignTicketAsync(int ticketId, string userId)
     {
         Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
@@ -100,7 +226,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get Archived Tickets
     public async Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
     {
         try
@@ -115,7 +243,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get All Tickets By Company
     public async Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
     {
         try
@@ -143,7 +273,9 @@ public class ITTicketService : IITTicketService
         }
 
     }
-
+    #endregion
+    
+    #region Get All Tickets By Priority
     public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
     {
         // .value extents int to allow it to be null. I don't know why we can't do int? PriorityId
@@ -175,7 +307,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get All Tickets By Status
     public async Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
     {
         // .value extents int to allow it to be null. I don't know why we can't do int? PriorityId
@@ -207,7 +341,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get All Tickets By Type
     public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
     {
         // .value extents int to allow it to be null. I don't know why we can't do int? PriorityId
@@ -239,7 +375,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get Ticket Developer
     public async Task<ITUser> GetTicketDeveloperAsync(int ticketId, int companyId)
     {
         ITUser developer = new();
@@ -260,7 +398,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get Tickets By Role
     public async Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
     {
         List<Ticket> tickets = new();
@@ -296,7 +436,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get Tickets By User Id
     public async Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId)
     {
         ITUser  itUser= await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -338,7 +480,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get Project Tickets By Role
     public async Task<List<Ticket>> GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId)
     {
         List<Ticket> tickets = new();
@@ -354,7 +498,9 @@ public class ITTicketService : IITTicketService
         }
         return tickets;
     }
-
+    #endregion
+    
+    #region Get Project Tickets By Status
     public async Task<List<Ticket>> GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId)
     {
         List<Ticket> tickets = new();
@@ -370,7 +516,9 @@ public class ITTicketService : IITTicketService
         }
         return tickets;
     }
-
+    #endregion
+    
+    #region Get Project Ticket sBy Priority
     public async Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
     {
         List<Ticket> tickets = new();
@@ -386,7 +534,9 @@ public class ITTicketService : IITTicketService
         }
         return tickets;
     }
-
+    #endregion
+    
+    #region Get Project Tickets By Type
     public async Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId)
     {
         List<Ticket> tickets = new();
@@ -402,7 +552,29 @@ public class ITTicketService : IITTicketService
         }
         return tickets;
     }
+    #endregion
 
+    #region Get Unassigned Tickets 
+
+    public async Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId)
+    {
+        List<Ticket> tickets = new();
+        try
+        {
+            tickets = ( await GetAllTicketsByCompanyAsync(companyId) ).Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).ToList();
+            return tickets;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error getting unassigned tickets --->  {e.Message}");
+            throw;
+        }
+        return tickets;
+    }
+
+    #endregion
+    
+    #region Lookup Ticket Priority Id
     public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
     {
         try
@@ -418,7 +590,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Lookup Ticket Status Id
     public async Task<int?> LookupTicketStatusIdAsync(string statusName)
     {
         try
@@ -434,7 +608,9 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Lookup Ticket Type Id
     public async Task<int?> LookupTicketTypeIdAsync(string typeName)
     {
         try
@@ -450,4 +626,5 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
+    #endregion
 }

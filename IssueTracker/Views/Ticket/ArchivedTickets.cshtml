@@ -1,15 +1,19 @@
+@using IssueTracker.Models.Enums
+@using IssueTracker.Services.Interfaces
+@using Microsoft.AspNetCore.Identity
 @model IEnumerable<IssueTracker.Models.Ticket>
 
+@inject UserManager<ITUser> UserManager
+@inject IITProjectService ProjectService
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ArchivedTickets";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ITUser itUser = await UserManager.GetUserAsync(User);
 }
 
-<h1>Index</h1>
+<h1>Archived Tickets</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -68,10 +72,10 @@
                 @Html.DisplayFor(modelItem => item.Archived)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OwnerUser.Id)
+                @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeveloperUser.Id)
+                @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Project.Name)
@@ -86,16 +90,15 @@
                 @Html.DisplayFor(modelItem => item.TicketType.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                @if (item.Archived)
-                    {
-                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                    }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @{
+                    bool isProjectPM = await ProjectService.isAssignedProjectManagerAsync(itUser.Id, item.ProjectId);
+                }
+                @if ( User.IsInRole(nameof(Roles.Admin)) || isProjectPM )
+                {
+                    <span>|</span>
+                    <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                }
             </td>
         </tr>
 }

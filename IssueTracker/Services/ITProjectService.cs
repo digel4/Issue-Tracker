@@ -240,6 +240,38 @@ public class ITProjectService : IITProjectService
     }
     #endregion
     
+    #region Get All Unassigned Projects
+
+    public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
+    {
+        List<Project> result = new();
+        List<Project> projects = new();
+
+        try
+        {
+            projects = await _context.Projects
+                .Include(p => p.ProjectPriority)
+                .Where(p => p.CompanyId == companyId)
+                .ToListAsync();
+
+            foreach (Project project in projects)
+            {
+                if ( (await GetProjectMembersByRoleAsync(project.Id, nameof(Roles.ProjectManager))).Count == 0)
+                {
+                    result.Add(project);
+                }
+            }
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error getting unassigned projects --->  {e.Message}");
+            throw;
+        }
+    }
+    #endregion
+    
     #region Get Developers On Project 
     public async Task<List<ITUser>> GetDevelopersOnProjectAsync(int projectId)
     {
@@ -363,6 +395,27 @@ public class ITProjectService : IITProjectService
         catch (Exception e)
         {
             Console.WriteLine($"****ERROR**** - Error Getting user projects list. --->  {e.Message}");
+            throw;
+        }
+    }
+    #endregion
+    
+    #region Is Assigned Project Manager
+    public async Task<bool> isAssignedProjectManagerAsync(string userId, int projectId)
+    {
+        try
+        {
+            string projectManagerId = (await GetProjectManagerAsync(projectId))?.Id;
+
+            if (projectManagerId == userId)
+            {
+                return true;
+            }
+            return false;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error running isAssignedProjectManagerAsync --->  {e.Message}");
             throw;
         }
     }

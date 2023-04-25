@@ -11,14 +11,16 @@ using IssueTracker.Models;
 using IssueTracker.Models.Enums;
 using IssueTracker.Models.ViewModels;
 using IssueTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace IssueTracker.Controllers
 {
+    // Authorise the entire controller with the authorize attribute
+    [Authorize]
     public class ProjectController : Controller
     {
         #region Properties
-        private readonly ApplicationDbContext _context;
         private readonly IITProjectService _projectService;
         private readonly IITRolesService _rolesService;
         private readonly IITLookUpService _lookUpService;
@@ -28,9 +30,8 @@ namespace IssueTracker.Controllers
         #endregion
 
         #region Constructor
-        public ProjectController(ApplicationDbContext context, IITProjectService IITProjectService, IITRolesService IITRolesService, IITLookUpService IITLookUpService, IITFileService IITFileService, UserManager<ITUser> userManager, IITCompanyInfoService IITCompanyInfoService)
+        public ProjectController(IITProjectService IITProjectService, IITRolesService IITRolesService, IITLookUpService IITLookUpService, IITFileService IITFileService, UserManager<ITUser> userManager, IITCompanyInfoService IITCompanyInfoService)
         {
-            _context = context;
             _projectService = IITProjectService;
             _rolesService = IITRolesService;
             _lookUpService = IITLookUpService;
@@ -39,16 +40,7 @@ namespace IssueTracker.Controllers
             _companyInfoService = IITCompanyInfoService;
         }
         #endregion
-        
-        #region Index
-        // GET: Project
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
-            return View(await applicationDbContext.ToListAsync());
-        }
-        #endregion
-        
+
         #region Get My Projects
         // GET: MyProjects
         public async Task<IActionResult> MyProjects()
@@ -97,6 +89,114 @@ namespace IssueTracker.Controllers
         }
         #endregion
         
+        #region Get Unassigned Projects
+        // GET: Ticket
+        [Authorize(Roles = nameof(Roles.Admin))] 
+        public async Task<IActionResult> UnassignedProjects()
+        {
+            // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            int companyId = User.Identity.GetCompanyId().Value;
+            string itUserId = _userManager.GetUserId(User);
+            
+            List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+
+            return View(projects);
+        }
+        #endregion
+        
+        #region Get Assign Project Manager
+
+        [Authorize(Roles = nameof(Roles.Admin))] 
+        [HttpGet]
+        public async Task<IActionResult> AssignProjectManager(int ProjectId)
+        {
+            // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            AssignProjectManagerViewModel model = new();
+            
+            model.Project = await _projectService.GetProjectByIdAsync(ProjectId, companyId);
+            model.ProjectManagerList = new SelectList( await _rolesService.GetManyUsersInRoleAsync(nameof(Roles.ProjectManager), companyId), "Id", "FullName" );
+
+            return View(model);
+        }
+        #endregion
+        
+        #region Post Assign Project Manager
+
+        [Authorize(Roles = nameof(Roles.Admin))] 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignProjectManager(AssignProjectManagerViewModel model)
+        {
+            if ( !string.IsNullOrEmpty(model.ProjectManagerId) )
+            {
+                await _projectService.AddProjectManagerAsync(model.ProjectManagerId, model.Project.Id);
+
+                return RedirectToAction(nameof(Details), new { id = model.Project.Id });
+            }
+
+            return RedirectToAction(nameof(AssignProjectManager), new { projectId = model.Project.Id });
+        }
+        #endregion
+        
+        #region Get Assign Members
+
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
+        [HttpGet]
+        public async Task<IActionResult> AssignMembers(int ProjectId)
+        {
+            // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            ProjectMembersViewModel model = new();
+            
+            model.Project = await _projectService.GetProjectByIdAsync(ProjectId, companyId);
+
+            List<ITUser> developers = await _rolesService.GetManyUsersInRoleAsync(nameof(Roles.Developer), companyId); 
+            List<ITUser> submitters = await _rolesService.GetManyUsersInRoleAsync(nameof(Roles.Submitter), companyId);
+
+            List<ITUser> companyMembers = developers.Concat(submitters).ToList();
+
+            List<string> projectMembers = model.Project.Members.Select( m => m.Id ).ToList();
+            
+            model.Users = new MultiSelectList( companyMembers, "Id", "FullName", projectMembers );
+
+            return View(model);
+        }
+        #endregion
+        
+        #region Post Assign Members
+
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
+        {
+            if ( model.SelectedUsers != null )
+            {
+                List<string> memberIds = (await _projectService.GetAllProjectMembersExceptPMAsync(model.Project.Id))
+                    .Select(m => m.Id).ToList();
+                
+                //Remove Current Members
+                foreach (string member in memberIds)
+                {
+                    await _projectService.RemoveUserFromProjectAsync(member, model.Project.Id);
+                }
+                
+                // Add selected members
+                foreach (string member in model.SelectedUsers)
+                {
+                    await _projectService.AddUserToProjectAsync(member, model.Project.Id);
+                }
+
+                return RedirectToAction(nameof(Details), new { id = model.Project.Id });
+            }
+
+            return RedirectToAction(nameof(AssignMembers), new { projectId = model.Project.Id });
+        }
+        #endregion
+        
         #region Get Details
         // GET: Project/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -121,6 +221,7 @@ namespace IssueTracker.Controllers
         
         #region Get Create
         // GET: Project/Create
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         public async Task<IActionResult> Create()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -143,6 +244,7 @@ namespace IssueTracker.Controllers
         // POST: Project/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( AddProjectWithPMViewModel model)
@@ -177,7 +279,7 @@ namespace IssueTracker.Controllers
                     Console.WriteLine($"****ERROR**** - Error post create on ProjectController. --->  {e.Message}");
                     throw;
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("MyProjects");
             }
             return RedirectToAction("Create");
         }
@@ -185,6 +287,7 @@ namespace IssueTracker.Controllers
         
         #region Get Edit
         // GET: Project/Edit/5
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         public async Task<IActionResult> Edit(int? id)
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -221,6 +324,7 @@ namespace IssueTracker.Controllers
         // POST: Project/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AddProjectWithPMViewModel model)
@@ -243,19 +347,26 @@ namespace IssueTracker.Controllers
                         await _projectService.AddProjectManagerAsync(model.PMId, model.Project.Id);
                     }
                 }
-                catch (Exception e)
+                catch (DbUpdateConcurrencyException)
                 {
-                    Console.WriteLine($"****ERROR**** - Error post Edit on ProjectController. --->  {e.Message}");
-                    throw;
+                    if (!await ProjectExists(model.Project.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("MyProjects");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("MyProjects");
         }
         #endregion
         
         #region Get Archive
         // GET: Project/Archive/5
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         public async Task<IActionResult> Archive(int? id)
         {
             if (id == null)
@@ -277,22 +388,23 @@ namespace IssueTracker.Controllers
         
         #region Post Archive
         // POST: Project/Archive/5
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ArchiveConfirmed(int id)
         {
-
             int companyId = User.Identity.GetCompanyId().Value;
             
             Project project = await _projectService.GetProjectByIdAsync(id, companyId);
             await _projectService.ArchiveProjectAsync(project);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyProjects));
         }
         #endregion
         
         #region Get Restore
         // GET: Project/Restore/5
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null)
@@ -314,6 +426,7 @@ namespace IssueTracker.Controllers
         
         #region Post Restore
         // POST: Project/Restore/5
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")] 
         [HttpPost, ActionName("Restore")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RestoreConfirmed(int id)
@@ -324,14 +437,16 @@ namespace IssueTracker.Controllers
             Project project = await _projectService.GetProjectByIdAsync(id, companyId);
             await _projectService.RestoreProjectAsync(project);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyProjects));
         }
         #endregion
         
         #region Does Project Exist
-        private bool ProjectExists(int id)
+        private async Task<bool> ProjectExists(int id)
         {
-          return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            return (await _projectService.GetAllProjectsByCompany(companyId)).Any(p => p.Id == id);
         }
         #endregion
     }

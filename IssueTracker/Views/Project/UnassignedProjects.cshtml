@@ -1,0 +1,75 @@
+@using IssueTracker.Models.Enums
+@model IEnumerable<IssueTracker.Models.Project>
+
+@{
+    ViewData["Title"] = "Unassigned Projects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Unassigned Projects</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Archived)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileData)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectPriority)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Archived)
+            </td>
+            <td>
+                @if (item.FileData != null)
+                {
+                    <img style="width:60px;height: 60px" src="data:image/*;base64,@(Convert.ToBase64String(item.FileData))" alt="project image"/>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
+            </td>
+            <td>
+                @* asp-route is dynamic. Since we called the parameter ProjectId in the proects controller we can to name it asp-route-ProjectId here *@
+                <a class="btn btn-sm btn-outline-secondary"asp-action="AssignProjectManager" asp-route-ProjectId="@item.Id">Add Project Manager</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

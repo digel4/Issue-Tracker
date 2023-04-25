@@ -9,6 +9,13 @@
 
     <ItemGroup>
         <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+        <None Remove="Views\TicketPriority\**" />
+        <None Remove="Views\ProjectPriority\**" />
+        <None Remove="Views\TicketComment\**" />
+        <None Remove="Views\TicketHistory\**" />
+        <None Remove="Views\TicketAttachment\**" />
+        <None Remove="Views\TicketStatus\**" />
+        <None Remove="Views\TicketType\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -25,6 +32,124 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4.0" Culture="neutral" PublicKeyToken="adb9793829ddae60" />
         
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\3ds.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\aac.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\ai.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\avi.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\bmp.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\cad.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\cdr.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\css.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\dat.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\default.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\dll.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\dmg.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\doc.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\docx.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\eps.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\fla.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\flv.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\gif.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\html.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\indd.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\iso.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\jpg.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\js.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\midi.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\mov.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\mp3.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\mpg.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\pdf.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\php.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\png.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\ppt.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\ps.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\psd.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\raw.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\sql.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\svg.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\tif.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\txt.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\wmv.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\xls.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\xlsx.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\xml.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\img\contenttype\png\zip.png" />
+      <_ContentIncludedByDefault Remove="Views\TicketPriority\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketPriority\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketPriority\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketPriority\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketPriority\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProjectPriority\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProjectPriority\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProjectPriority\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProjectPriority\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ProjectPriority\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketComment\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketComment\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketComment\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketComment\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketComment\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketHistory\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketHistory\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketHistory\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketHistory\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketHistory\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketAttachment\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketAttachment\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketAttachment\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketAttachment\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketAttachment\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketStatus\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketStatus\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketStatus\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketStatus\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketStatus\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketType\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketType\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketType\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketType\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\TicketType\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Controllers\ProjectPriorityController.cs" />
+      <Compile Remove="Controllers\TicketPriorityController.cs" />
+      <Compile Remove="Controllers\TicketHistoryController.cs" />
+      <Compile Remove="Controllers\TicketCommentController.cs" />
+      <Compile Remove="Controllers\TicketAttachmentController.cs" />
+      <Compile Remove="Controllers\TicketTypeController.cs" />
+      <Compile Remove="Controllers\TicketStatusController.cs" />
+      <Compile Remove="Views\TicketPriority\**" />
+      <Compile Remove="Views\ProjectPriority\**" />
+      <Compile Remove="Views\TicketComment\**" />
+      <Compile Remove="Views\TicketHistory\**" />
+      <Compile Remove="Views\TicketAttachment\**" />
+      <Compile Remove="Views\TicketStatus\**" />
+      <Compile Remove="Views\TicketType\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Views\TicketPriority\**" />
+      <EmbeddedResource Remove="Views\ProjectPriority\**" />
+      <EmbeddedResource Remove="Views\TicketComment\**" />
+      <EmbeddedResource Remove="Views\TicketHistory\**" />
+      <EmbeddedResource Remove="Views\TicketAttachment\**" />
+      <EmbeddedResource Remove="Views\TicketStatus\**" />
+      <EmbeddedResource Remove="Views\TicketType\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Views\TicketPriority\**" />
+      <Content Remove="Views\ProjectPriority\**" />
+      <Content Remove="Views\TicketComment\**" />
+      <Content Remove="Views\TicketHistory\**" />
+      <Content Remove="Views\TicketAttachment\**" />
+      <Content Remove="Views\TicketStatus\**" />
+      <Content Remove="Views\TicketType\**" />
     </ItemGroup>
 
 </Project>

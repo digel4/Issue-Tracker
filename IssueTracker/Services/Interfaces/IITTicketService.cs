@@ -6,10 +6,14 @@ public interface IITTicketService
 {
     // CRUD Methods
     public Task AddNewTicketAsync(Ticket ticket);
+    public Task AddNewTicketCommentAsync(TicketComment ticketComment);
+    public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
     public Task UpdateTicketAsync(Ticket ticket);
     public Task<Ticket> GetTicketByIdAsync(int ticketId);
+    public Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId);
+    public Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId); 
     public Task ArchiveTicketAsync(Ticket ticket);
-
+    public Task RestoreTicketAsync(Ticket ticket);
     public Task AssignTicketAsync(int ticketId, string userId);
     public Task<List<Ticket>> GetArchivedTicketsAsync(int companyId);
     public Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId);
@@ -23,8 +27,7 @@ public interface IITTicketService
     public Task<List<Ticket>> GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId);
     public Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId);
     public Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId);
-
-
+    public Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId);
     public Task<int?> LookupTicketPriorityIdAsync(string priorityName);
     public Task<int?> LookupTicketStatusIdAsync(string statusName);
     public Task<int?> LookupTicketTypeIdAsync(string typeName);

@@ -29,6 +29,10 @@ public class Ticket
     [DisplayName("Archived")]
     public bool Archived { get; set; }
     
+    [Required]
+    [DisplayName("Archived by Project")]
+    public bool ArchivedByProject { get; set; }
+    
     // This is a foreign key in the database. This corresponds to another table on the database. 
     [Required]
     [DisplayName("Project")]
@@ -59,17 +63,17 @@ public class Ticket
     // Navigations properties. These allows us to specify the relationships of one class to another. IE we need to specify these to create the relations between the tables in the database.
     // These are not stored in the database
     
-    public virtual ITUser OwnerUser { get; set; }
+    public virtual ITUser? OwnerUser { get; set; }
     
-    public virtual ITUser DeveloperUser { get; set; }
+    public virtual ITUser? DeveloperUser { get; set; }
     
-    public virtual Project Project { get; set; }
+    public virtual Project? Project { get; set; }
     
-    public virtual TicketStatus TicketStatus { get; set; }
+    public virtual TicketStatus? TicketStatus { get; set; }
     
-    public virtual TicketPriority TicketPriority { get; set; }
+    public virtual TicketPriority? TicketPriority { get; set; }
     
-    public virtual TicketType TicketType { get; set; }
+    public virtual TicketType? TicketType { get; set; }
     
     // These are one-to-many relationship tables. 
 

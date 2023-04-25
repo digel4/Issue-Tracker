@@ -7,7 +7,11 @@ namespace IssueTracker.Services;
 
 public class ITTicketHistoryService : IITTicketHistoryService
 {
+    #region Properties
     private readonly ApplicationDbContext _context;
+    #endregion
+    
+    #region Constructor
     // Constructor
     public ITTicketHistoryService(
         ApplicationDbContext context 
@@ -16,8 +20,9 @@ public class ITTicketHistoryService : IITTicketHistoryService
         // Dependency Injection /  service layer
         _context = context;
     }
+    #endregion
 
-
+    #region Add History (1)
     public async Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId)
     {
         if (oldTicket == null && newTicket != null)
@@ -150,12 +155,48 @@ public class ITTicketHistoryService : IITTicketHistoryService
             }
             catch (Exception e)
             {
-                Console.WriteLine($"****ERROR**** - Error adding editing ticket history --->  {e.Message}");
+                Console.WriteLine($"****ERROR**** - Error adding ticket history --->  {e.Message}");
                 throw;
             }
         }
     }
+    #endregion
+    
+    #region Add History (2)
+    public async Task AddHistoryAsync(int ticketId, string model, string userId)
+    {
+        try
+        {
+            // model is passed in as a string because we want to run some string methods on it. We also want to set it as the property key on the history object as a string.
+            
+            Ticket ticket = await _context.Tickets.FindAsync(ticketId);
+            // Remove "Ticket" from the string
+            string description = model.ToLower().Replace("ticket", "");
+            description = $"New {description} added to ticket: {ticket.Title}";
 
+            TicketHistory history = new()
+            {
+                TicketId = ticket.Id,
+                Property = model,
+                OldValue = "",
+                NewValue = "",
+                Created = DateTimeOffset.Now,
+                UserId = userId,
+                Description = description
+            };
+
+            await _context.TicketHistories.AddAsync(history);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error adding ticket history --->  {e.Message}");
+            throw;
+        }
+    }
+    #endregion
+
+    #region Get Project Tickets Histories
     public async Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int projectId, int companyId)
     {
         try
@@ -177,7 +218,9 @@ public class ITTicketHistoryService : IITTicketHistoryService
             throw;
         }
     }
-
+    #endregion
+    
+    #region Get Company Tickets Histories
     public async Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)
     {
         try
@@ -202,4 +245,5 @@ public class ITTicketHistoryService : IITTicketHistoryService
             throw;
         }
     }
+    #endregion
 }

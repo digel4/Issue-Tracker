@@ -1,0 +1,69 @@
+@model IssueTracker.Models.ViewModels.AssignDeveloperViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<div class="container">
+    <h2>Assign Members for</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>@Model.Ticket.Title</h3>
+            <a style="font-size:small" asp-action="Details" asp-controller="Project" asp-route-id="@Model.Ticket.ProjectId">@Model.Ticket.Project.Name</a>
+            <div class="card">
+                <div class="card-header">
+                    <label class="control-label">Assign developer</label>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="AssignDeveloper" asp-controller="Ticket">
+                        <input hidden asp-for="@Model.Ticket.Id"/>
+                        <p>Description: @Model.Ticket.Description</p>
+                        <div class="form-group">
+                            <label class="col-form-label">Select Developers</label>
+                            <select required asp-for="DeveloperId" class="form-control" asp-items="@Model.Developers" multiple="multiple"></select>
+                            <option></option>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="submit" class="btn alert-primary" value="Assign"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="UnassignedTickets" asp-controller="Ticket"> Unassigned Tickets</a>
+    </div>
+</div>
+
+@* <div class="container"> *@
+@*   <h2>Assign Members for</h2>*@
+@*     <div class="row"> *@
+@*         <div class="col-md-6"> *@
+@*             <h3>@Model.Project.Name</h3> *@
+@*             <div class="card"> *@
+@*                 <div class="card-header"> *@
+@*                     <label asp-for="@Model.Users" class="control-label">Assign team members for project</label> *@
+@*                 </div> *@
+@*                 <div class="card-body"> *@
+@*                     <form method="post" asp-action="AssignMembers" asp-controller="Projects"> *@
+@*                         <input hidden asp-for="Project.Id"/> *@
+@*                         <div class="col-12 mb-3"> *@
+@*                             <div class="form-group"> *@
+@*                                 <select required asp-for="@Model.SelectedUsers" class="form-control" asp-items="@Model.Users" multiple="multiple"></select> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                         <div class="form-group"> *@
+@*                             <div class="col-lg-offset-2 col-lg-10"> *@
+@*                                 <input type="submit" class="btn alert-primary" value="Assign Users"/> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                     </form> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@*     <div> *@
+@*         <a asp-action="Details" asp-controller="Project" asp-route-id="@Model.Project.Id">Back to Details</a> *@
+@*     </div> *@
+@* </div> *@
