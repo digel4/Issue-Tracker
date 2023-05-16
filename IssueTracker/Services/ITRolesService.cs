@@ -32,15 +32,16 @@ public class ITRolesService : IITRolesService
 
         return result;
     }
+
     
     public async Task<List<IdentityRole>> GetRolesAsync()
     {
         try
         {
             List<IdentityRole> result = new();
-
+    
             result = await _context.Roles.ToListAsync();
-
+    
             return result;
         }
         catch (Exception e)

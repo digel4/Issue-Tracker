@@ -5,9 +5,11 @@ using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Services.Interfaces;
 using IssueTracker.Services;
+
 using IssueTracker.Services.Factories;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,7 @@ builder.Services.AddControllersWithViews();
 ///custom Services
 builder.Services.AddScoped<IITRolesService, ITRolesService>();
 builder.Services.AddScoped<IITCompanyInfoService, ITCompanyInfoService>();
+
 builder.Services.AddScoped<IITProjectService, ITProjectService>();
 builder.Services.AddScoped<IITTicketService, ITTicketService>();
 builder.Services.AddScoped<IITTicketHistoryService, ITTicketHistoryService>();
@@ -49,6 +52,7 @@ builder.Services.AddScoped<IITLookUpService, ITLookUpService>();
 
 // Configure mail settings
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
 
 var app = builder.Build();
 

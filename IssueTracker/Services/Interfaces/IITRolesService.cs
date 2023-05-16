@@ -1,5 +1,7 @@
 using IssueTracker.Models;
+
 using Microsoft.AspNetCore.Identity;
+
 
 namespace IssueTracker.Services.Interfaces;
 
@@ -7,7 +9,9 @@ public interface IITRolesService
 {
     public Task<bool> IsUserInRoleAsync(ITUser user, string roleName);
 
+
     public Task<List<IdentityRole>> GetRolesAsync();
+
     public Task<IEnumerable<string>> GetSingleUserRolesAsync(ITUser user);
     
     public Task<bool> AddUserToRoleAsync(ITUser user, string roleName);
