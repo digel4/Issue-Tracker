@@ -47,6 +47,29 @@ namespace IssueTracker.Controllers
 
             return View(notifications);
         }
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<RedirectToActionResult> MarkAsRead(int id)
+        {
+            Notification? notification = await _notificationService.GetByIdAsync(id);
+
+            if (notification is not null)
+            {
+                if (notification.RecipentId == (await _userManager.GetUserAsync(User)).Id)
+                    await _notificationService.MarkAsRead(notification);
+                else
+                    return RedirectToAction(nameof(NotAuthorized));
+            }
+
+            return RedirectToAction(nameof(MyNotifications));
+        }
+
+        [HttpGet]
+        public ViewResult NotAuthorized()
+        {
+            return View();
+        }
 
         // GET: Notification/Details/5
         public async Task<IActionResult> Details(int? id)

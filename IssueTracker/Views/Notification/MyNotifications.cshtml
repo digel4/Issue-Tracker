@@ -1,9 +1,10 @@
 ﻿@using System.Web;
+@using IssueTracker.Models.Enums
 @model IEnumerable<Notification>
 
 @{
-    IEnumerable<Notification> newNotifications = Model.Where(n => !n.HasBeenSeen);
-    IEnumerable<Notification> oldNotifications = Model.Where(n => n.HasBeenSeen);
+    IEnumerable<Notification> newNotifications = Model.Where(n => !n.Viewed);
+    IEnumerable<Notification> oldNotifications = Model.Where(n => n.Viewed);
 }
 
 <div class="pagetitle">
@@ -59,7 +60,7 @@
                                 break;
 
                             default:
-                                <a class="btn btn-secondary" asp-controller="Notifications" asp-action="MarkAsRead" asp-route-id="@notification.Id">Ok</a>
+                                <a class="btn btn-secondary" asp-controller="Notification" asp-action="MarkAsRead" asp-route-id="@notification.Id">Ok</a>
                                 break;
                         }
                         </div>

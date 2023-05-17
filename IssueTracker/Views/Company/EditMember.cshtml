@@ -1,7 +1,8 @@
-﻿@using BugBanisher.Models.ViewModels;
-@model EditEmployeeViewModel
+﻿@using IssueTracker.Models.ViewModels;
+@using IssueTracker.Services.Interfaces
+@model EditMemberViewModel
 
-@inject IFileService FileService
+@inject IITFileService FileService
 
 <div class="pagetitle">
     <h1>Edit Employee</h1>
@@ -40,34 +41,34 @@
 	    <div class="card">
 		    <div class="row g-0">
 			    <div class="col-4 col-lg-3 d-flex justify-content-center align-items-center">
-				    @if (Model.Employee.PictureData is not null)
+				    @if (Model.Member.AvatarFileData is not null)
 					{
-						<img src="data:image/*;base64,@(Convert.ToBase64String(Model.Employee.PictureData))" class="rounded-circle mt-2 mt-md-0" width="100" height="100">
+						<img src="data:image/*;base64,@(Convert.ToBase64String(Model.Member.AvatarFileData))" class="rounded-circle mt-2 mt-md-0" width="100" height="100">
 					}
 					else
 					{
-						<img src="~/@FileService.GetDefaultUserPicPath()" class="rounded-circle mt-2 mt-md-0" width="100" height="100">
+						<img src="~/img/defaultUser.png" class="rounded-circle mt-2 mt-md-0" width="100" height="100">
 					}
 			    </div>
 			    <div class="col-8 col-lg-9">
 				    <div class="card-body">
-                            <h5 class="card-title">@Model.Employee.FullName</h5>
+                            <h5 class="card-title">@Model.Member.FullName</h5>
                         
 
-                        <form class="row g-3" asp-controller="Company" asp-action="EditEmployee" method="post">
-                            <input type="hidden" asp-for="Employee.Id"/>
-                            <div class="col-12">
-                                <label class="form-label" asp-for="JobTitle">Job Title</label>
-                                <input class="form-control" asp-for="JobTitle" type="text">
-                            </div>
-                            <div class="col-12">
-                                <label asp-for="AvailableRoles" class="form-label">User Role</label>
-                                <select asp-for="SelectedRole" asp-items="@Model.AvailableRoles" class="form-select"></select>
-                            </div>
+                        <form class="row g-3" asp-controller="Company" asp-action="EditMember" method="post">
+                            <input type="hidden" asp-for="Member.Id"/>
+                            @* <div class="col-12"> *@
+                            @*     <label class="form-label" asp-for="JobTitle">Job Title</label> *@
+                            @*     <input class="form-control" asp-for="JobTitle" type="text"> *@
+                            @* </div> *@
+                            @* <div class="col-12"> *@
+                            @*     <label asp-for="AvailableRoles" class="form-label">User Role</label> *@
+                            @*     <select asp-for="SelectedRole" asp-items="@Model.AvailableRoles" class="form-select"></select> *@
+                            @* </div> *@
                             <div class="d-flex justify-content-start">
                                 <div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
-                                    <a class="btn btn-outline-secondary" asp-controller="Company" asp-action="ManageEmployees">Cancel</a>
+                                    <a class="btn btn-outline-secondary" asp-controller="Company" asp-action="ManageMembers">Cancel</a>
                                 </div>
                             </div>
                         </form>

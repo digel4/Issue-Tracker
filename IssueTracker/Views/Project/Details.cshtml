@@ -91,7 +91,7 @@
                                         <p class="text-muted m-b-0">Project Manager</p>
                                         @if (User.IsInRole(nameof(Roles.Admin)) || (itUser.Id == projectManager.Id))
                                         {
-                                            <a class="btn btn-xs alert-primary" style="font:small" asp-action="AssignMembers" asp-controller="Project" asp-route-ProjectId="@Model.Id">Manage Team</a>
+                                            <a class="btn btn-xs alert-primary" style="font-size:small" asp-action="AssignMembers" asp-controller="Project" asp-route-ProjectId="@Model.Id">Manage Team</a>
                                         }
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="body" style="overflow-y:auto;height:300px;background-color:antiquewhite">
                             @* Project Activity loop *@
-                            @foreach (TicketHistory history in await HistoryService.GetProjectTicketsHistoriesAsync(Model.Id, itUser.CompanyId))
+                            @foreach (TicketHistory history in await HistoryService.GetProjectTicketsHistoriesAsync(Model.Id, itUser.CompanyId.Value))
                             {
                                 <div>
                                     <span class="date">@history.Created.ToString("dd MMM yyyy")</span>

@@ -164,8 +164,6 @@
 //     }
 // }
 
-
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -182,6 +180,7 @@ namespace IssueTracker.Controllers;
 
 public class CompanyController : Controller
 {
+    #region Properties
     private readonly UserManager<ITUser> _userManager;
     private readonly IITCompanyInfoService _companyInfoService;
     private readonly IITProjectService _projectService;
@@ -189,7 +188,9 @@ public class CompanyController : Controller
     private readonly IITNotificationService _notificationService;
     private readonly IITRolesService _rolesService;
     private readonly IITFileService _fileService;
+    #endregion
 
+    #region Contstructor
     public CompanyController(UserManager<ITUser> userManager, 
         IITCompanyInfoService companyService,
         IITProjectService projectService,
@@ -206,7 +207,9 @@ public class CompanyController : Controller
         _rolesService = rolesService;
         _fileService = fileService;
     }
-
+    #endregion
+    
+    #region View Member
     [HttpGet]
     [Authorize]
     public async Task<ViewResult> ViewMember(string userId)
@@ -221,10 +224,12 @@ public class CompanyController : Controller
 
         return View(itUser);
     }
-
+    #endregion
+    
+    #region Update Member Profile
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> UpdateEmployeeProfile(ITUser updatedUser)
+    public async Task<IActionResult> UpdateMemberProfile(ITUser updatedUser)
     {
         ITUser user = await _userManager.GetUserAsync(User);
 
@@ -249,10 +254,12 @@ public class CompanyController : Controller
 
         return RedirectToAction(nameof(ViewMember), new { userId = user.Id });
     }
-
+    #endregion
+    
+    #region Delete Avatar Image
     [HttpGet]
     [Authorize]
-    public async Task<RedirectToActionResult> DeleteProfilePicture(string userId)
+    public async Task<RedirectToActionResult> DeleteAvatarImage(string userId)
     {
         if ((await _userManager.GetUserAsync(User)).Id != userId)
             return RedirectToAction(nameof(NotAuthorized));
@@ -261,7 +268,9 @@ public class CompanyController : Controller
 
         return RedirectToAction(nameof(ViewMember), new { userId = userId });
     }
-
+    #endregion
+    
+    #region Manage Members
     [HttpGet]
     [Authorize(Roles = nameof(Roles.Admin))]
     public async Task<ViewResult> ManageMembers()
@@ -271,7 +280,9 @@ public class CompanyController : Controller
         List<ITUser> companyMembers = await _companyInfoService.GetAllMembersAsync(companyId);
         return View(companyMembers);
     }
-
+    #endregion
+    
+    #region Edit Member (1)
     [HttpGet]
     [Authorize(Roles = nameof(Roles.Admin))]
     public async Task<ViewResult> EditMember(string id)
@@ -293,7 +304,9 @@ public class CompanyController : Controller
 
         return View(viewModel);
     }
-
+    #endregion
+    
+    #region Edit Member (2)
     [HttpPost]
     [Authorize(Roles = nameof(Roles.Admin))]
     [ValidateAntiForgeryToken]
@@ -340,7 +353,9 @@ public class CompanyController : Controller
         TempData["Message"] = "Employee changes saved!";
         return RedirectToAction(nameof(ManageMembers));
     }
-
+    #endregion
+    
+    #region Confirm Remove Member
     [HttpGet]
     [Authorize(Roles = nameof(Roles.Admin))]
     public async Task<IActionResult> ConfirmRemoveMember(string employeeId)
@@ -365,7 +380,9 @@ public class CompanyController : Controller
 
         return View(employeeToRemove);
     }
-
+    #endregion
+    
+    #region Remove Member Confirmed
     [HttpPost]
     [Authorize(Roles = nameof(Roles.Admin))]
     [ValidateAntiForgeryToken]
@@ -385,7 +402,9 @@ public class CompanyController : Controller
         TempData["Message"] = $"{userRemoved.FirstName} {userRemoved.LastName} was successfully removed.";
         return RedirectToAction(nameof(ManageMembers));
 	}
-
+    #endregion
+    
+    #region Invite User To Company
     [HttpGet]
     [Authorize(Roles = nameof(Roles.Admin))]
     public async Task<ViewResult> InviteUserToCompany()
@@ -396,7 +415,9 @@ public class CompanyController : Controller
       
         return View(new ITUser());
     }
-
+    #endregion
+    
+    #region Invite User To Company
     [HttpPost]
     [Authorize(Roles = nameof(Roles.Admin))]
     [ValidateAntiForgeryToken]
@@ -422,7 +443,9 @@ public class CompanyController : Controller
         ViewData["Message"] = $"{receivingUser!.Email} ({receivingUser.FullName}) has been invited!";
         return View();
     }
-
+    #endregion
+    
+    #region Accept Company Invite
     [HttpGet]
     [Authorize]
     public async Task<ViewResult> AcceptCompanyInvite(int notificationId)
@@ -449,7 +472,9 @@ public class CompanyController : Controller
 
         return View();
     }
-
+    #endregion
+    
+    #region Reject Company Invite
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> RejectCompanyInvite(int notificationId)
@@ -472,12 +497,15 @@ public class CompanyController : Controller
 
         return RedirectToAction(nameof(NotificationController.MyNotifications), "Notification");
     }
-
+    #endregion
+    
+    #region Not Authorized
     [HttpGet]
     public ViewResult NotAuthorized()
     {
         return View();
     }
+    #endregion
 
 	#region Private Helper Methods
 	private async Task<string?> GetInviteErrors(ITUser sendingUser, ITUser? receivingUser)

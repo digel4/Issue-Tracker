@@ -1,8 +1,237 @@
-@model TModel
+@using Microsoft.AspNetCore.Identity
+@using IssueTracker.Services.Interfaces
+@using IssueTracker.Models.Enums
+
+@inject UserManager<ITUser> UserManager
+@inject IITFileService FileService
+
+
+@model IEnumerable<ITUser>
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+	List<ITUser> admins = new List<ITUser>();
+	List<ITUser> projectManagers = new List<ITUser>();
+	List<ITUser> developers = new List<ITUser>();
+	List<ITUser> submitters = new List<ITUser>();
+
+	foreach (ITUser user in Model)
+	{
+		if (await UserManager.IsInRoleAsync(user, nameof(Roles.Admin)))
+			admins.Add(user);
+
+		else if (await UserManager.IsInRoleAsync(user, nameof(Roles.ProjectManager)))
+			projectManagers.Add(user);
+
+		else if (await UserManager.IsInRoleAsync(user, nameof(Roles.Developer)))
+			developers.Add(user);
+
+		else if (await UserManager.IsInRoleAsync(user, nameof(Roles.Submitter)))
+			submitters.Add(user);
+	}
 }
 
-<h2>title</h2>
+<!-- Breadcrumbs -->
+<div class="pagetitle">
+	<h1>Manage Employees</h1>
+	<nav>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Company</li>
+			<li class="breadcrumb-item active">Manage Employees</li>
+		</ol>
+	</nav>
+</div>
+
+<!-- Changes saved alert -->
+@if(TempData.ContainsKey("Message"))
+{
+	<div class="col-md-5">
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			@TempData["Message"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	</div>
+}
+
+<!-- Error alert -->
+@if (TempData.ContainsKey("Error"))
+{
+	<div class="col-lg-6">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			@TempData["Error"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	</div>
+}
+
+<h5>Administrators</h5>
+@if (admins.Count() == 0)
+{
+	<div class="row">
+		<div class="col col-md-8 col-lg-5">
+			<div class="card">
+				<div class="card-body">
+					<p class="card-text"><br/>No company employees are assigned to this role.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+@foreach (ITUser user in admins)
+{
+	<div class="card col col-md-8 col-lg-5 p-3">
+		<div class="d-flex">
+			<div class="flex-shrink-0">
+				@if (user.AvatarFileData is not null)
+				{
+					<img src="data:image/*;base64,@(Convert.ToBase64String(user.AvatarFileData))" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+				else
+				{
+					<img src="~/img/defaultUser.png" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+			</div>
+			<div class="flex-grow-1 ms-3">
+				<div class="row row-cols-1 row-cols-md-2">
+					<div class="col-auto">
+						<h5 class="card-title d-inline"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@user.Id">@user.FullName</a></h5>
+						@* <h6 class="card-subtitle mt-2">Title: @user.JobTitle</h6> *@
+					</div>
+					<div class="col d-flex align-items-center mt-2 mt-md-0">
+						<a class="btn btn-sm btn-outline-info" asp-controller="Company" asp-action="EditMember" asp-route-id="@user.Id"><i class="bi bi-pencil-square"></i></a>
+						<a class="btn btn-sm btn-outline-danger ms-1" asp-controller="Company" asp-action="ConfirmRemoveMember" asp-route-employeeId="@user.Id"><i class="bi bi-trash"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<h5>Project Managers</h5>
+@if (projectManagers.Count() == 0)
+{
+	<div class="row">
+		<div class="col col-md-5">
+			<div class="card">
+				<div class="card-body">
+					<p class="card-text"><br/>No company employees are assigned to this role.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+@foreach (ITUser user in projectManagers)
+{
+	<div class="card col col-md-8 col-lg-5 p-3">
+		<div class="d-flex">
+			<div class="flex-shrink-0">
+				@if (user.AvatarFileData is not null)
+				{
+					<img src="data:image/*;base64,@(Convert.ToBase64String(user.AvatarFileData))" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+				else
+				{
+					<img src="~/img/defaultUser.png" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+			</div>
+			<div class="flex-grow-1 ms-2">
+				<div class="row row-cols-1 row-cols-md-2">
+					<div class="col-auto">
+						<h5 class="card-title d-inline"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@user.Id">@user.FullName</a></h5>
+						@* <h6 class="card-subtitle mt-2">Title: @user.JobTitle</h6> *@
+					</div>
+					<div class="col d-flex align-items-center mt-2 mt-md-0">
+						<a class="btn btn-sm btn-outline-info" asp-controller="Company" asp-action="EditMember" asp-route-id="@user.Id"><i class="bi bi-pencil-square"></i></a>
+						<a class="btn btn-sm btn-outline-danger ms-1" asp-controller="Company" asp-action="ConfirmRemoveMember" asp-route-employeeId="@user.Id"><i class="bi bi-trash"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<h5>Developers</h5>
+@if (developers.Count() == 0)
+{
+	<div class="row">
+		<div class="col col-md-5">
+			<div class="card">
+				<div class="card-body">
+					<p class="card-text"><br/>No company employees are assigned to this role.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+@foreach (ITUser user in developers)
+{
+	<div class="card col col-md-8 col-lg-5 p-3">
+		<div class="d-flex">
+			<div class="flex-shrink-0">
+				@if (user.AvatarFileData is not null)
+				{
+					<img src="data:image/*;base64,@(Convert.ToBase64String(user.AvatarFileData))" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+				else
+				{
+					<img src="~/img/defaultUser.png" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+			</div>
+			<div class="flex-grow-1 ms-2">
+				<div class="row row-cols-1 row-cols-md-2">
+					<div class="col-auto">
+						<h5 class="card-title d-inline"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@user.Id">@user.FullName</a></h5>
+						@* <h6 class="card-subtitle mt-2">Title: @user.JobTitle</h6> *@
+					</div>
+					<div class="col d-flex align-items-center mt-2 mt-md-0">
+						<a class="btn btn-sm btn-outline-info" asp-controller="Company" asp-action="EditMember" asp-route-id="@user.Id"><i class="bi bi-pencil-square"></i></a>
+						<a class="btn btn-sm btn-outline-danger ms-1" asp-controller="Company" asp-action="ConfirmRemoveMember" asp-route-employeeId="@user.Id"><i class="bi bi-trash"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<h5>Submitters</h5>
+@if (submitters.Count() == 0)
+{
+	<div class="row">
+		<div class="col col-md-5">
+			<div class="card">
+				<div class="card-body">
+					<p class="card-text"><br/>No company employees are assigned to this role.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+@foreach (ITUser user in submitters)
+{
+	<div class="card col col-md-8 col-lg-5 p-3">
+		<div class="d-flex">
+			<div class="flex-shrink-0">
+				@if (user.AvatarFileData is not null)
+				{
+					<img src="data:image/*;base64,@(Convert.ToBase64String(user.AvatarFileData))" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+				else
+				{
+					<img src="~/img/defaultUser.png" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+				}
+			</div>
+			<div class="flex-grow-1 ms-2">
+				<div class="row row-cols-1 row-cols-md-2">
+					<div class="col-auto">
+						<h5 class="card-title d-inline"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@user.Id">@user.FullName</a></h5>
+						@* <h6 class="card-subtitle mt-2">Title: @user.JobTitle</h6> *@
+					</div>
+					<div class="col d-flex align-items-center mt-2 mt-md-0">
+						<a class="btn btn-sm btn-outline-info" asp-controller="Company" asp-action="EditMember" asp-route-id="@user.Id"><i class="bi bi-pencil-square"></i></a>
+						<a class="btn btn-sm btn-outline-danger ms-1" asp-controller="Company" asp-action="ConfirmRemoveMember" asp-route-employeeId="@user.Id"><i class="bi bi-trash"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}

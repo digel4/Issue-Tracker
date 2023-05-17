@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Identity
+
 @inject UserManager<ITUser> UserManager
 
 @{
@@ -22,7 +24,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Congratulations! You're now a member of @ViewData["CompanyName"].</h5>
                     <p>The company administrator can now assign you a role and job title. While you're waiting, why not
-                        <a asp-controller="Company" asp-action="ViewEmployee" asp-route-userId="@user.Id">edit your profile?</a>
+                        <a asp-controller="Company" asp-action="Viewmember" asp-route-userId="@user.Id">edit your profile?</a>
                     </p>
                 </div>
             </div>
