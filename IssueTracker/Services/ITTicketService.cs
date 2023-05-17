@@ -599,7 +599,7 @@ public class ITTicketService : IITTicketService
         {
             TicketStatus status = await _context.TicketStatuses.FirstOrDefaultAsync(p => p.Name == statusName);
             
-            // ? is null check. if priority is not null then return priority.Id
+            // ? is null check. if priority is not null then return status.Id
             return status?.Id;
         }
         catch (Exception e)
@@ -626,5 +626,23 @@ public class ITTicketService : IITTicketService
             throw;
         }
     }
+    #endregion
+
+    #region RemoveMemberFromAllTicketsAsync
+
+    public async Task RemoveMemberFromAllTicketsAsync(int companyId, string memberId)
+    {
+        List<Ticket> tickets = await _context.Tickets.Where(t => t.DeveloperUserId == memberId).ToListAsync();
+
+        foreach (Ticket ticket in tickets)
+        {
+            ticket.DeveloperUserId = null;
+            ticket.TicketStatusId = await LookupTicketStatusIdAsync( nameof(ITTicketStatus.Unassigned) );
+        }
+
+        await _context.SaveChangesAsync();
+    }
+    
+
     #endregion
 }

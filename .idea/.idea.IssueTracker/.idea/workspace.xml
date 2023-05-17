@@ -6,11 +6,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="add controllers and views">
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/EditMemberViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/AcceptCompanyInvite.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/ConfirmRemoveMember.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/EditMember.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/InviteUserToCompany.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/ManageMembers.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/ViewMember.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/NotAuthorized.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/NotFound.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/ITUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/ITUser.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITCompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITCompanyInfoService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITRolesService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITRolesService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITRolesService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITRolesService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITCompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITCompanyInfoService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/Create.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/Delete.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/Details.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/Edit.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/Index.cshtml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +113,7 @@
       <workItem from="1680174726037" duration="1873000" />
       <workItem from="1680190729548" duration="4549000" />
       <workItem from="1680266695661" duration="668000" />
-      <workItem from="1684248567969" duration="309000" />
+      <workItem from="1684248567969" duration="6754000" />
     </task>
     <task id="LOCAL-00001" summary="Add data models">
       <created>1679907887407</created>

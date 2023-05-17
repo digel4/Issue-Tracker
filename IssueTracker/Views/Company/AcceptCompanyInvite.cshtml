@@ -1,0 +1,31 @@
+@inject UserManager<ITUser> UserManager
+
+@{
+    ITUser user = await UserManager.GetUserAsync(User);
+}
+
+<div class="pagetitle">
+    <h1>Success!</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Company</a></li>
+            <li class="breadcrumb-item active">Joined</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Congratulations! You're now a member of @ViewData["CompanyName"].</h5>
+                    <p>The company administrator can now assign you a role and job title. While you're waiting, why not
+                        <a asp-controller="Company" asp-action="ViewEmployee" asp-route-userId="@user.Id">edit your profile?</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

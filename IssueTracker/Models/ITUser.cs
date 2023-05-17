@@ -37,7 +37,7 @@ public class ITUser : IdentityUser
     public string? AvatarContentType { get; set; }
     
     // This is a foreign key in the database.  This corresponds to another table on the database. This corresponds to another table on the database. This refers to a  look up table since we are literally just looking for a few properties.
-    public int CompanyId { get; set; }
+    public int? CompanyId { get; set; }
     
     // Virtuals
     // When entity framework sees virtuals it allows easy loading and change tracking. This is opposed to eager loading. Essentially we get the foreign keys above and then the virtual objects below

@@ -48,7 +48,7 @@ public class Ticket
     
     // This is a foreign key in the database.  This corresponds to another table on the database
     [DisplayName("Ticket Status")]
-    public int TicketStatusId { get; set; }
+    public int? TicketStatusId { get; set; }
     
     // This is a foreign key in the database. This corresponds to another table on the database
     [DisplayName("Ticket Owner")]

@@ -251,7 +251,7 @@ namespace IssueTracker.Controllers
             
             if (User.IsInRole(nameof(Roles.Admin)))
             {
-                ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompany(itUser.CompanyId), "Id", "Name");
+                ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompany(itUser.CompanyId.Value), "Id", "Name");
             }
             else
             {

@@ -66,4 +66,7 @@ public class Project
 
     // These are many-to-many relationship tables. This join table is automatically made. We don't have to create a Members class
     public virtual ICollection<ITUser> Members { get; set; }= new HashSet<ITUser>();
+    
+    // These are many-to-many relationship tables. This join table is automatically made. We don't have to create a Notifications class
+    public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
 }

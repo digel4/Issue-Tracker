@@ -5,5 +5,6 @@ public enum ITTicketStatus
     New,
     Development,
     Testing,
-    Resolved
+    Resolved,
+    Unassigned
 }

@@ -540,6 +540,38 @@ public class ITProjectService : IITProjectService
     }
     #endregion
     
+    public async Task<bool> RemoveMemberFromAllProjectsAsync(int companyId, string memberId)
+    {
+        ITUser? employee = await _context.Users.FirstOrDefaultAsync(u => u.Id == memberId);
+
+        if (employee is null)
+            return false;
+
+        foreach (Project project in await GetAllProjectsByCompany(companyId))
+        {
+            ITUser ProjectManager = await GetProjectManagerAsync(project.Id);
+            
+            if (ProjectManager.Id == memberId)
+                await RemoveProjectManagerAsync(project.Id);
+
+            if (project.Members.Contains(employee))
+                project.Members.Remove(employee);
+        }
+
+        foreach (Project project in await GetArchivedProjectsByCompany(companyId))
+        {
+            ITUser ProjectManager = await GetProjectManagerAsync(project.Id);
+            
+            if (ProjectManager.Id == memberId)
+                await RemoveProjectManagerAsync(project.Id);
+
+            if (project.Members.Contains(employee))
+                project.Members.Remove(employee);
+        }
+
+        return true;
+    }
+    
     #region Restore Project
     public async Task RestoreProjectAsync(Project project)
     {

@@ -91,6 +91,8 @@ public interface IITProjectService
     #region Remove User From Project
     public Task RemoveUserFromProjectAsync(string userId, int projectId);
         #endregion
+
+        Task<bool> RemoveMemberFromAllProjectsAsync(int companyId, string employeeId);
         
     #region Restore Project
     public Task RestoreProjectAsync(Project project);

@@ -7,16 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Data;
 using IssueTracker.Models;
+using IssueTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace IssueTracker.Controllers
 {
     public class NotificationController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ITUser> _userManager;
+        private readonly IITNotificationService _notificationService;
 
-        public NotificationController(ApplicationDbContext context)
+        public NotificationController(
+            ApplicationDbContext context,
+            UserManager<ITUser> userManager,
+            IITNotificationService notificationService
+            )
         {
             _context = context;
+            _userManager = userManager;
+            _notificationService = notificationService;
         }
 
         // GET: Notification
@@ -24,6 +35,17 @@ namespace IssueTracker.Controllers
         {
             var applicationDbContext = _context.Notifications.Include(n => n.Recipent).Include(n => n.Sender).Include(n => n.Ticket);
             return View(await applicationDbContext.ToListAsync());
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public async Task<ViewResult> MyNotifications()
+        {
+            ITUser? appUser = await _userManager.GetUserAsync(User);
+
+            List<Notification> notifications = appUser is not null ? await _notificationService.GetAllNotificationsForUserAsync(appUser) : new List<Notification>();
+
+            return View(notifications);
         }
 
         // GET: Notification/Details/5
