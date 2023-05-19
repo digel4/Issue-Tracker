@@ -1,0 +1,142 @@
+@using IssueTracker.Extensions;
+@using IssueTracker.Models.Enums
+@using IssueTracker.Services.Interfaces
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ITUser> UserManager
+@inject IITNotificationService NotificationService
+
+@{
+    bool IsController(string controller) => (string?)ViewContext.RouteData.Values["controller"] == controller;
+    bool IsAction(string action) => (string?)ViewContext.RouteData.Values["action"] == action;
+    int companyId = User.Identity!.GetCompanyId().Value;
+    IEnumerable<Notification> unseenNotifications = await NotificationService.GetUnseenNotificationsForUserAsync(await UserManager.GetUserAsync(User));
+}
+
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link @(IsController("Home") ? "" : "collapsed")" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <!-- Company -->
+        @if (User.IsInRole(nameof(Roles.Admin)) && companyId != -1)
+        {
+            
+            <li class="nav-item">
+                <a class="nav-link @(IsController("Company") ? "" : "collapsed")" data-bs-target="#company-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Company</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="company-nav" class="nav-content @(IsController("Company") ? "" : "collapse")" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a class="@(IsAction("InviteUserToCompany") ? "active" : "")" asp-controller="Company" asp-action="InviteUserToCompany">
+                            <i class="bi bi-circle"></i><span>Invite User</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="@(IsAction("ManageEmployees") ? "active" : "")" asp-controller="Company" asp-action="ManageMembers" asp-route-companyId="@companyId">
+                            <i class="bi bi-circle"></i><span>Manage Members</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+
+        <!-- Projects, Tickets, Stats & Charts -->
+        @if (companyId != -1)
+        {
+            <!-- Projects -->
+            <li class="nav-item">
+                <a class="nav-link @(IsController("Projects") ? "" : "collapsed")" data-bs-target="#projects-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-journal-text"></i><span>Projects</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="projects-nav" class="nav-content @(IsController("Projects") ? "" : "collapse")" data-bs-parent="#sidebar-nav">
+                    @if (User.IsInRole(nameof(Roles.Admin)))
+                    {
+                        <li>
+                            <a class="@(IsAction("ListActiveProjects") ? "active" : "")" 
+                            asp-controller="Project" asp-action="AllProjects">
+                                <i class="bi bi-circle"></i><span>All Active Projects</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@(IsAction("ListArchivedProjects") ? "active" : "")"
+                            asp-controller="Project" asp-action="ArchivedProjects">
+                                <i class="bi bi-circle"></i><span>All Archived Projects</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@(IsAction("CreateProject") ? "active" : "")" asp-controller="Project" asp-action="Create">
+                                <i class="bi bi-circle"></i><span>Create New Project</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="@(IsAction("ListMyActiveProjects") ? "active" : "")" asp-controller="Project" asp-action="MyProjects">
+                                <i class="bi bi-circle"></i><span>My Active Projects</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="@(IsAction("ListMyArchivedProjects") ? "active" : "")" asp-controller="Project" asp-action="MyArchivedProjects">
+                                <i class="bi bi-circle"></i><span>My Archived Projects</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+
+            <!-- Tickets -->
+            <li class="nav-item">
+                <a class="nav-link @(IsController("Tickets") ? "" : "collapsed")" data-bs-target="#tickets-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Tickets</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="tickets-nav" class="nav-content @(IsController("Tickets") ? "" : "collapse")" data-bs-parent="#sidebar-nav">
+                    @if (User.IsInRole(nameof(Roles.Admin)))
+                    {
+                        <li>
+                            <a class="@(IsAction("ListOpenTickets") ? "active" : "")" asp-controller="Ticket" asp-action="AllOpenTickets">
+                                <i class="bi bi-circle"></i><span>All Open Tickets</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="@(IsAction("ListOpenTickets") ? "active" : "")" asp-controller="Ticket" asp-action="AllOpenTickets">
+                                <i class="bi bi-circle"></i><span>My Open Tickets</span>
+                            </a>
+                        </li>
+                    }
+
+                    <li>
+                        <a class="@(IsAction("ListActionRequiredTickets") ? "active" : "")" asp-controller="Ticket" asp-action="ActionRequiredTickets">
+                            <i class="bi bi-circle"></i><span>Action Needed</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="@(IsAction("ListCompletedTickets") ? "active" : "")" asp-controller="Ticket" asp-action="CompletedTickets">
+                            <i class="bi bi-circle"></i><span>Completed</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+
+        <!-- Notifications -->
+        <li class="nav-item">
+            <a class="nav-link @(IsController("Notifications") ? "" : "collapsed")" asp-controller="Notification" asp-action="MyNotifications">
+                <i class="bi bi-bar-chart"></i><span>Notifications <span class="@(unseenNotifications.Count() > 0 ? "text-danger" : "")"> (@unseenNotifications.Count())</span></span>
+            </a>
+        </li>
+
+    </ul>
+
+</aside>

@@ -5,9 +5,17 @@ namespace IssueTracker.Services.Interfaces;
 public interface IITTicketService
 {
     // CRUD Methods
-    public Task AddNewTicketAsync(Ticket ticket);
-    public Task AddNewTicketCommentAsync(TicketComment ticketComment);
-    public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
+    public Task<int> AddNewTicketAsync(Ticket ticket);
+    public Task<bool>  AddNewTicketCommentAsync(int ticketId, TicketComment ticketComment);
+    public Task<bool> AddTicketAttachmentAsync(int ticketId, TicketAttachment ticketAttachment);
+
+    public Task<List<Ticket>> GetAllActionRequiredTicketsAsync(int companyId);
+    public Task<List<Ticket>> GetAllOpenTicketsAsync(int companyId);
+    public Task<List<Ticket>> GetAllCompletedTicketsAsync(int companyId);
+    public Task<List<Ticket>> GetUserActionRequiredTicketsAsync(string userId, int companyId);
+    public Task<List<Ticket>> GetUserCompletedTicketsAsync(string userId, int companyId);
+    public Task<List<Ticket>> GetUserOpenTicketsAsync(string userId, int companyId);
+    
     public Task UpdateTicketAsync(Ticket ticket);
     public Task<Ticket> GetTicketByIdAsync(int ticketId);
     public Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId);
@@ -32,4 +40,6 @@ public interface IITTicketService
     public Task<int?> LookupTicketStatusIdAsync(string statusName);
     public Task<int?> LookupTicketTypeIdAsync(string typeName);
     public Task RemoveMemberFromAllTicketsAsync(int companyId, string memberId);
+
+    public Task DeleteTicketAsync(Ticket ticket);
 }

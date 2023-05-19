@@ -2,11 +2,21 @@ namespace IssueTracker.Models.ViewModels;
 
 public class DashboardViewModel
 {
-    public Company Company { get; set; }
-
-    public List<Project> Projects { get; set; }
+    public List<Project> ActiveProjects { get; set; }
     
-    public List<Ticket> Tickets { get; set; }
+    public List<Ticket> OpenTickets { get; set; }
+    
+    public List<Ticket> CompletedTickets { get; set; }
     
     public List<ITUser> Members { get; set; }
+    
+    public List<Notification> Notifications { get; set; }
+    
+    public int AdminCount { get; set; }
+    
+    public int ProjectManagerCount { get; set; }
+    
+    public int DeveloperCount { get; set; }
+    
+    public int MemberCount { get; set; }
 }

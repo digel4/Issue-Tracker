@@ -5,28 +5,53 @@
     <projectFile profileName="https">IssueTracker/IssueTracker.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="add controllers and views">
+    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/CreateOrEditProjectViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/CreateOrEditTicketViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/ProjectListViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/ProjectViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/TicketListViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/TicketViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/Delete.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/MyArchivedProjects.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_SidebarPartial.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Ticket/CreateOrEditTicket.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Ticket/Delete.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/js/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/NotificationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/NotificationController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/AcceptCompanyInvite.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/AcceptCompanyInvite.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/ConfirmRemoveMember.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/ConfirmRemoveMember.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/EditMember.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/EditMember.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/InviteUserToCompany.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/InviteUserToCompany.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/ManageMembers.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/ManageMembers.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Company/ViewMember.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Company/ViewMember.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/DashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/DashboardViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITProjectService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITTicketService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITProjectService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITTicketHistoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITTicketHistoryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITTicketService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITTicketService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Home/Dashboard.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Home/Dashboard.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Notification/MyNotifications.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Notification/MyNotifications.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Notification/NotificationBodyPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Notification/NotificationBodyPartial.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/Details.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/Details.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_LoginPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_LoginPartial.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Ticket/AllTickets.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Ticket/AllTickets.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Ticket/Details.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Ticket/Details.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/css/site.css" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -112,7 +137,9 @@
       <workItem from="1680266695661" duration="668000" />
       <workItem from="1684248567969" duration="6754000" />
       <workItem from="1684325563537" duration="1633000" />
-      <workItem from="1684327210171" duration="490000" />
+      <workItem from="1684327210171" duration="9015000" />
+      <workItem from="1684348460819" duration="4384000" />
+      <workItem from="1684389474233" duration="20562000" />
     </task>
     <task id="LOCAL-00001" summary="Add data models">
       <created>1679907887407</created>
@@ -156,5 +183,24 @@
     <MESSAGE value="update db" />
     <MESSAGE value="add controllers and views" />
     <option name="LAST_COMMIT_MESSAGE" value="add controllers and views" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs</url>
+          <line>332</line>
+          <properties documentPath="$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs" initialLine="332" containingFunctionPresentation="method 'Details'">
+            <startOffsets>
+              <option value="13763" />
+            </startOffsets>
+            <endOffsets>
+              <option value="13786" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

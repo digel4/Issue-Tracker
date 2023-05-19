@@ -2,6 +2,7 @@ using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Models.Enums;
 using IssueTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
@@ -11,17 +12,21 @@ public class ITProjectService : IITProjectService
     #region Properties
     private readonly ApplicationDbContext _context;
     private readonly IITRolesService  _rolesService;
+    private readonly UserManager<ITUser> _userManager;
+
     #endregion
     
     #region Contructor
     public ITProjectService(
         ApplicationDbContext context,
-        IITRolesService rolesService
-    )
+        IITRolesService rolesService,
+        UserManager<ITUser> userManager
+        )
     {
         // Dependency Injection /  service layer
         _context = context;
         _rolesService = rolesService;
+        _userManager = userManager;
     }
     #endregion
     
@@ -275,7 +280,24 @@ public class ITProjectService : IITProjectService
     #region Get Developers On Project 
     public async Task<List<ITUser>> GetDevelopersOnProjectAsync(int projectId)
     {
-        throw new NotImplementedException();
+        Project? project = await _context.Projects
+            .Include(p => p.Members)
+            .FirstOrDefaultAsync(p => p.Id == projectId);
+
+        List<ITUser> developers = new List<ITUser>();
+
+        if (project is null)
+            return developers;
+
+        foreach (ITUser projectMember in project.Members)
+        {
+            ITUser member = await _context.Users.FirstAsync(u => u.Id == projectMember.Id);
+
+            if (await _userManager.IsInRoleAsync(member, nameof(Roles.Developer)))
+                developers.Add(member);
+        }
+
+        return developers;
     }
     #endregion
     
@@ -345,7 +367,24 @@ public class ITProjectService : IITProjectService
     #region Get Submitters On Project
     public async Task<List<ITUser>> GetSubmittersOnProjectAsync(int projectId)
     {
-        throw new NotImplementedException();
+        Project? project = await _context.Projects
+            .Include(p => p.Members)
+            .FirstOrDefaultAsync(p => p.Id == projectId);
+
+        List<ITUser> members = new List<ITUser>();
+
+        if (project is null)
+            return members;
+
+        foreach (ITUser projectMember in project.Members)
+        {
+            ITUser member = await _context.Users.FirstAsync(u => u.Id == projectMember.Id);
+
+            if (await _userManager.IsInRoleAsync(member, nameof(Roles.Submitter)))
+                members.Add(member);
+        }
+
+        return members;
     }
     #endregion
     
@@ -363,6 +402,9 @@ public class ITProjectService : IITProjectService
     {
         try
         {
+
+                
+                
             List<Project> userProjects = (await _context.Users
                 .Include(u => u.Projects)
                     .ThenInclude(p => p.ProjectPriority)
@@ -388,8 +430,50 @@ public class ITProjectService : IITProjectService
                 .FirstOrDefaultAsync(u => u.Id == userId))
                 // This returns a user and then we access the projects property of that user through dot notation
                 .Projects.ToList();
+            
+            return userProjects.Where(u => u.Archived == false).ToList();
 
-            return userProjects;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error Getting user projects list. --->  {e.Message}");
+            throw;
+        }
+    }
+    #endregion
+    
+    #region Get User Archived Projects
+    public async Task<List<Project>> GetUserArchivedProjectsAsync(string userId)
+    {
+        try
+        {
+            List<Project> userProjects = (await _context.Users
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.ProjectPriority)
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.Company)
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.Members)
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.Tickets)
+                    .ThenInclude(t => t.DeveloperUser)
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.Tickets)
+                    .ThenInclude(t => t.OwnerUser)
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.Tickets)
+                    .ThenInclude(t => t.TicketPriority)
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.Tickets)
+                    .ThenInclude(t => t.TicketStatus)
+                    .Include(u => u.Projects)
+                    .ThenInclude(p => p.Tickets)
+                    .ThenInclude(t => t.TicketType)
+                    .FirstOrDefaultAsync(u => u.Id == userId))
+                // This returns a user and then we access the projects property of that user through dot notation
+                .Projects.ToList();
+
+            return userProjects.Where(u => u.Archived == true).ToList();
 
         }
         catch (Exception e)
@@ -539,7 +623,8 @@ public class ITProjectService : IITProjectService
         }
     }
     #endregion
-    
+
+    #region Remove Member From All Projects
     public async Task<bool> RemoveMemberFromAllProjectsAsync(int companyId, string memberId)
     {
         ITUser? employee = await _context.Users.FirstOrDefaultAsync(u => u.Id == memberId);
@@ -571,6 +656,7 @@ public class ITProjectService : IITProjectService
 
         return true;
     }
+    #endregion
     
     #region Restore Project
     public async Task RestoreProjectAsync(Project project)
@@ -593,6 +679,22 @@ public class ITProjectService : IITProjectService
             Console.WriteLine($"****ERROR**** - Error restoring project. --->  {e.Message}");
             throw;
         }
+    }
+    #endregion
+    
+    #region Delete Project
+    public async Task<bool> DeleteProjectAsync(int companyId, int projectId)
+    {
+        Project? project = await GetProjectByIdAsync(projectId, companyId);
+
+        if (project == null) return false;
+
+        foreach (ITUser projectMember in project.Members)
+            project.Members.Remove(projectMember);
+
+        _context.Projects.Remove(project);
+        await _context.SaveChangesAsync();
+        return true;
     }
     #endregion
     

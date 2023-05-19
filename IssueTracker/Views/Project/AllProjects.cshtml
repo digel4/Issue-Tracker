@@ -1,112 +1,319 @@
-@using IssueTracker.Models.Enums
+@using IssueTracker.Models.ViewModels
 @using IssueTracker.Services.Interfaces
 @using Microsoft.AspNetCore.Identity
-@model IEnumerable<IssueTracker.Models.Project>
 
 @inject UserManager<ITUser> UserManager
+@inject IITFileService FileService
 @inject IITProjectService ProjectService
 
+@model ProjectListViewModel
+
 @{
-    ViewData["Title"] = "All Projects";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ITUser itUser = await UserManager.GetUserAsync(User);
+    int pageNumber = int.Parse(Model.PageNumber);
+    int perPage = int.Parse(Model.PerPage);
+    int numberOfPages = (Model.Projects.Count / perPage) + 1;
+
+    bool canPrevPage = pageNumber > 1;
+    bool canNextPage = pageNumber < numberOfPages;
+
+    IEnumerable<Project> sortedProjects = Model.SortBy switch
+    {
+        "Open Tickets" => Model.Projects.OrderByDescending(p => p.Tickets.Count),
+        "Due Date" => Model.Projects.OrderBy(p => p.EndDate),
+        // "Project Manager" => Model.Projects.OrderBy(p => p.ProjectManagerId),
+        "Project Name" or _ => Model.Projects.OrderBy(p => p.Name)
+    };
 }
 
-<h1>All Projects</h1>
-@* Note we could write Roles.Admin.ToString() as well *@
-@if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+<div class="pagetitle">
+    <h1>@Model.ActiveOrArchived Projects</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Projects</li>
+            <li class="breadcrumb-item active">@Model.ActiveOrArchived</li>
+        </ol>
+    </nav>
+</div>
+
+
+<form asp-controller="Project" asp-action="@(Model.ActiveOrArchived)Projects" method="get" class="row mb-3 align-items-end">
+
+    <div class="col-12">
+        <div class="d-block d-md-inline ms-0">
+            <span>Sort by:</span>
+            <select asp-items="@Model.SortByOptions" asp-for="SortBy">
+            </select>
+        </div>
+        <div class="d-block d-md-inline ms-0 ms-md-2 mt-2 mt-md-0">
+            <span>Per page:</span>
+            <select asp-items="@Model.PerPageOptions" asp-for="PerPage">
+            </select>
+        </div>
+        <div class="d-block d-md-inline ms-0 ms-md-2 mt-2 mt-md-0">
+            <button class="btn btn-sm btn-success" type="submit" asp-action="@(Model.ActiveOrArchived)Projects" asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@Model.PageNumber" asp-route-perPage="@Model.PerPage">
+                Go
+            </button>
+        </div>
+    </div>
+    
+</form>
+
+@foreach (Project project in sortedProjects.Skip((pageNumber - 1) * perPage).Take(perPage))
 {
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+    // ITUser? projectManager = await UserManager.FindByIdAsync(project.ProjectManagerId);
+    ITUser? projectManager = await ProjectService.GetProjectManagerAsync(project.Id);
+
+    List<Ticket> openTickets = project.Tickets.Where(t => t.TicketStatus.Name != "Resolved" && !t.Archived).ToList();
+
+    int unassignedTickets = openTickets.Where(t => t.DeveloperUserId == null || t.TicketStatus.Name == "Unassigned").Count();
+    int onHoldTickets = openTickets.Where(t => t.TicketStatus.Name == "Testing").Count();
+    int priorityTickets = openTickets.Where(t => t.TicketPriority.Name == "Urgent").Count();
+
+    string ticketSummary = $"{openTickets.Count} open ({unassignedTickets} unassigned/pending, {onHoldTickets} on hold, {priorityTickets} high priority)";
+
+    float daysRemaining = (project.EndDate - DateTime.Now).Days;
+    float daysUsed = (DateTime.Now - project.StartDate).Days;
+    float totalDays = (project.EndDate - project.StartDate).Days;
+    float percentComplete = daysRemaining > 0 ? (daysUsed / totalDays) * 100 : 100;
+
+    <div class="row mb-1">
+        <div class="card col-md-9">
+            <div class="card-body">
+                <div class="row d-flex align-items-center justify-content-start mt-3">
+                    <div class="col-4 col-md-2">
+                        <a asp-controller="Project" asp-action="Details" asp-route-projectId="@project.Id">
+                            @if (project.FileData != null)
+                            {
+                                <img class="img-fluid" style="max-height: 100px;" src="data:image/*;base64,@Convert.ToBase64String(project.FileData)"/>
+                            }
+                            else
+                            {
+                                <img class="img-fluid" style="max-height: 100px;" src="~/img/defaultUser.png"/>
+                            }
+                        </a>
+                    </div>
+                    <div class="col-8 col-md-5">
+                        <strong>Project Name:</strong>
+                        <a asp-controller="Project" asp-action="Details" asp-route-projectId="@project.Id">
+                            <h5 class="card-text">@project.Name</h5>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-5 mt-3 mb-2 mt-md-0 mb-md-0">
+                        @if (projectManager is not null)
+                        {
+                            <span><strong>Project Manager:</strong></span>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 mt-2">
+                                @if (projectManager.AvatarFileData is not null)
+                                {
+                                    <img src="data:image/*;base64,@(Convert.ToBase64String(projectManager.AvatarFileData))" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+                                }
+                                else
+                                {
+                                    <img src="~/img/defaultUser.png" class="rounded-circle align-self-center ms-1 me-1" width="60" height="60">
+                                }
+                                </div>
+                                <div class="flex-grow-1 mt-2 ms-3">
+                                    <span><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@projectManager.Id">@projectManager.FullName</a></span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <span><strong>Project Manager:</strong></span>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 mt-2">
+                                    <img class="rounded-circle align-self-center ms-1 me-1" width="60" height="60" src="~/img/defaultUser.png" />
+                                </div>
+                                <div class="flex-grow-1 mt-2 ms-3">
+                                    <span class="fw-bold text-danger">Unassigned!</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                @if (!project.Archived)
+                {
+                    <div class="row d-flex align-items-end justify-content-start">
+                        <div class="col col-md-6">
+                            <p class="card-text mt-3 @(daysRemaining <= 0 ? "text-danger" : "")"><strong>Deadline:</strong> @(daysRemaining <= 0 ? "Project is due!" : $"{project.EndDate.Date.ToShortDateString()} - {daysRemaining} days remaining")</p>
+                            <div class="progress mt-0">
+						        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: @(percentComplete)%" aria-valuenow="@percentComplete" aria-valuemin="0" aria-valuemax="100"></div>
+					        </div>
+                        </div>
+
+                        <div class="col col-md-6">
+                            <p class="card-text"><strong>Tickets: </strong>@ticketSummary</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row d-flex align-items-end justify-content-start">
+                        <p class="card-text text-muted mt-2">Project is archived.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Archived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectPriority)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Archived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                @if (item.FileData != null)
-                {
-                    <img style="width:60px;height: 60px" src="data:image/*;base64,@(Convert.ToBase64String(item.FileData))" alt="project image"/>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                @{
-                    bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == itUser.Id;
-                }
-                @if ( User.IsInRole(nameof(Roles.Admin)) || isProjectPM )
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                    
-                    @if (item.Archived)
-                    {
-                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                    }
-                }
-            </td>
-        </tr>
+<p class="text-muted">
+    @{
+        int startingEntry = sortedProjects.Count() == 0 ? 0 : (pageNumber - 1) * perPage + 1;
+        int endingEntry = Math.Min(sortedProjects.Count(), startingEntry + perPage - 1);
+    }
+    Showing @startingEntry to @endingEntry of @(sortedProjects.Count())
+</p>
+
+@if (sortedProjects.Count() > perPage)
+{
+    @if (canPrevPage)
+    {
+        <a class="btn btn-sm btn-outline-info" asp-action="@(Model.ActiveOrArchived)Projects"
+        asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@(pageNumber-1)" asp-route-perPage="@Model.PerPage">
+            Prev
+        </a>
+    }
+
+    @if (pageNumber > 4)
+    {
+        <span class="ms-2">...</span>
+    }
+
+    @for (int i = Math.Max(pageNumber - 3, 1); i <= Math.Min(pageNumber + 3, numberOfPages); i++)
+    {
+        string active = i == pageNumber ? "btn-info" : "btn-outline-info";
+
+        <a class="btn btn-sm @active ms-2" type="button" asp-action="@(Model.ActiveOrArchived)Projects"
+        asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@i" asp-route-perPage="@Model.PerPage">
+            @i
+        </a>
+    }
+
+    @if (pageNumber < numberOfPages - 3)
+    {
+        <span class="ms-2">...</span>
+    }
+
+    @if (canNextPage)
+    {
+        <a class="btn btn-sm btn-outline-info ms-2" asp-action="@(Model.ActiveOrArchived)Projects"
+        asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@(pageNumber+1)" asp-route-perPage="@Model.PerPage">
+            Next
+        </a>
+    }
 }
-    </tbody>
-</table>
+
+@* @using IssueTracker.Models.Enums *@
+@* @using IssueTracker.Services.Interfaces *@
+@* @using Microsoft.AspNetCore.Identity *@
+@* @model IEnumerable<IssueTracker.Models.Project> *@
+
+@* @inject UserManager<ITUser> UserManager *@
+@* @inject IITProjectService ProjectService *@
+@* *@
+@* @{ *@
+@*     ViewData["Title"] = "All Projects"; *@
+@*     Layout = "~/Views/Shared/_Layout.cshtml"; *@
+@*     ITUser itUser = await UserManager.GetUserAsync(User); *@
+@* } *@
+@* *@
+@* <h1>All Projects</h1> *@
+@* $1$ Note we could write Roles.Admin.ToString() as well #1# *@
+@* @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager))) *@
+@* { *@
+@*     <p> *@
+@*         <a asp-action="Create">Create New</a> *@
+@*     </p> *@
+@* } *@
+@* *@
+@* <table class="table"> *@
+@*     <thead> *@
+@*         <tr> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Name) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Description) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.StartDate) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.EndDate) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Archived) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.FileName) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.FileData) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Company) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.ProjectPriority) *@
+@*             </th> *@
+@*             <th></th> *@
+@*         </tr> *@
+@*     </thead> *@
+@*     <tbody> *@
+@* @foreach (var item in Model) { *@
+@*         <tr> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Name) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Description) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.StartDate) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.EndDate) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Archived) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.FileName) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @if (item.FileData != null) *@
+@*                 { *@
+@*                     <img style="width:60px;height: 60px" src="data:image/*;base64,@(Convert.ToBase64String(item.FileData))" alt="project image"/> *@
+@*                 } *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Company.Name) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.ProjectPriority.Name) *@
+@*             </td> *@
+@*             <td> *@
+@*                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+@*                 @{ *@
+@*                     bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == itUser.Id; *@
+@*                 } *@
+@*                 @if ( User.IsInRole(nameof(Roles.Admin)) || isProjectPM ) *@
+@*                 { *@
+@*                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>  *@
+@*                      *@
+@*                     @if (item.Archived) *@
+@*                     { *@
+@*                         <a asp-action="Restore" asp-route-id="@item.Id">Restore</a> *@
+@*                     } *@
+@*                     else *@
+@*                     { *@
+@*                         <a asp-action="Archive" asp-route-id="@item.Id">Archive</a> *@
+@*                     } *@
+@*                 } *@
+@*             </td> *@
+@*         </tr> *@
+@* } *@
+@*     </tbody> *@
+@* </table> *@

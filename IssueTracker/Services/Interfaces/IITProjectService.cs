@@ -67,6 +67,8 @@ public interface IITProjectService
     #region Get User Projects
     public Task<List<Project>> GetUserProjectsAsync(string userId);
     #endregion
+
+    public Task<List<Project>> GetUserArchivedProjectsAsync(string userId);
     
     #region is Assigned Project Manager
     public Task<bool> isAssignedProjectManagerAsync(string userId, int projectId); 
@@ -92,7 +94,9 @@ public interface IITProjectService
     public Task RemoveUserFromProjectAsync(string userId, int projectId);
         #endregion
 
-        Task<bool> RemoveMemberFromAllProjectsAsync(int companyId, string employeeId);
+    public Task<bool> DeleteProjectAsync(int companyId, int projectId);
+
+    Task<bool> RemoveMemberFromAllProjectsAsync(int companyId, string employeeId);
         
     #region Restore Project
     public Task RestoreProjectAsync(Project project);

@@ -54,38 +54,83 @@ namespace IssueTracker.Controllers
         }
         #endregion
         
+        #region Get My Archived Projects
+        // GET: MyProjects
+        public async Task<IActionResult> MyArchivedProjects()
+        {
+            // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            string userId = _userManager.GetUserId(User);
+            
+            List<Project> projects = await _projectService.GetUserArchivedProjectsAsync(userId);
+
+            return View(projects);
+        }
+        #endregion
+        
         #region Get All Projects
         // GET: AllProjects
-        public async Task<IActionResult> AllProjects()
+        public async Task<IActionResult> AllProjects(string sortBy = "Project Name", int pageNumber = 1, int perPage = 10)
         {
+            //
+            // List<Project> projects = new();
+            // // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
+            // int companyId = User.Identity.GetCompanyId().Value;
+            //
+            // if ( User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)) )
+            // {
+            //     projects = await _companyInfoService.GetAllProjectsAsync(companyId);
+            // }
+            // else
+            // {
+            //     // This doesn't include archived projects
+            //     projects = await _projectService.GetAllProjectsByCompany(companyId);
+            // }
+            // return View(projects);
+            int companyId = User.Identity!.GetCompanyId().Value;
+            ITUser user = await _userManager.GetUserAsync(User);
 
-            List<Project> projects = new();
-            // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
-            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> activeProjects = 
+                User.IsInRole(nameof(Roles.Admin)) ? await _projectService.GetAllProjectsByCompany(companyId) : await _projectService.GetUserProjectsAsync(user.Id);
 
-            if ( User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)) )
+            ProjectListViewModel viewModel = new ProjectListViewModel()
             {
-                projects = await _companyInfoService.GetAllProjectsAsync(companyId);
-            }
-            else
-            {
-                // This doesn't include archived projects
-                projects = await _projectService.GetAllProjectsByCompany(companyId);
-            }
-            return View(projects);
+                ActiveOrArchived = "All",
+                Projects = activeProjects,
+                PageNumber = pageNumber.ToString(),
+                PerPage = perPage.ToString(),
+                SortBy = sortBy,
+
+                SortByOptions = new SelectList(new string[] { "Project Name", "Project Manager", "Due Date", "Open Tickets" }, sortBy),
+                PerPageOptions = new SelectList(new string[] { "5", "10", "20", "30", "40", "50" }, perPage.ToString()),
+            };
+
+            return View("AllProjects", viewModel);
         }
         #endregion
         
         #region Get Archived Projects
         // GET: ArchivedProjects
-        public async Task<IActionResult> ArchivedProjects()
+        public async Task<IActionResult> ArchivedProjects(string sortBy = "Project Name", int pageNumber = 1, int perPage = 10)
         {
-            // We haven't created the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
-            int companyId = User.Identity.GetCompanyId().Value;
-            
-            List<Project> projects = await _projectService.GetArchivedProjectsByCompany(companyId);
+            int companyId = User.Identity!.GetCompanyId().Value;
+            ITUser itUser = await _userManager.GetUserAsync(User);
 
-            return View(projects);
+            List<Project> archivedProjects = 
+                User.IsInRole(nameof(Roles.Admin))  ? await _projectService.GetArchivedProjectsByCompany(companyId) : await _projectService.GetUserArchivedProjectsAsync(itUser.Id);
+
+            ProjectListViewModel viewModel = new ProjectListViewModel()
+            {
+                ActiveOrArchived = "Archived",
+                Projects = archivedProjects,
+                PageNumber = pageNumber.ToString(),
+                PerPage = perPage.ToString(),
+                SortBy = sortBy,
+
+                SortByOptions = new SelectList(new string[] { "Project Name", "Project Manager", "Due Date", "Open Tickets" }, sortBy),
+                PerPageOptions = new SelectList(new string[] { "5", "10", "20", "30", "40", "50" }, perPage.ToString()),
+            };
+
+            return View("AllProjects", viewModel);
         }
         #endregion
         
@@ -199,23 +244,30 @@ namespace IssueTracker.Controllers
         
         #region Get Details
         // GET: Project/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? projectId)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            
             int companyId = User.Identity.GetCompanyId().Value;
             
-            Project project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
+            ITUser itUser = await _userManager.GetUserAsync(User);
 
-            if (project == null)
+            Project? project = await _projectService.GetProjectByIdAsync(projectId.Value, companyId);
+
+            if (project is null)
+                return View(nameof(NotFound));
+
+            if (!User.IsInRole(nameof(Roles.Admin)) && !project.Members.Contains(itUser))
+                return View(nameof(NotAuthorized));
+
+            ProjectViewModel viewModel = new ProjectViewModel
             {
-                return NotFound();
-            }
+                Project = project,
+                ProjectManager = await _projectService.GetProjectManagerAsync(project.Id),
+                Developers = await _projectService.GetDevelopersOnProjectAsync(project.Id),
+                Submitters = await _projectService.GetSubmittersOnProjectAsync(project.Id),
+                Tickets = project.Tickets,
+            };
 
-            return View(project);
+            return View(viewModel);
         }
         #endregion
         
@@ -440,6 +492,56 @@ namespace IssueTracker.Controllers
             return RedirectToAction(nameof(MyProjects));
         }
         #endregion
+        
+        #region Get Delete
+        [HttpGet]
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")]
+        public async Task<ViewResult> Delete(int projectId)
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            Project? project = await _projectService.GetProjectByIdAsync(projectId, companyId);
+
+            if (project == null)
+                return View(nameof(NotFound));
+
+            ITUser user = await _userManager.GetUserAsync(User);
+            
+
+            if ( await _projectService.isAssignedProjectManagerAsync(user.Id, projectId) || User.IsInRole(nameof(Roles.Admin))) return View(project);
+                
+            return View( "NotAuthorized" );
+            
+        }
+        #endregion
+
+        #region Post Delete
+        [HttpPost]
+        [Authorize(Roles = $"{nameof(Roles.Admin)}, {nameof(Roles.ProjectManager)}")]
+        [ValidateAntiForgeryToken]
+        public async Task<RedirectToActionResult> DeleteConfirmed(Project project)
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            
+            ITUser user = await _userManager.GetUserAsync(User);
+
+            if (await _projectService.isAssignedProjectManagerAsync( user.Id, project.Id) || User.IsInRole(nameof(Roles.Admin)) )
+            {
+                await _projectService.DeleteProjectAsync(companyId, project.Id);
+                return RedirectToAction(nameof(AllProjects));
+            }
+            return RedirectToAction("NotAuthorized");
+
+
+
+        }
+        #endregion
+        
+        [HttpGet]
+        public ViewResult NotAuthorized()
+        {
+            return View();
+        }
         
         #region Does Project Exist
         private async Task<bool> ProjectExists(int id)

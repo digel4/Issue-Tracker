@@ -2,6 +2,7 @@ using IssueTracker.Data;
 using IssueTracker.Models;
 using IssueTracker.Models.Enums;
 using IssueTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -31,50 +32,103 @@ public class ITTicketService : IITTicketService
      #endregion
      
     #region Add New Ticket
-    public async Task AddNewTicketAsync(Ticket ticket)
+    public async Task<int> AddNewTicketAsync(Ticket ticket)
     {
-        try
-        {
-            _context.Add(ticket);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        await _context.Tickets.AddAsync(ticket);
+        await _context.SaveChangesAsync();
+        return ticket.Id;
+    }
+    #endregion
+
+    #region Get All Action Required Tickets
+    public async Task<List<Ticket>> GetAllActionRequiredTicketsAsync(int companyId)
+    {
+        List<Ticket> companyTickets = await GetAllTicketsByCompanyAsync(companyId);
+        return companyTickets.Where(t => 
+            t.TicketStatus.Name == Enum.GetName(ITTicketStatus.Unassigned) ||
+            t.TicketStatus.Name == Enum.GetName(ITTicketStatus.New)
+        ).ToList();
     }
     #endregion
     
+    #region Get All Open Tickets
+    public async Task<List<Ticket>> GetAllOpenTicketsAsync(int companyId)
+    {
+        List<Ticket> companyTickets = await GetAllTicketsByCompanyAsync(companyId);
+        return companyTickets.Where(t => t.TicketStatus.Name != Enum.GetName(ITTicketStatus.Resolved)).ToList();
+    }
+    #endregion
+    
+    #region Get All Completed Tickets
+    public async Task<List<Ticket>> GetAllCompletedTicketsAsync(int companyId)
+    {
+        List<Ticket> companyTickets = await GetAllTicketsByCompanyAsync(companyId);
+        
+        return companyTickets.Where(t => t.TicketStatus.Name == Enum.GetName(ITTicketStatus.Resolved)).ToList();
+    }
+    #endregion
+    
+    #region Get User Action Required Tickets
+    public async Task<List<Ticket>> GetUserActionRequiredTicketsAsync(string userId, int companyId)
+    {
+        List<Ticket> userTickets = await GetTicketsByUserIdAsync(userId, companyId);
+        
+        return userTickets.Where(t => 
+            t.TicketStatus.Name == Enum.GetName(ITTicketStatus.New) &&
+            t.Archived == false
+        ).ToList();
+    }
+    #endregion
+
+    #region Get User Open Tickets
+    public async Task<List<Ticket>> GetUserOpenTicketsAsync(string userId, int companyId)
+    {
+
+        List<Ticket> userTickets = await GetTicketsByUserIdAsync(userId, companyId);
+
+        return userTickets.Where( t =>
+            t.TicketStatus.Name != Enum.GetName(ITTicketStatus.Resolved) &&
+            t.Archived == false
+        ).ToList();
+    }
+    #endregion
+    
+    #region Get User Completed Tickets
+    public async Task<List<Ticket>> GetUserCompletedTicketsAsync(string userId, int companyId)
+    {
+        List<Ticket> userTickets = await GetTicketsByUserIdAsync(userId, companyId);
+        
+        return userTickets.Where(t => 
+            t.TicketStatus.Name == Enum.GetName(ITTicketStatus.Resolved) &&
+            t.Archived == false
+        ).ToList();
+    }
+    #endregion
     
     #region Add New Ticket Comment
-    public async Task AddNewTicketCommentAsync(TicketComment ticketComment)
+    public async Task<bool> AddNewTicketCommentAsync(int ticketId, TicketComment ticketComment)
     {
-        try
-        {
-            _context.Add(ticketComment);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        Ticket? ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
+
+        if (ticket == null) return false;
+
+        ticket.Comments.Add(ticketComment);
+        await _context.SaveChangesAsync();
+        return true;
     }
     #endregion
     
     #region Add Ticket Attachment 
-    public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+    public async Task<bool> AddTicketAttachmentAsync(int ticketId, TicketAttachment ticketAttachment)
     {
-        try
-        {
-            await _context.AddAsync(ticketAttachment);
-            await _context.SaveChangesAsync();
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        Ticket? ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
+
+        if (ticket == null)
+            return false;
+
+        ticket.Attachments.Add(ticketAttachment);
+        await _context.SaveChangesAsync();
+        return true;
     }
     #endregion
     
@@ -199,6 +253,25 @@ public class ITTicketService : IITTicketService
     }
     #endregion
     
+    #region Delete Ticket
+
+    public async Task DeleteTicketAsync(Ticket ticket)
+    {
+    try
+        {
+            _context.Tickets.Remove(ticket);
+            await _context.SaveChangesAsync();
+            // return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+        
+    #endregion
+
     #region Assign Ticket
     public async Task AssignTicketAsync(int ticketId, string userId)
     {

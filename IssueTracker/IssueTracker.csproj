@@ -150,6 +150,8 @@
       <Content Remove="Views\TicketAttachment\**" />
       <Content Remove="Views\TicketStatus\**" />
       <Content Remove="Views\TicketType\**" />
+      <Content Remove="Views\Ticket\UnassignedTickets.cshtml" />
+      <Content Remove="Views\Ticket\AssignDeveloper.cshtml" />
     </ItemGroup>
 
 </Project>

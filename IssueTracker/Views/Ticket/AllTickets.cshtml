@@ -1,120 +1,308 @@
-@using IssueTracker.Models.Enums
-@using IssueTracker.Services.Interfaces
-@using Microsoft.AspNetCore.Identity
-@model IEnumerable<IssueTracker.Models.Ticket>
+@* @using IssueTracker.Models.Enums *@
+@* @using IssueTracker.Services.Interfaces *@
+@* @using Microsoft.AspNetCore.Identity *@
+@* @model IEnumerable<IssueTracker.Models.Ticket> *@
+@* *@
+@* @inject UserManager<ITUser> UserManager *@
+@* @inject IITProjectService ProjectService *@
+@* *@
+@* @{ *@
+@*     ViewData["Title"] = "AllTickets"; *@
+@*     Layout = "~/Views/Shared/_Layout.cshtml"; *@
+@*     ITUser itUser = await UserManager.GetUserAsync(User); *@
+@* } *@
+@* *@
+@* <h1>All Tickets</h1> *@
+@* *@
+@* <p> *@
+@*     <a asp-action="Create">Create New</a> *@
+@* </p> *@
+@* <table class="table"> *@
+@*     <thead> *@
+@*         <tr> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Title) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Description) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Created) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Updated) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Archived) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.OwnerUser) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.DeveloperUser) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.Project) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.TicketStatus) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.TicketPriority) *@
+@*             </th> *@
+@*             <th> *@
+@*                 @Html.DisplayNameFor(model => model.TicketType) *@
+@*             </th> *@
+@*             <th></th> *@
+@*         </tr> *@
+@*     </thead> *@
+@*     <tbody> *@
+@* @foreach (var item in Model) { *@
+@*         <tr> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Title) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Description) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Created) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Updated) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Archived) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.OwnerUser.FullName) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.DeveloperUser.FullName) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.Project.Name) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.TicketStatus.Name) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.TicketPriority.Name) *@
+@*             </td> *@
+@*             <td> *@
+@*                 @Html.DisplayFor(modelItem => item.TicketType.Name) *@
+@*             </td> *@
+@*             <td> *@
+@*                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+@*                 @{ *@
+@*                     bool isProjectPM = await ProjectService.isAssignedProjectManagerAsync(itUser.Id, item.ProjectId); *@
+@*                 } *@
+@*                 @if (User.IsInRole(nameof(Roles.Admin)) || item.DeveloperUserId == itUser.Id || item.OwnerUserId == itUser.Id || isProjectPM) *@
+@*                 { *@
+@*                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> *@
+@*                 } *@
+@*                 @if ( User.IsInRole(nameof(Roles.Admin)) || isProjectPM ) *@
+@*                 { *@
+@*                     <span>|</span> *@
+@*                     @if (item.Archived) *@
+@*                     { *@
+@*                         <a asp-action="Restore" asp-route-id="@item.Id">Restore</a> *@
+@*                     } *@
+@*                     else *@
+@*                     { *@
+@*                         <a asp-action="Archive" asp-route-id="@item.Id">Archive</a> *@
+@*                     } *@
+@*                 } *@
+@*             </td> *@
+@*         </tr> *@
+@* } *@
+@*     </tbody> *@
+@* </table> *@
 
-@inject UserManager<ITUser> UserManager
-@inject IITProjectService ProjectService
+
+
+@using IssueTracker.Models.ViewModels;
+
+@model TicketListViewModel
 
 @{
-    ViewData["Title"] = "AllTickets";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ITUser itUser = await UserManager.GetUserAsync(User);
+    string ticketListType = Model.TicketListType;
+
+    int pageNumber = int.Parse(Model.PageNumber);
+    int perPage = int.Parse(Model.PerPage);
+    int numberOfPages = Model.Tickets.Count % perPage == 0 ? (Model.Tickets.Count / perPage) : (Model.Tickets.Count / perPage) + 1;
+
+    bool canPrevPage = pageNumber > 1;
+    bool canNextPage = pageNumber < numberOfPages;
+
+    IEnumerable<Ticket> sortedTickets = Model.SortBy switch
+    {
+        "Title" => Model.Tickets.OrderBy(t => t.Title),
+        "Project" => Model.Tickets.OrderBy(t => t.Project!.Id),
+        "Priority" => Model.Tickets.OrderBy(t => t.TicketPriorityId),
+        "Assigned" => Model.Tickets.OrderBy(t => t.DeveloperUserId),
+        "Type" => Model.Tickets.OrderBy(t => t.TicketTypeId),
+        "Status" or _ => Model.Tickets.OrderBy(t => t.TicketStatusId),
+    };
 }
 
-<h1>All Tickets</h1>
+<div class="pagetitle">
+    <h1>@ticketListType Tickets</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Tickets</li>
+            <li class="breadcrumb-item active">@ticketListType</li>
+        </ol>
+    </nav>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
+@if (ticketListType == "Action Required")
+{
+    <div class="card p-2 pt-4">
+        <div class="card-body mb-0">
+            <div class="card-text">
+                <text>
+                    These tickets require some action by the developer or project manager.<br/>
+                    Either the developer has not been assigned, has not accepted the assignment, or they have placed the ticket on hold.
+                </text>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Sort & Paging Options -->
+
+<form asp-controller="Ticket" asp-action="AllTickets@(Model.TicketListType)Tickets" method="get" class="row mb-3 align-items-end">
+
+    <div class="col-12">
+
+        <div class="d-block d-md-inline ms-0">
+            <span>Sort by:</span>
+            <select asp-items="@Model.SortByOptions" asp-for="SortBy">
+            </select>
+        </div>
+
+        <div class="d-block d-md-inline ms-0 ms-md-2 mt-2 mt-md-0">
+            <span>Per page:</span>
+            <select asp-items="@Model.PerPageOptions" asp-for="PerPage">
+            </select>
+        </div>
+        
+        <div class="d-block d-md-inline ms-0 ms-md-2 mt-2 mt-md-0">
+            <button class="btn btn-sm btn-success ms-0 ms-md-2 mt-md-0" type="submit" asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@Model.PageNumber" asp-route-perPage="@Model.PerPage">
+            Go
+            </button>
+        </div>
+        
+    </div>
+
+</form>
+
+<!-- Tickets Table -->
+
+@if (sortedTickets.Count() == 0)
+{
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text text-center mt-3">There are no tickets to show.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+
+        <table class="table table-bordered bg-light">
+
+            <colgroup>
+                <col width="450">
+                <col width="400">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th>Ticket Title</th>
+                    <th>Project</th>
+                    <th class="text-center">Assigned To</th>
+                    <th class="text-center">Priority</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+        
+                @foreach (Ticket ticket in sortedTickets.Skip((pageNumber - 1) * perPage).Take(perPage))
+                {
+                    <tr class="align-middle">
+                        <td><a asp-action="Details" asp-route-ticketId="@ticket.Id"><i class="bi bi-ticket-detailed-fill me-2"></i>@ticket.Title</a></td>
+                        <td>@ticket.Project!.Name</td>
+                        @if (ticket.DeveloperUser is not null)
+                        {
+                            <td class="text-center">@ticket.DeveloperUser.FullName</td>
+                        }
+                        else
+                        {
+                            <td class="text-center text-danger">Unassigned</td>
+                        }
+                        <td class="text-center"><span class="@Model.GetPriorityFormatting(@ticket.TicketPriority.Name)">@ticket.TicketPriority!.Name</span></td>
+                        <td class="text-center">@ticket.TicketType!.Name</td>
+                        <td class="@Model.GetStatusFormatting(@ticket.TicketStatus.Name) text-center">
+                            @ticket.TicketStatus!.Name 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+}
+
+<!-- Paging -->
+
+<p class="text-muted">
+    @{
+        int startingEntry = sortedTickets.Count() == 0 ? 0 : (pageNumber - 1) * perPage + 1;
+        int endingEntry = Math.Min(sortedTickets.Count(), startingEntry + perPage - 1);
+    }
+    Showing @startingEntry to @endingEntry of @(sortedTickets.Count())
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Archived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OwnerUser)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeveloperUser)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketPriority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Archived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketType.Name)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                @{
-                    bool isProjectPM = await ProjectService.isAssignedProjectManagerAsync(itUser.Id, item.ProjectId);
-                }
-                @if (User.IsInRole(nameof(Roles.Admin)) || item.DeveloperUserId == itUser.Id || item.OwnerUserId == itUser.Id || isProjectPM)
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                }
-                @if ( User.IsInRole(nameof(Roles.Admin)) || isProjectPM )
-                {
-                    <span>|</span>
-                    @if (item.Archived)
-                    {
-                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                    }
-                    else
-                    {
-                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
-                    }
-                }
-            </td>
-        </tr>
+
+@if (sortedTickets.Count() > perPage)
+{
+    @if (canPrevPage)
+    {
+        <a class="btn btn-sm btn-outline-dark" asp-action="@(Model.TicketListType)Tickets"
+           asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@(pageNumber - 1)" asp-route-perPage="@Model.PerPage">
+            Prev
+        </a>
+    }
+
+    @if (pageNumber > 4)
+    {
+        <span class="ms-2">...</span>
+    }
+
+    @for (int i = Math.Max(pageNumber - 3, 1); i <= Math.Min(pageNumber + 3, numberOfPages); i++)
+    {
+        string active = i == pageNumber ? "btn-dark" : "btn-outline-dark";
+
+        <a class="btn btn-sm @active ms-2" type="button" asp-action="@(Model.TicketListType)Tickets"
+           asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@i" asp-route-perPage="@Model.PerPage">
+            @i
+        </a>
+    }
+
+    @if (pageNumber < numberOfPages - 3)
+    {
+        <span class="ms-2">...</span>
+    }
+
+    @if (canNextPage)
+    {
+        <a class="btn btn-sm btn-outline-dark ms-2" asp-action="@(Model.TicketListType)Tickets"
+           asp-route-sortBy="@Model.SortBy" asp-route-pageNumber="@(pageNumber + 1)" asp-route-perPage="@Model.PerPage">
+            Next
+        </a>
+    }
 }
-    </tbody>
-</table>
