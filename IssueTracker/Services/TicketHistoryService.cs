@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
-public class ITTicketHistoryService : IITTicketHistoryService
+public class ITTicketHistoryService : ITicketHistoryService
 {
     #region Properties
     private readonly ApplicationDbContext _context;

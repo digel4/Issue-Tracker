@@ -6,7 +6,7 @@
 @model ProjectViewModel
 
 @inject UserManager<ITUser> UserManager
-@inject IITFileService FileService
+@inject IFileService FileService
 
 @{
 	ITUser user = await UserManager.GetUserAsync(User);
@@ -412,8 +412,8 @@
 @* @model IssueTracker.Models.Project *@
 @* *@
 @* @inject UserManager<ITUser> UserManager *@
-@* @inject IITProjectService ProjectService *@
-@* @inject IITTicketHistoryService HistoryService *@
+@* @inject IProjectService ProjectService *@
+@* @inject ITicketHistoryService HistoryService *@
 @* *@
 @* @{ *@
 @*     ViewData["Title"] = "Details"; *@

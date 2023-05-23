@@ -1,6 +1,6 @@
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITFileService
+public interface IFileService
 {
     public Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file);
 

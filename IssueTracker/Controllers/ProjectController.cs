@@ -22,25 +22,25 @@ namespace IssueTracker.Controllers
     public class ProjectController : Controller
     {
         #region Properties
-        private readonly IITProjectService _projectService;
-        private readonly IITRolesService _rolesService;
+        private readonly IProjectService _projectService;
+        private readonly IRolesService _rolesService;
         private readonly IITLookUpService _lookUpService;
-        private readonly IITFileService _fileService;
+        private readonly IFileService _fileService;
         private readonly UserManager<ITUser> _userManager;
-        private readonly IITCompanyInfoService _companyInfoService;
-        private readonly IITNotificationService _notificationService;
+        private readonly ICompanyInfoService _companyInfoService;
+        private readonly INotificationService _notificationService;
 
         #endregion
 
         #region Constructor
         public ProjectController(
-            IITProjectService ProjectService, 
-            IITRolesService RolesService, 
+            IProjectService ProjectService, 
+            IRolesService RolesService, 
             IITLookUpService LookUpService, 
-            IITFileService FileService, 
+            IFileService FileService, 
             UserManager<ITUser> userManager, 
-            IITCompanyInfoService CompanyInfoService,
-            IITNotificationService NotificationService 
+            ICompanyInfoService CompanyInfoService,
+            INotificationService NotificationService 
         )
         {
             _projectService = ProjectService;

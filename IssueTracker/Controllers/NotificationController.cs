@@ -17,12 +17,12 @@ namespace IssueTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ITUser> _userManager;
-        private readonly IITNotificationService _notificationService;
+        private readonly INotificationService _notificationService;
 
         public NotificationController(
             ApplicationDbContext context,
             UserManager<ITUser> userManager,
-            IITNotificationService notificationService
+            INotificationService notificationService
             )
         {
             _context = context;

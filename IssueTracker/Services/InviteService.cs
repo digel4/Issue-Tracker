@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
-public class ITInviteService : IITInviteService
+public class ITInviteService : IInviteService
 {
     private readonly ApplicationDbContext _context;
     

@@ -8,20 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
-public class ITTicketService : IITTicketService
+public class ITTicketService : ITicketService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
-    private readonly IITRolesService  _rolesService;
-    private readonly IITProjectService  _projectService;
+    private readonly IRolesService  _rolesService;
+    private readonly IProjectService  _projectService;
     #endregion
 
 
     #region Constructor
      public ITTicketService(
          ApplicationDbContext context,
-         IITRolesService rolesService,
-         IITProjectService projectService
+         IRolesService rolesService,
+         IProjectService projectService
      )
      {
          // Dependency Injection /  service layer
@@ -153,7 +153,8 @@ public class ITTicketService : IITTicketService
     {
         try
         {
-            Ticket ticket = await _context.Tickets
+
+            Ticket? ticket = await _context.Tickets
                 .Include(t => t.DeveloperUser)
                 .Include(t => t.OwnerUser)
                 .Include(t => t.Project)
@@ -165,14 +166,20 @@ public class ITTicketService : IITTicketService
                 .Include(t => t.History)
                 .FirstOrDefaultAsync(t => t.Id == ticketId);
 
+            // if (ticket == null)
+            // {
+            //     throw new ArgumentNullException(nameof(ticket));
+            // }
+            
             return ticket;
+            
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
-
+        
     }
     #endregion
     

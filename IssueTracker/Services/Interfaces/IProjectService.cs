@@ -2,7 +2,7 @@ using IssueTracker.Models;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITProjectService
+public interface IProjectService
 {
     #region Add New Project
     public Task<int> AddNewProjectAsync(Project project);

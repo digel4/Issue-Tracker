@@ -2,7 +2,7 @@ using IssueTracker.Models;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITNotificationService
+public interface INotificationService
 {
     
     public Task AddNotificationAsync(Notification notification);

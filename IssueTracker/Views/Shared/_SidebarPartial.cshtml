@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Identity
 
 @inject UserManager<ITUser> UserManager
-@inject IITNotificationService NotificationService
+@inject INotificationService NotificationService
 
 @{
     bool IsController(string controller) => (string?)ViewContext.RouteData.Values["controller"] == controller;

@@ -7,7 +7,7 @@ namespace IssueTracker.Data;
 
 public static class SeedDefaultTickets
 {
-            public static async Task SeedDefautTicketsAsync(ApplicationDbContext context, IITProjectService projectSvc, IITCompanyInfoService companyInfoSvc, IITTicketService ticketSvc, IITTicketHistoryService ticketHistorySvc, int company1Id, int company2Id, SortedList<string, string> asimovMembers, SortedList<string, string> linuxMembers)
+            public static async Task SeedDefautTicketsAsync(ApplicationDbContext context, IProjectService projectSvc, ICompanyInfoService companyInfoSvc, ITicketService ticketSvc, ITicketHistoryService ticketHistorySvc, int company1Id, int company2Id, SortedList<string, string> asimovMembers, SortedList<string, string> linuxMembers)
         {
 
             

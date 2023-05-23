@@ -23,28 +23,28 @@ namespace IssueTracker.Controllers
     {
         #region Properties
         private readonly UserManager<ITUser> _userManager;
-        private readonly IITProjectService _projectService;
+        private readonly IProjectService _projectService;
         private readonly IITLookUpService _lookUpService;
-        private readonly IITTicketService _ticketService;
-        private readonly IITFileService _fileService;
-        private readonly IITTicketHistoryService _historyService;
-        private readonly IITRolesService _rolesService;
-        private readonly IITNotificationService _notificationService;
-        private readonly IITTicketHistoryService _ticketHistoryService;
+        private readonly ITicketService _ticketService;
+        private readonly IFileService _fileService;
+        private readonly ITicketHistoryService _historyService;
+        private readonly IRolesService _rolesService;
+        private readonly INotificationService _notificationService;
+        private readonly ITicketHistoryService _ticketHistoryService;
 
         #endregion
         
         #region Contructor
         public TicketController( 
             UserManager<ITUser> userManager, 
-            IITProjectService projectService, 
+            IProjectService projectService, 
             IITLookUpService lookUpService, 
-            IITTicketService ticketService, 
-            IITFileService fileService, 
-            IITTicketHistoryService historyService,
-            IITRolesService rolesService,
-            IITNotificationService notificationService,
-            IITTicketHistoryService ticketHistoryService
+            ITicketService ticketService, 
+            IFileService fileService, 
+            ITicketHistoryService historyService,
+            IRolesService rolesService,
+            INotificationService notificationService,
+            ITicketHistoryService ticketHistoryService
             )
         {
             _projectService = projectService;

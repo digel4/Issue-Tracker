@@ -5,7 +5,7 @@
 
 @model TicketViewModel
 
-@inject IITFileService FileService
+@inject IFileService FileService
 @inject UserManager<ITUser> UserManager
 
 @{
@@ -407,9 +407,9 @@
 @* @using Microsoft.AspNetCore.Identity *@
 @* *@
 @* @inject UserManager<ITUser> UserManager *@
-@* @inject IITProjectService ProjectService *@
-@* @inject IITTicketHistoryService HistoryService *@
-@* @inject IITFileService FileService *@
+@* @inject IProjectService ProjectService *@
+@* @inject ITicketHistoryService HistoryService *@
+@* @inject IFileService FileService *@
 @* *@
 @* @{ *@
 @*     ViewData["Title"] = "Details"; *@

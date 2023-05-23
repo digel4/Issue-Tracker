@@ -2,7 +2,7 @@ using IssueTracker.Models;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITCompanyInfoService
+public interface ICompanyInfoService
 {
     //<> after task is the return type
     public Task<Company> GetCompanyInfoByIdAsync(int? companyId);

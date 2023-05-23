@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITRolesService
+public interface IRolesService
 {
     public Task<bool> IsUserInRoleAsync(ITUser user, string roleName);
 

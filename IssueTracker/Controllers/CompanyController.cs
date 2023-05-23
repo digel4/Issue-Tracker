@@ -182,22 +182,22 @@ public class CompanyController : Controller
 {
     #region Properties
     private readonly UserManager<ITUser> _userManager;
-    private readonly IITCompanyInfoService _companyInfoService;
-    private readonly IITProjectService _projectService;
-    private readonly IITTicketService _ticketService;
-    private readonly IITNotificationService _notificationService;
-    private readonly IITRolesService _rolesService;
-    private readonly IITFileService _fileService;
+    private readonly ICompanyInfoService _companyInfoService;
+    private readonly IProjectService _projectService;
+    private readonly ITicketService _ticketService;
+    private readonly INotificationService _notificationService;
+    private readonly IRolesService _rolesService;
+    private readonly IFileService _fileService;
     #endregion
 
     #region Contstructor
     public CompanyController(UserManager<ITUser> userManager, 
-        IITCompanyInfoService companyService,
-        IITProjectService projectService,
-        IITTicketService ticketService,
-        IITNotificationService notificationService,
-        IITRolesService rolesService,
-        IITFileService fileService)
+        ICompanyInfoService companyService,
+        IProjectService projectService,
+        ITicketService ticketService,
+        INotificationService notificationService,
+        IRolesService rolesService,
+        IFileService fileService)
     {
         _userManager = userManager;
         _companyInfoService = companyService;

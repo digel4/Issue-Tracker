@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
-public class ITProjectService : IITProjectService
+public class ITProjectService : IProjectService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
-    private readonly IITRolesService  _rolesService;
+    private readonly IRolesService  _rolesService;
     private readonly UserManager<ITUser> _userManager;
 
     #endregion
@@ -19,7 +19,7 @@ public class ITProjectService : IITProjectService
     #region Contructor
     public ITProjectService(
         ApplicationDbContext context,
-        IITRolesService rolesService,
+        IRolesService rolesService,
         UserManager<ITUser> userManager
         )
     {

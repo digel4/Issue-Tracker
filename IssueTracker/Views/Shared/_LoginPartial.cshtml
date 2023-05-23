@@ -4,9 +4,9 @@
 
 @inject UserManager<ITUser> UserManager
 @inject SignInManager<ITUser> SignInManager
-@inject IITCompanyInfoService CompanyInfoService
-@inject IITNotificationService NotificationService
-@inject IITFileService FileService
+@inject ICompanyInfoService CompanyInfoService
+@inject INotificationService NotificationService
+@inject IFileService FileService
 
 @{
     ITUser itUser = await UserManager.GetUserAsync(User);

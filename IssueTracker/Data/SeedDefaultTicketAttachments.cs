@@ -8,7 +8,7 @@ public static class SeedDefaultTicketAttachments
 {
 
     
-    public static async Task SeedAsimovAttachmentsAsync(ApplicationDbContext context,IITTicketService ticketService, IITTicketHistoryService ticketHistoryService, SortedList<string,string> asimovMembers)
+    public static async Task SeedAsimovAttachmentsAsync(ApplicationDbContext context,ITicketService ticketService, ITicketHistoryService ticketHistoryService, SortedList<string,string> asimovMembers)
     {
         #region PortfolioWebApp
         Ticket PortfolioTicketOne = context.Tickets.First(t => t.Title == "Nav Bar Not Working on Edge Browser");
@@ -140,7 +140,7 @@ public static class SeedDefaultTicketAttachments
         #endregion
     }
     
-    public static async Task SeedLinuxAttachmentsAsync(ApplicationDbContext context,IITTicketService ticketService, IITTicketHistoryService ticketHistoryService, SortedList<string,string> linuxMembers)
+    public static async Task SeedLinuxAttachmentsAsync(ApplicationDbContext context,ITicketService ticketService, ITicketHistoryService ticketHistoryService, SortedList<string,string> linuxMembers)
     {
         #region BlogWebApp
         Ticket BlogWebTicketOne = context.Tickets.First(t => t.Title == "Crash when deleting certain products");

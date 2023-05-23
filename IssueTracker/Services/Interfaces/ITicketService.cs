@@ -2,7 +2,7 @@ using IssueTracker.Models;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITTicketService
+public interface ITicketService
 {
     // CRUD Methods
     public Task<int> AddNewTicketAsync(Ticket ticket);

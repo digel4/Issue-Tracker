@@ -14,10 +14,10 @@ public class HomeController : Controller
 {
     #region Properties
     private readonly ILogger<HomeController> _logger;
-    private readonly IITCompanyInfoService _companyInfoService;
-    private readonly IITProjectService _projectService;
-    private readonly IITTicketService _ticketService;
-    private readonly IITNotificationService _notificationService;
+    private readonly ICompanyInfoService _companyInfoService;
+    private readonly IProjectService _projectService;
+    private readonly ITicketService _ticketService;
+    private readonly INotificationService _notificationService;
     private readonly SignInManager<ITUser> _signInManager;
     private readonly UserManager<ITUser> _userManager;
 
@@ -25,10 +25,10 @@ public class HomeController : Controller
 
     #region Constructor
     public HomeController(
-        IITCompanyInfoService companyInfoService, 
-        IITProjectService projectService, 
-        IITTicketService ticketService,
-        IITNotificationService notificationService,
+        ICompanyInfoService companyInfoService, 
+        IProjectService projectService, 
+        ITicketService ticketService,
+        INotificationService notificationService,
         SignInManager<ITUser> signInManager,
         UserManager<ITUser> userManager
         )

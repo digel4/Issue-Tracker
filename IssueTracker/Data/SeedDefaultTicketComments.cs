@@ -8,7 +8,7 @@ namespace IssueTracker.Data;
 public static class SeedDefaultTicketComments
 {
     
-    public static async Task SeedAsimovCommentsAsync( ApplicationDbContext context, IITTicketService ticketService, IITTicketHistoryService ticketHistoryService, SortedList<string, string> asimovMembers)
+    public static async Task SeedAsimovCommentsAsync( ApplicationDbContext context, ITicketService ticketService, ITicketHistoryService ticketHistoryService, SortedList<string, string> asimovMembers)
     {
         #region PortfolioWebApp
             Ticket PortfolioTicketOne = context.Tickets.First(t => t.Title == "Nav Bar Not Working on Edge Browser");
@@ -217,7 +217,7 @@ public static class SeedDefaultTicketComments
     }
 
     
-    public static async Task SeedLinuxCommentsAsync( ApplicationDbContext context, IITTicketService ticketService,IITTicketHistoryService ticketHistoryService, SortedList<string, string> linuxMembers)
+    public static async Task SeedLinuxCommentsAsync( ApplicationDbContext context, ITicketService ticketService,ITicketHistoryService ticketHistoryService, SortedList<string, string> linuxMembers)
     {
         
         #region BlogWebApp

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IssueTracker.Services;
 
 // Deriving or inheriting a child class from a parent class. 
-public class ITRolesService : IITRolesService
+public class ITRolesService : IRolesService
 {
     private readonly ApplicationDbContext _context;
     private readonly RoleManager<IdentityRole> _roleManager;

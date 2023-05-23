@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITTicketHistoryService
+public interface ITicketHistoryService
 {
 //     Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId);
 //     

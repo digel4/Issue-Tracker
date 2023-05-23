@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IssueTracker.Services;
 
 // Deriving or inheriting a child class from a parent class. 
-public class ITCompanyInfoService : IITCompanyInfoService
+public class ITCompanyInfoService : ICompanyInfoService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
@@ -97,10 +97,9 @@ public class ITCompanyInfoService : IITCompanyInfoService
     #region Get All Members 
     public async Task<List<ITUser>> GetAllMembersAsync(int companyId)
     {
-        // This is the same as writing List<ITUser> result = new List<ITUser>();
-        List<ITUser> result = new();
+        // This is the same as writing List<ITUser> result = new List<ITUser>();();
 
-        result = await _context.Users.Where(u => u.CompanyId == companyId).ToListAsync();
+        List<ITUser>  result = await _context.Users.Where(u => u.CompanyId == companyId).ToListAsync();
 
         return result;
     }
@@ -109,10 +108,8 @@ public class ITCompanyInfoService : IITCompanyInfoService
     #region Get All Projects 
     public async Task<List<Project>> GetAllProjectsAsync(int companyId)
     {
-        // This is the same as writing List<Project> result = new List<Project>();
-        List<Project> result = new();
         // We need to make sure we get all the other tables associated with projects like project priority. We do this with .Include. This is called eager loading information. We do not get the virtual props by default only the local ones.
-        result = await _context.Projects
+        List<Project> result = await _context.Projects
             .Where(p => p.CompanyId == companyId)
             //.Include(p => p.Company)
             .Include(p => p.Members)
@@ -153,13 +150,9 @@ public class ITCompanyInfoService : IITCompanyInfoService
     #region Get All Tickets 
     public async Task<List<Ticket>> GetAllTicketsAsync(int companyId)
     {
-        // This is the same as writing List<Ticket> result = new List<Ticket>();
-        List<Ticket> result = new();
-        List<Project> projects = new();
+        List<Project> projects = await GetAllProjectsAsync(companyId);
 
-        projects = await GetAllProjectsAsync(companyId);
-
-        result = projects.SelectMany(p => p.Tickets).ToList();
+        List<Ticket> result = projects.SelectMany(p => p.Tickets).ToList();
 
         return result;
     }

@@ -42,16 +42,16 @@ builder.Services.AddIdentity<ITUser, IdentityRole>(options => options.SignIn.Req
 builder.Services.AddControllersWithViews();
 
 ///custom Services
-builder.Services.AddScoped<IITRolesService, ITRolesService>();
-builder.Services.AddScoped<IITCompanyInfoService, ITCompanyInfoService>();
+builder.Services.AddScoped<IRolesService, ITRolesService>();
+builder.Services.AddScoped<ICompanyInfoService, ITCompanyInfoService>();
 
-builder.Services.AddScoped<IITProjectService, ITProjectService>();
-builder.Services.AddScoped<IITTicketService, ITTicketService>();
-builder.Services.AddScoped<IITTicketHistoryService, ITTicketHistoryService>();
+builder.Services.AddScoped<IProjectService, ITProjectService>();
+builder.Services.AddScoped<ITicketService, ITTicketService>();
+builder.Services.AddScoped<ITicketHistoryService, ITTicketHistoryService>();
 builder.Services.AddScoped<IEmailSender, ITEmailService>();
-builder.Services.AddScoped<IITNotificationService, ITNotificationService>();
-builder.Services.AddScoped<IITInviteService, ITInviteService>();
-builder.Services.AddScoped<IITFileService, ITFileService>();
+builder.Services.AddScoped<INotificationService, ITNotificationService>();
+builder.Services.AddScoped<IInviteService, ITInviteService>();
+builder.Services.AddScoped<IFileService, ITFileService>();
 builder.Services.AddScoped<IITLookUpService, ITLookUpService>();
 
 // Configure mail settings

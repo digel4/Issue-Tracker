@@ -11,11 +11,11 @@ namespace IssueTracker.Controllers;
 [Authorize]
 public class UserRolesController : Controller
 {
-    private readonly IITRolesService _rolesService;
-    private readonly IITCompanyInfoService _companyInfoService;
+    private readonly IRolesService _rolesService;
+    private readonly ICompanyInfoService _companyInfoService;
     public UserRolesController(
-        IITRolesService rolesService, 
-        IITCompanyInfoService companyInfoService
+        IRolesService rolesService, 
+        ICompanyInfoService companyInfoService
     )
     {
         _rolesService = rolesService;

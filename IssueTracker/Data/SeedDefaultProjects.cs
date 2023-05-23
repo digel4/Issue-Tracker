@@ -7,7 +7,7 @@ namespace IssueTracker.Data;
 
 public static class SeedDefaultProjects
 {
-        public static async Task SeedDefaultProjectsAsync(ApplicationDbContext context, IITProjectService projectSvc, IITCompanyInfoService companyInfoSvc , int company1Id, int company2Id )
+        public static async Task SeedDefaultProjectsAsync(ApplicationDbContext context, IProjectService projectSvc, ICompanyInfoService companyInfoSvc , int company1Id, int company2Id )
         {
             
             //Get project priority Ids

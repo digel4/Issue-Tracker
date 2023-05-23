@@ -55,10 +55,10 @@ public static class DataUtility
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             //Service: An instance of RoleManager
             var roleManagerSvc = svcProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var projectSvc = svcProvider.GetRequiredService<IITProjectService>();
-            var companyInfoSvc = svcProvider.GetRequiredService<IITCompanyInfoService>();
-            var ticketSvc = svcProvider.GetRequiredService<IITTicketService>();
-            var ticketHistorySvc = svcProvider.GetRequiredService<IITTicketHistoryService>();
+            var projectSvc = svcProvider.GetRequiredService<IProjectService>();
+            var companyInfoSvc = svcProvider.GetRequiredService<ICompanyInfoService>();
+            var ticketSvc = svcProvider.GetRequiredService<ITicketService>();
+            var ticketHistorySvc = svcProvider.GetRequiredService<ITicketHistoryService>();
             //Service: An instance of the UserManager
             var userManagerSvc = svcProvider.GetRequiredService<UserManager<ITUser>>();
             //Migration: This is the programmatic equivalent to Update-Database
@@ -332,7 +332,7 @@ public static class DataUtility
 
 
 
-        // public static async Task SeedDefaultProjectsAsync(ApplicationDbContext context, IITProjectService projectSvc, IITCompanyInfoService companyInfoSvc)
+        // public static async Task SeedDefaultProjectsAsync(ApplicationDbContext context, IProjectService projectSvc, ICompanyInfoService companyInfoSvc)
         // {
         //
         //     //Get project priority Ids
@@ -1135,7 +1135,7 @@ public static class DataUtility
 
 
     
-        // public static async Task SeedDefautTicketsAsync(ApplicationDbContext context, IITProjectService projectSvc, IITCompanyInfoService companyInfoSvc)
+        // public static async Task SeedDefautTicketsAsync(ApplicationDbContext context, IProjectService projectSvc, ICompanyInfoService companyInfoSvc)
         // {
         //     //Get project Ids
         //     int portfolioId = context.Projects.FirstOrDefault(p => p.Name == "Portfolio Website").Id;

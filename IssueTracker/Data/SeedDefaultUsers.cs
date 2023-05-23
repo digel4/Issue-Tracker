@@ -7,7 +7,7 @@ namespace IssueTracker.Data;
 
 public static class SeedDefaultUsers
 {
-        public static async Task SeedDefaultUsersAsync(UserManager<ITUser> userManager, IITCompanyInfoService companyInfoSvc,  int company1Id, int company2Id)
+        public static async Task SeedDefaultUsersAsync(UserManager<ITUser> userManager, ICompanyInfoService companyInfoSvc,  int company1Id, int company2Id)
         {
             //Seed Default Admin User
             var defaultUser = new ITUser

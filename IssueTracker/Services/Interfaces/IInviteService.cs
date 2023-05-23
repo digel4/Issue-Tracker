@@ -2,7 +2,7 @@ using IssueTracker.Models;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITInviteService
+public interface IInviteService
 {
     public Task<bool> AcceptInviteAsync(Guid? token, string userId, int companyId);
     

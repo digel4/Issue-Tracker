@@ -3,8 +3,8 @@
 @using Microsoft.AspNetCore.Identity
 
 @inject UserManager<ITUser> UserManager
-@inject IITFileService FileService
-@inject IITProjectService ProjectService
+@inject IFileService FileService
+@inject IProjectService ProjectService
 
 @model ProjectListViewModel
 
@@ -211,7 +211,7 @@
 @* @model IEnumerable<IssueTracker.Models.Project> *@
 
 @* @inject UserManager<ITUser> UserManager *@
-@* @inject IITProjectService ProjectService *@
+@* @inject IProjectService ProjectService *@
 @* *@
 @* @{ *@
 @*     ViewData["Title"] = "All Projects"; *@

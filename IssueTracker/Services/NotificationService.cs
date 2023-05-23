@@ -8,19 +8,19 @@ using Microsoft.Identity.Client;
 
 namespace IssueTracker.Services;
 
-public class ITNotificationService : IITNotificationService
+public class ITNotificationService : INotificationService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
     private readonly IEmailSender _emailSender;
-    private readonly IITRolesService  _rolesService;
+    private readonly IRolesService  _rolesService;
     #endregion
     
     #region Constructor
     public ITNotificationService(
         ApplicationDbContext context,
         IEmailSender emailSender,
-        IITRolesService rolesService
+        IRolesService rolesService
     )
     {
         // Dependency Injection /  service layer
