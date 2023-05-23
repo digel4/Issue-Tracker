@@ -2,7 +2,6 @@ using IssueTracker.Models;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
