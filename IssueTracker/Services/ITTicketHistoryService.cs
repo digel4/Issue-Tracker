@@ -320,7 +320,7 @@ public class ITTicketHistoryService : IITTicketHistoryService
                 .Include(t => t.DeveloperUser)
                 .FirstOrDefaultAsync(t => t.Id == ticketId);
 
-            if (ticket is null)
+            if (ticket == null)
                 return;
 
             ITUser creator = await _userManager.FindByIdAsync(ticket.OwnerUserId);
@@ -335,9 +335,9 @@ public class ITTicketHistoryService : IITTicketHistoryService
                 $"Priority: {ticket.TicketPriority!.Name}</br>" +
                 $"Type: {ticket.TicketType!.Name}</br>" +
                 $"Assigned To: {(ticket.DeveloperUser != null ? ticket.DeveloperUser.FullName : "Unassigned")}</br></br>" +
-                $"Description: {ticket.Description}",
+                $"Description: {ticket.Description}"
             };
-
+            Console.WriteLine(createdEvent);
             await _context.TicketHistories.AddAsync(createdEvent);
             await _context.SaveChangesAsync();
         }

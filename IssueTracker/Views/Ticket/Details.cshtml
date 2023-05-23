@@ -78,9 +78,9 @@
 
                 </p><hr/>
 
-                <p class="card-text text-muted">Created On @Model.Ticket.Created..Date.ToShortDateString() By:
+                <p class="card-text text-muted">Created On @Model.Ticket.Created.Date.ToShortDateString() By:
                     <div class="d-flex">
-                        @if (Model.Ticket.OwnerUser != null)
+                        @if (Model.Ticket.OwnerUser == null)
                         {
                             <div class="flex-shrink-0">
                                 <img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50">
@@ -249,7 +249,8 @@
                                 <tr class="align-middle">
                                     <td class="text-center">
                                         <a asp-controller="Ticket" asp-action="ShowFile" asp-route-ticketAttachmentId="@attachment.Id">
-                                            <img class="img-fluid" height="50" width="50" src="~/img/ContentType/@(System.IO.Path.GetExtension(attachment.FileName).Trim('.')).png" />
+                                            @* <img class="img-fluid" height="50" width="50" src="~/img/ContentType/@(System.IO.Path.GetExtension(attachment.FileName).Trim('.')).png" /> *@
+                                            <img class="img-fluid" height="50" width="50" src=@FileService.GetFileIcon(attachment.FileName) />
                                         </a>
                                     </td>
                                     <td>@attachment.FileName</td>

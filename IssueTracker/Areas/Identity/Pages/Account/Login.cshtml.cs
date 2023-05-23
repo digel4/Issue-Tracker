@@ -137,5 +137,40 @@ namespace IssueTracker.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+        
+        public async Task<IActionResult> OnPostDemoAccount(string type)
+        {
+            string returnUrl = Url.Action("Index", "Home");
+
+            var result = type switch
+            {
+                "AsimovIntelligenceSystemsAdmin" => await _signInManager.PasswordSignInAsync("IsaacAsimov@AsimovIntelligenceSystems.com", "Abc&123!", false, lockoutOnFailure: false), // developer
+                "AsimovIntelligenceSystemsProjectManager" => await _signInManager.PasswordSignInAsync("SusanCalvin@AsimovIntelligenceSystems.com", "Abc&123!", false, lockoutOnFailure: false), // project manager
+                "AsimovIntelligenceSystemsDeveloper" => await _signInManager.PasswordSignInAsync("MathewJacobs@AsimovIntelligenceSystems.com", "Abc&123!", false, lockoutOnFailure: false), // developer
+                "AsimovIntelligenceSystemsSubmitter" => await _signInManager.PasswordSignInAsync("ScottApple@AsimovIntelligenceSystems.com", "Abc&123!", false, lockoutOnFailure: false), // Submitter
+                
+                "GNU/CorporationAdmin" => await _signInManager.PasswordSignInAsync("RichardStallman@GNUCorporation.com", "Abc&123!", false, lockoutOnFailure: false), // developer
+                "GNU/CorporationProjectManager" => await _signInManager.PasswordSignInAsync("JaneRichards@GNUCorporation.com", "Abc&123!", false, lockoutOnFailure: false), // project manager
+                "GNU/CorporationDeveloper" => await _signInManager.PasswordSignInAsync("JamesPeters@GNUCorporation.com", "Abc&123!", false, lockoutOnFailure: false), // developer
+                "GNU/CorporationSubmitter" => await _signInManager.PasswordSignInAsync("SueLincoln@GNUCorporation.com", "Abc&123!", false, lockoutOnFailure: false), //Submitter
+                
+                
+                
+                //_ => await _signInManager.PasswordSignInAsync("jdwohl@gmail.com", "Abc&123!", false, lockoutOnFailure: false), // admin
+   
+            };
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User logged in.");
+                return LocalRedirect(returnUrl);
+            }
+
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return Page();
+            }
+        }
     }
 }

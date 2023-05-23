@@ -69,7 +69,7 @@
     int onHoldTickets = openTickets.Where(t => t.TicketStatus.Name == "Testing").Count();
     int priorityTickets = openTickets.Where(t => t.TicketPriority.Name == "Urgent").Count();
 
-    string ticketSummary = $"{openTickets.Count} open ({unassignedTickets} unassigned/pending, {onHoldTickets} on hold, {priorityTickets} high priority)";
+    string ticketSummary = $"{openTickets.Count} open ({unassignedTickets} unassigned/pending, {onHoldTickets} testing, {priorityTickets} high priority)";
 
     float daysRemaining = (project.EndDate - DateTime.Now).Days;
     float daysUsed = (DateTime.Now - project.StartDate).Days;

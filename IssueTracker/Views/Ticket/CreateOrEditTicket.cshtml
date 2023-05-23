@@ -1,5 +1,6 @@
 @using IssueTracker.Models.ViewModels;
 @using Microsoft.AspNetCore.Identity
+@using IssueTracker.Models.Enums
 
 @model CreateOrEditTicketViewModel
 
@@ -19,7 +20,7 @@
 </nav>
 </div>
 
-<form asp-controller="Ticket" asp-action="@(createOrEdit == "Create" ? "CreateTicket" : "EditTicket")" method="post">
+<form asp-controller="Ticket" asp-action="@(createOrEdit == "Create" ? "Create" : "Edit")" method="post">
     <input type="hidden" asp-for="Ticket.Id"/>
     <input type="hidden" asp-for="Ticket.Title"/>
     <input type="hidden" asp-for="Ticket.ProjectId"/>
@@ -67,7 +68,7 @@
                 </select>
             </div>
 
-            @if (Model.Ticket.DeveloperUser is not null && (await UserManager.GetUserAsync(User)).Id == Model.Ticket.DeveloperUser.Id)
+            @if (Model.Ticket.DeveloperUser != null && (await UserManager.GetUserAsync(User)).Id == Model.Ticket.DeveloperUser.Id)
             {
                 <div class="form-group mt-3">
                     <label asp-for="Statuses">Status</label>
@@ -84,7 +85,14 @@
 
                     </select>
                     <span class="ms-2 text-danger text-small">Only the assigned developer can set the ticket status</span>
-                    <input type="hidden" asp-for="SelectedStatus" value="@Model.Ticket.TicketStatusId">
+                    @if (createOrEdit == "Create")
+                    {
+                        
+                    }
+                    else
+                    {
+                        <input type="hidden" asp-for="SelectedStatus" value="@nameof(ITTicketStatus.New)">
+                    }
                 </div>
             }
 

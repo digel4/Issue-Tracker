@@ -257,7 +257,7 @@ public class ITTicketService : IITTicketService
 
     public async Task DeleteTicketAsync(Ticket ticket)
     {
-    try
+        try
         {
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();

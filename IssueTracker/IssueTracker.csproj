@@ -152,6 +152,11 @@
       <Content Remove="Views\TicketType\**" />
       <Content Remove="Views\Ticket\UnassignedTickets.cshtml" />
       <Content Remove="Views\Ticket\AssignDeveloper.cshtml" />
+      <Content Remove="Views\Project\Edit.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\img\ProjectPics" />
     </ItemGroup>
 
 </Project>

@@ -32,10 +32,11 @@ public class ITProjectService : IITProjectService
     
     #region Add New Project 
     // CRUD - Create
-    public async Task AddNewProjectAsync(Project project)
+    public async Task<int> AddNewProjectAsync(Project project)
     {
         _context.Add(project);
         await _context.SaveChangesAsync();
+        return project.Id;
     }
     #endregion
 
@@ -286,7 +287,7 @@ public class ITProjectService : IITProjectService
 
         List<ITUser> developers = new List<ITUser>();
 
-        if (project is null)
+        if (project == null)
             return developers;
 
         foreach (ITUser projectMember in project.Members)

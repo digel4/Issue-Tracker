@@ -306,10 +306,11 @@ public class ITNotificationService : IITNotificationService
 		Notification newProjectNotification = new Notification
 		{
 			RecipentId = userId,
+            SenderId = userId,
 			CompanyId = user.CompanyId.Value,
 			Created = DateTime.Now,
             ProjectId = project.Id,
-			Title = $"New project",
+			Title = "New project",
             Message = "You have a new project to work on.",
 			NotificationTypeId = (int)NotificationType.NewProject,
 		};
@@ -330,6 +331,7 @@ public class ITNotificationService : IITNotificationService
 
         Notification newTicketNotification = new Notification
         {
+            SenderId = developerId,
             RecipentId = developerId,
             CompanyId = developer.CompanyId.Value,
             Created = DateTime.Now,

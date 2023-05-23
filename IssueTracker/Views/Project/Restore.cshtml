@@ -1,79 +1,27 @@
-@model IssueTracker.Models.Project
+@model Project
 
-@{
-    ViewData["Title"] = "Restore";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<div class="pagetitle">
+    <h1>Unarchive Project</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Projects</li>
+            <li class="breadcrumb-item">Archived</li>
+            <li class="breadcrumb-item active">Unarchive</li>
+        </ol>
+    </nav>
+</div>
 
-<h1>Restore</h1>
+<div class="col col-lg-6">
+    <div class="card">
+        <div class="card-header card-title ms-3"><strong>Project: </strong>@Model.Name</div>
+        <div class="card-body">
+            <form asp-controller="Project" asp-action="Restore" method="post" class="mt-2">
+                <input type="hidden" asp-for="Id" />
+                <p>Are you sure you want to unarchive this project?</p>
 
-<h3>Are you sure you want to restore this project?</h3>
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Archived)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Archived)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FileName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FileName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FileData)
-        </dt>
-        <dd class = "col-sm-10">
-        @if (Model.FileData != null)
-        {
-            <img style="width:60px;height: 60px" src="data:image/*;base64,@(Convert.ToBase64String(Model.FileData))" alt="project image"/>
-        }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Company)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Company.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectPriority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectPriority.Name)
-        </dd>
-    </dl>
-    
-    <form asp-action="Restore">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Restore" class="btn btn-success" /> |
-        <a asp-action="MyProjects">Back to List</a>
-    </form>
+                <button type="submit" class="btn btn-warning">Confirm</button>
+                <a class="btn btn-outline-secondary" asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.Id">Cancel</a>
+            </form>
+        </div>
+    </div>
 </div>

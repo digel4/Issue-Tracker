@@ -79,12 +79,12 @@
                     else
                     {
                         <li>
-                            <a class="@(IsAction("ListMyActiveProjects") ? "active" : "")" asp-controller="Project" asp-action="MyProjects">
+                            <a class="@(IsAction("ListMyActiveProjects") ? "active" : "")" asp-controller="Project" asp-action="AllProjects">
                                 <i class="bi bi-circle"></i><span>My Active Projects</span>
                             </a>
                         </li>
                         <li>
-                            <a class="@(IsAction("ListMyArchivedProjects") ? "active" : "")" asp-controller="Project" asp-action="MyArchivedProjects">
+                            <a class="@(IsAction("ListMyArchivedProjects") ? "active" : "")" asp-controller="Project" asp-action="ArchivedProjects">
                                 <i class="bi bi-circle"></i><span>My Archived Projects</span>
                             </a>
                         </li>

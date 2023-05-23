@@ -49,4 +49,6 @@ public class ITUser : IdentityUser
     // This is a one-to-many relationship tables. 
 
     public virtual ICollection<Project> Projects { get; set; }
+    
+    // public virtual ICollection<Notification> Notifications { get; set; }
 }

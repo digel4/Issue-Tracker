@@ -187,15 +187,15 @@ public class ITCompanyInfoService : IITCompanyInfoService
     {
         List<ITUser> members = await GetAllMembersAsync(companyId);
 
-        List<ITUser> admins = new List<ITUser>();
+        List<ITUser> submitters = new List<ITUser>();
 
         foreach (ITUser user in members)
         {
-            if (await _userManager.IsInRoleAsync(user, nameof(Roles.Admin)))
-                admins.Add(user);
+            if (await _userManager.IsInRoleAsync(user, nameof(Roles.Submitter)))
+                submitters.Add(user);
         }
 
-        return admins;
+        return submitters;
     }
     #endregion
     

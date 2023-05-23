@@ -51,7 +51,10 @@ public class ITFileService : IITFileService
     public string GetFileIcon(string file)
     {
         string ext = Path.GetExtension(file).Replace(".", "");
-        return $"/img/contenttype/{ext}.png";
+        string ext2 = Path.GetExtension(file);
+        // string returnString = $"~/img/ContentType/{ext}.png";
+        string returnString = "/img/ContentType/png.png";
+        return returnString;
     }
     #endregion
     

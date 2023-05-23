@@ -349,9 +349,9 @@ namespace IssueTracker.Controllers
             // We haven't craeted the capital U User here but .Net basically creates it for is. It is whichever User is logged in. It's similiar to the custom claim we used for company used elsewhere in the controllers
             int companyId = User.Identity.GetCompanyId().Value;
             
-            Project? project = await _projectService.GetProjectByIdAsync(companyId, projectId);
+            Project? project = await _projectService.GetProjectByIdAsync(projectId, companyId);
             
-            if (project != null || itUser != null) return View(nameof(NotFound));
+            if (project == null || itUser == null) return View(nameof(NotFound));
             
             if (!await _rolesService.IsUserInRoleAsync(itUser, nameof(Roles.Admin) ) && !project.Members.Contains(itUser))
                 return View(nameof(NotAuthorized));
@@ -448,11 +448,15 @@ namespace IssueTracker.Controllers
             ticket.Title = viewModel.Title;
             ticket.Description = viewModel.Description;
             ticket.Created = DateTime.Now;
-            ticket.DeveloperUserId = viewModel.SelectedDeveloper;
-            ticket.TicketType.Name = viewModel.SelectedType!;
-            ticket.TicketPriority.Name = viewModel.SelectedPriority!;
-
-            ticket.TicketStatus.Name = ticket.DeveloperUserId != null ? "New" : "Unassigned";
+            ticket.DeveloperUserId =  viewModel.SelectedDeveloper;
+            
+            ticket.TicketTypeId = int.Parse(viewModel.SelectedType) ;
+            ticket.TicketPriorityId = int.Parse(viewModel.SelectedPriority);
+            ticket.TicketStatusId = ticket.DeveloperUserId != null ? 1 : 5;
+            
+            // ticket.TicketType.Name = viewModel.SelectedType;
+            // ticket.TicketPriority.Name = viewModel.SelectedPriority;
+            // ticket.TicketStatus.Name = ticket.DeveloperUserId != null ? "New" : "Unassigned";
 
             ticket.Id = await _ticketService.AddNewTicketAsync(ticket);
 
@@ -467,7 +471,7 @@ namespace IssueTracker.Controllers
         
         #region Get Edit
         // GET: Ticket/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? ticketId)
         {
             // if (id == null)
             // {
@@ -486,7 +490,7 @@ namespace IssueTracker.Controllers
             
             ViewData["Action"] = "Edit";
 
-            Ticket? ticket = await _ticketService.GetTicketByIdAsync(id.Value);
+            Ticket? ticket = await _ticketService.GetTicketByIdAsync(ticketId.Value);
 
             if (ticket == null) return View(nameof(NotFound));
             
@@ -494,7 +498,7 @@ namespace IssueTracker.Controllers
             Project? project = await _projectService.GetProjectByIdAsync(ticket.ProjectId, companyId);
             ITUser? user = await _userManager.GetUserAsync(User);
 
-            if (project is null || user is null)
+            if (project == null || user == null)
                 return View(nameof(NotFound));
 
             if (!User.IsInRole(nameof(Roles.Admin)) && ticket.DeveloperUserId != user.Id)
@@ -568,9 +572,14 @@ namespace IssueTracker.Controllers
 
                 ticket.Title = viewModel.Title;
                 ticket.Description = viewModel.Description;
-                ticket.TicketStatus.Name = viewModel.SelectedStatus!;
-                ticket.TicketPriority.Name = viewModel.SelectedPriority!;
-                ticket.TicketType.Name = viewModel.SelectedType!;
+                
+                // ticket.TicketStatus.Name = viewModel.SelectedStatus!;
+                // ticket.TicketPriority.Name = viewModel.SelectedPriority!;
+                // ticket.TicketType.Name = viewModel.SelectedType!;
+                ticket.TicketTypeId = int.Parse(viewModel.SelectedType) ;
+                ticket.TicketPriorityId = int.Parse(viewModel.SelectedPriority);
+                ticket.TicketStatusId = ticket.DeveloperUserId != null ? 1 : 5;
+                
                 ticket.Updated = DateTime.Now;
 
                 if (viewModel.SelectedDeveloper == null)
@@ -607,7 +616,7 @@ namespace IssueTracker.Controllers
             }
             int companyId = User.Identity.GetCompanyId().Value;
             ITUser user = await _userManager.GetUserAsync(User);
-            Project project = (await _projectService.GetProjectByIdAsync(companyId, viewModel.Ticket.ProjectId))!;
+            Project project = await _projectService.GetProjectByIdAsync( viewModel.Ticket.ProjectId, companyId );
 
             TicketComment comment = new TicketComment()
             {
@@ -760,7 +769,7 @@ namespace IssueTracker.Controllers
                 return View(nameof(NotFound));
             
             int companyId = User.Identity!.GetCompanyId().Value;
-            Project project = (await _projectService.GetProjectByIdAsync(companyId, ticket.ProjectId))!;
+            Project project = await _projectService.GetProjectByIdAsync(ticket.ProjectId, companyId );
             ITUser itUser = await _userManager.GetUserAsync(User);
             
             ITUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
@@ -815,6 +824,8 @@ namespace IssueTracker.Controllers
 
 		    List<ITUser> usersAvailableToAssign = await _projectService.GetDevelopersOnProjectAsync(ticket.ProjectId);
 
+             
+            
 		    if (!usersAvailableToAssign.Contains(itUser))
 			    usersAvailableToAssign.Add(itUser); // creator should be able to assign themself the ticket
 
@@ -822,10 +833,10 @@ namespace IssueTracker.Controllers
 		    {
                 
 			    Ticket = ticket,
-			    Developers = new SelectList(usersAvailableToAssign, "Id", "FullName", "Unassigned"),
-			    Priorities = new SelectList(await _lookUpService.GetTicketPrioritiesAsync(), "Id", "Description", "medium"),
-			    Types = new SelectList(await _lookUpService.GetTicketTypesAsync(), "Id", "Description", "bug"),
-			    Statuses = new SelectList(await _lookUpService.GetTicketStatusesAsync(), "Id", "Description", "unassigned"),
+			    Developers = new SelectList(usersAvailableToAssign, "Id", "FullName", "Unassigned"   ),
+			    Priorities = new SelectList(await _lookUpService.GetTicketPrioritiesAsync(), "Id", "Name", nameof(ITTicketPriority.Medium)  ),
+                Types = new SelectList(await _lookUpService.GetTicketTypesAsync(), "Id", "Name", nameof(ITTicketType.GeneralTask) ),
+			    Statuses = new SelectList(await _lookUpService.GetTicketStatusesAsync(), "Id", "Name", nameof(ITTicketStatus.New) )
 		    };
 
 		    return viewModel;
@@ -846,9 +857,9 @@ namespace IssueTracker.Controllers
 			    Title = ticket.Title,
 			    Description = ticket.Description,
 			    Developers = new SelectList(usersAvailableToAssign, "Id", "FullName", ticket.DeveloperUserId),
-			    Priorities = new SelectList(await _lookUpService.GetTicketPrioritiesAsync(), "Id", "Description", ticket.TicketPriorityId),
-			    Types = new SelectList(await _lookUpService.GetTicketTypesAsync(), "Id", "Description", ticket.TicketTypeId),
-			    Statuses = new SelectList(await _lookUpService.GetTicketStatusesAsync(), "Id", "Description", ticket.TicketStatusId),
+			    Priorities = new SelectList(await _lookUpService.GetTicketPrioritiesAsync(), "Name", "Name", ticket.TicketPriority.Name),
+			    Types = new SelectList(await _lookUpService.GetTicketTypesAsync(), "Name", "Name", ticket.TicketType.Name),
+			    Statuses = new SelectList(await _lookUpService.GetTicketStatusesAsync(), "Name", "Name", ticket.TicketStatus.Name),
 			    IsStatusDropdownEnabled = itUser.Id == ticket.DeveloperUserId ? true : false,
             };
 

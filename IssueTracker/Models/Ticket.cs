@@ -9,13 +9,14 @@ public class Ticket
     public int Id { get; set; }
     
     [Required]
-    [StringLength(50,ErrorMessage = "The {0} must be at least {2} and a max {1} characters."),MinLength(2)]
+    [StringLength(150,ErrorMessage = "The {0} must be at least {2} and a max {1} characters."),MinLength(2)]
     [DisplayName("Title ")]
     public string? Title { get; set; }
 
     [Required]
     [DisplayName("Description")]
     public string Description { get; set; }
+    
     
     [DisplayName("Date Created")]
     [DataType(DataType.Date)]

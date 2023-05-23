@@ -5,7 +5,7 @@ namespace IssueTracker.Services.Interfaces;
 public interface IITProjectService
 {
     #region Add New Project
-    public Task AddNewProjectAsync(Project project);
+    public Task<int> AddNewProjectAsync(Project project);
     #endregion
 
     #region  Add Project Manager

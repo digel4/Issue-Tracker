@@ -13,14 +13,14 @@ public class TicketHistory
     [DisplayName("Ticket")]
     public int TicketId { get; set; }
 
-    [DisplayName("Updated Item")]
-    public string Property { get; set; }
-    
-    [DisplayName("Previous")]
-    public string OldValue { get; set; }
-    
-    [DisplayName("Current")]
-    public string NewValue { get; set; }
+    // [DisplayName("Updated Item")]
+    // public string Property { get; set; }
+    //
+    // [DisplayName("Previous")]
+    // public string OldValue { get; set; }
+    //
+    // [DisplayName("Current")]
+    // public string NewValue { get; set; }
     
     [DisplayName("Date Modified")]
     [DataType(DataType.Date)]

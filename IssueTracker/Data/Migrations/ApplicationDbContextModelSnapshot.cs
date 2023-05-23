@@ -228,7 +228,8 @@ namespace IssueTracker.Migrations
                     b.Property<int>("NotificationTypeId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("RecipentId")
@@ -373,8 +374,8 @@ namespace IssueTracker.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<DateTimeOffset?>("Updated")
                         .HasColumnType("timestamp with time zone");
@@ -477,18 +478,6 @@ namespace IssueTracker.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewValue")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("OldValue")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Property")
                         .IsRequired()
                         .HasColumnType("text");
 

@@ -22,10 +22,14 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = DataUtility.GetConnectionString(builder.Configuration);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString, 
+
+    options.UseNpgsql(connectionString,
         // adding option to allow query splitting.
         o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
-));
+    ).EnableSensitiveDataLogging()
+);
+
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ITUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
