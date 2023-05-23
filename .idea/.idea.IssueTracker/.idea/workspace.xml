@@ -6,90 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Areas/Identity/Pages/Account/_LoginLayout.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultCompanies.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultProjects.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTicketAttachments.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTicketComments.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTicketHistoryItems.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTickets.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultUsers.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Data/TextGenerator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/CreateOrEditProject.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Areas/Identity/Pages/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Areas/Identity/Pages/Account/Login.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Areas/Identity/Pages/Account/Login.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Areas/Identity/Pages/Account/Login.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/ITUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/ITUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Notification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Notification.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Ticket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Ticket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/TicketHistory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/TicketHistory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/CreateOrEditProjectViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/CreateOrEditProjectViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITCompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITCompanyInfoService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITFileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITFileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITNotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITNotificationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITProjectService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ITTicketService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IITProjectService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/Archive.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/Archive.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/Create.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/Create.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/Details.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/Details.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/Restore.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/Restore.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_SidebarPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_SidebarPartial.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Ticket/CreateOrEditTicket.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Ticket/CreateOrEditTicket.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Ticket/Details.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Ticket/Details.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/3ds.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/3ds.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/aac.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/aac.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/ai.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/ai.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/avi.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/avi.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/bmp.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/bmp.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/cad.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/cad.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/cdr.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/cdr.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/css.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/css.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/dat.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/dat.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/default.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/default.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/dll.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/dll.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/dmg.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/dmg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/doc.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/doc.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/docx.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/docx.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/eps.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/eps.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/fla.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/fla.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/flv.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/flv.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/gif.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/gif.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/html.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/html.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/indd.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/indd.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/iso.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/iso.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/jpg.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/jpg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/js.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/js.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/midi.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/midi.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/mov.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/mov.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/mp3.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/mp3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/mpg.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/mpg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/pdf.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/pdf.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/php.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/php.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/png.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/png.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/ppt.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/ppt.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/pptx.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/pptx.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/ps.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/ps.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/psd.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/psd.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/raw.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/raw.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/sql.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/sql.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/svg.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/svg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/tif.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/tif.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/txt.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/txt.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/wmv.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/wmv.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/xls.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/xls.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/xlsx.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/xlsx.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/xml.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/xml.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/contenttype/zip.png" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ContentType/zip.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTickets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTickets.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +25,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3cab351b03a847d981ce1b63bd12453ba29600/52/1501d23f/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/764fd1253841467e8fa04b95cc45b02d6ce00/0a/6fdd06e1/UserManager`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Project/Edit.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Views/Shared/_LoginPartial.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -280,53 +199,25 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs</url>
           <line>322</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="322" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'">
-            <startOffsets>
-              <option value="12930" />
-            </startOffsets>
-            <endOffsets>
-              <option value="12949" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="322" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'" />
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs</url>
           <line>340</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="340" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'">
-            <startOffsets>
-              <option value="13763" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13817" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="340" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'" />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs</url>
           <line>327</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="327" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'">
-            <startOffsets>
-              <option value="13071" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13705" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="327" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'" />
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs</url>
           <line>339</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="339" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'">
-            <startOffsets>
-              <option value="13718" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13750" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="339" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'" />
           <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>

@@ -1,4 +1,3 @@
-using System.Collections;
 using IssueTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +11,11 @@ namespace IssueTracker.Data;
 public static class DataUtility
 {
     //Company Ids
-        private static int company1Id;
-        private static int company2Id;
-        private static int company3Id;
-        private static int company4Id;
-        private static int company5Id;
+        // private static int company1Id;
+        // private static int company2Id;
+        // private static int company3Id;
+        // private static int company4Id;
+        // private static int company5Id;
         
         public static string GetConnectionString(IConfiguration configuration)
         {
@@ -24,11 +23,12 @@ public static class DataUtility
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             //It will be automatically overwritten if we are running on Heroku
             var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            #pragma warning disable CS8603
             return string.IsNullOrEmpty(databaseUrl) ? connectionString : BuildConnectionString(databaseUrl);
+            #pragma warning restore CS8603
         }
         
-        public static string BuildConnectionString(string databaseUrl)
-        {
+        private static string BuildConnectionString(string databaseUrl) {
             //Provides an object representation of a uniform resource identifier (URI) and easy access to the parts of the URI.
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');
@@ -66,118 +66,105 @@ public static class DataUtility
 
             if (dbContextSvc.Companies.FirstOrDefault(p => p.Name == "Asimov Intelligence Systems") == null)
             {
-
-
                 // Custom Issue Tracker Seed Methods
                 await SeedRolesAsync(roleManagerSvc);
                 await SeedDefaultCompanies.SeedDefaultCompaniesAsync(dbContextSvc);
 
-                int company1Id = dbContextSvc.Companies.FirstOrDefault(p => p.Name == "Asimov Intelligence Systems").Id;
-                int company2Id = dbContextSvc.Companies.FirstOrDefault(p => p.Name == "GNU/Corporation").Id;
+                Company? asimovIntelligenceSystemsCompany = dbContextSvc.Companies
+                    .Include(c => c.Members)
+                    .FirstOrDefault(p => p.Name == "Asimov Intelligence Systems");
+                Company? linuxCompany = dbContextSvc.Companies
+                    .Include(c => c.Members)
+                    .FirstOrDefault(p => p.Name == "GNU/Corporation");
 
-                await SeedDefaultUsers.SeedDefaultUsersAsync(userManagerSvc, companyInfoSvc, company1Id, company2Id);
+                if (asimovIntelligenceSystemsCompany == null)  
+                    throw new ArgumentNullException(nameof(asimovIntelligenceSystemsCompany));
+                if (linuxCompany == null)  
+                    throw new ArgumentNullException(nameof(linuxCompany));
+                
+                await SeedDefaultUsers.SeedDefaultUsersAsync(userManagerSvc, companyInfoSvc, asimovIntelligenceSystemsCompany.Id, linuxCompany.Id);
+
+            
 
 
-
-
-                List<ITUser> AsimovIntelligenceSystemsAllMembers = await companyInfoSvc.GetAllMembersAsync(company1Id);
-
-                //PMs
-                string SusanCalvin = AsimovIntelligenceSystemsAllMembers.Where(m => m.FullName == "Susan Calvin")
-                    .FirstOrDefault().Id;
-                string ArronThomas = AsimovIntelligenceSystemsAllMembers.Where(m => m.FullName == "Arron Thomas")
-                    .FirstOrDefault().Id;
-
-                //Developers
-                string MathewJacobs = AsimovIntelligenceSystemsAllMembers.Where(m => m.FullName == "Mathew Jacobs")
-                    .FirstOrDefault().Id;
-                string NatashaYobs = AsimovIntelligenceSystemsAllMembers.Where(m => m.FullName == "Natasha Yobs")
-                    .FirstOrDefault().Id;
-                string TonyTownsend = AsimovIntelligenceSystemsAllMembers.Where(m => m.FullName == "Tony Townsend")
-                    .FirstOrDefault().Id;
-
-                //Submitters
-                string ScottApple = AsimovIntelligenceSystemsAllMembers.Where(m => m.FullName == "Scott Apple")
-                    .FirstOrDefault().Id;
-
+                // List<ITUser> AsimovIntelligenceSystemsAllMembers = await companyInfoSvc.GetAllMembersAsync(company1Id);
+                List<ITUser> asimovIntelligenceSystemsAllMembers = asimovIntelligenceSystemsCompany.Members.ToList();
+                List<ITUser> linuxCompanyAllMembers = linuxCompany.Members.ToList();
+                #pragma warning disable CS8602
                 SortedList<string, string> asimovMembers = new SortedList<string, string>()
                 {
                     {
-                        "SusanCalvin", SusanCalvin
+                        "SusanCalvin", asimovIntelligenceSystemsAllMembers
+                            .FirstOrDefault(m => m.FullName == "Susan Calvin").Id
                     },
                     {
-                        "ArronThomas", ArronThomas
+
+                        "ArronThomas", asimovIntelligenceSystemsAllMembers
+                            .FirstOrDefault(m => m.FullName == "Arron Thomas").Id
+
                     },
                     {
-                        "MathewJacobs", MathewJacobs
+                        "MathewJacobs", asimovIntelligenceSystemsAllMembers
+                            .FirstOrDefault(m => m.FullName == "Mathew Jacobs").Id
                     },
                     {
-                        "NatashaYobs", NatashaYobs
+                        "NatashaYobs", asimovIntelligenceSystemsAllMembers
+                            .FirstOrDefault(m => m.FullName == "Natasha Yobs").Id
                     },
                     {
-                        "TonyTownsend", TonyTownsend
+                        "TonyTownsend", asimovIntelligenceSystemsAllMembers
+                            .FirstOrDefault(m => m.FullName == "Tony Townsend").Id
                     },
                     {
-                        "ScottApple", ScottApple
+                        "ScottApple", asimovIntelligenceSystemsAllMembers
+                            .FirstOrDefault(m => m.FullName == "Scott Apple").Id
                     }
                 };
-
-                List<ITUser> GNUCorporationAllMembers = await companyInfoSvc.GetAllMembersAsync(company2Id);
-
-                //PMs
-                string JaneRichards = GNUCorporationAllMembers.Where(m => m.FullName == "Jane Richards")
-                    .FirstOrDefault().Id;
-                string FredHopkins = GNUCorporationAllMembers.Where(m => m.FullName == "Fred Hopkins").FirstOrDefault()
-                    .Id;
-
-                //Developers
-                string JamesPeters = GNUCorporationAllMembers.Where(m => m.FullName == "James Peters").FirstOrDefault()
-                    .Id;
-                string CarolSmith = GNUCorporationAllMembers.Where(m => m.FullName == "Carol Smith").FirstOrDefault()
-                    .Id;
-                string BruceTurner = GNUCorporationAllMembers.Where(m => m.FullName == "Bruce Turner").FirstOrDefault()
-                    .Id;
-
-                //Submitters
-                string SueLincoln = GNUCorporationAllMembers.Where(m => m.FullName == "Sue Lincoln").FirstOrDefault()
-                    .Id;
-
+                
                 SortedList<string, string> linuxMembers = new SortedList<string, string>()
                 {
                     {
-                        "JaneRichards", JaneRichards
+                        "JaneRichards", linuxCompanyAllMembers
+                            .FirstOrDefault(m => m.FullName == "Jane Richards").Id
                     },
                     {
-                        "FredHopkins", FredHopkins
+                        "FredHopkins", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Fred Hopkins")
+                            .Id
                     },
                     {
-                        "JamesPeters", JamesPeters
+                        "JamesPeters", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "James Peters")
+                            .Id
                     },
                     {
-                        "CarolSmith", CarolSmith
+                        "CarolSmith", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Carol Smith")
+                            .Id
                     },
                     {
-                        "BruceTurner", BruceTurner
+                        "BruceTurner", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Bruce Turner")
+                            .Id
+
                     },
                     {
-                        "SueLincoln", SueLincoln
+                        "SueLincoln", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Sue Lincoln")
+                            .Id
+
                     }
                 };
-
+                #pragma warning restore CS8602
 
                 // await SeedDemoUsersAsync(userManagerSvc);
                 await SeedDefaultTicketTypeAsync(dbContextSvc);
                 await SeedDefaultTicketStatusAsync(dbContextSvc);
                 await SeedDefaultTicketPriorityAsync(dbContextSvc);
                 await SeedDefaultProjectPriorityAsync(dbContextSvc);
-                await SeedDefaultProjects.SeedDefaultProjectsAsync(dbContextSvc, projectSvc, companyInfoSvc,  company1Id,
-                    company2Id);
-                await SeedDefaultTickets.SeedDefautTicketsAsync(dbContextSvc, projectSvc, companyInfoSvc, ticketSvc,
-                    ticketHistorySvc, company1Id, company2Id, asimovMembers, linuxMembers);
+                await SeedDefaultProjects.SeedDefaultProjectsAsync(dbContextSvc, projectSvc, companyInfoSvc,  asimovIntelligenceSystemsCompany.Id,
+                    linuxCompany.Id);
+                await SeedDefaultTickets.SeedDefaultTicketsAsync(dbContextSvc, projectSvc, companyInfoSvc, ticketSvc,
+                    ticketHistorySvc, asimovIntelligenceSystemsCompany.Id, linuxCompany.Id, asimovMembers, linuxMembers);
             }
         }
 
-        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
+        private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
@@ -187,15 +174,15 @@ public static class DataUtility
             // await roleManager.CreateAsync(new IdentityRole(Roles.DemoUser.ToString()));
         }
         
-        public static async Task SeedDefaultProjectPriorityAsync(ApplicationDbContext context)
+        private static async Task SeedDefaultProjectPriorityAsync(ApplicationDbContext context)
         {
             try
             {
-                IList<Models.ProjectPriority> projectPriorities = new List<ProjectPriority>() {
-                    new ProjectPriority() { Name = ITProjectPriority.Low.ToString() },
-                    new ProjectPriority() { Name = ITProjectPriority.Medium.ToString() },
-                    new ProjectPriority() { Name = ITProjectPriority.High.ToString() },
-                    new ProjectPriority() { Name = ITProjectPriority.Urgent.ToString() },
+                IList<ProjectPriority> projectPriorities = new List<ProjectPriority> {
+                    new() { Name = ITProjectPriority.Low.ToString() },
+                    new() { Name = ITProjectPriority.Medium.ToString() },
+                    new() { Name = ITProjectPriority.High.ToString() },
+                    new() { Name = ITProjectPriority.Urgent.ToString() }
                 };
 
                 var dbProjectPriorities = context.ProjectPriorities.Select(c => c.Name).ToList();
@@ -213,17 +200,17 @@ public static class DataUtility
             }
         }
         
-                public static async Task SeedDefaultTicketTypeAsync(ApplicationDbContext context)
+                private static async Task SeedDefaultTicketTypeAsync(ApplicationDbContext context)
         {
             try
             {
                 IList<TicketType> ticketTypes = new List<TicketType>() {
-                     new TicketType() { Name = ITTicketType.NewDevelopment.ToString() },      // Ticket involves development of a new, uncoded solution 
-                     new TicketType() { Name = ITTicketType.WorkTask.ToString() },            // Ticket involves development of the specific ticket description 
-                     new TicketType() { Name = ITTicketType.Defect.ToString()},               // Ticket involves unexpected development/maintenance on a previously designed feature/functionality
-                     new TicketType() { Name = ITTicketType.ChangeRequest.ToString() },       // Ticket involves modification development of a previously designed feature/functionality
-                     new TicketType() { Name = ITTicketType.Enhancement.ToString() },         // Ticket involves additional development on a previously designed feature or new functionality
-                     new TicketType() { Name = ITTicketType.GeneralTask.ToString() }          // Ticket involves no software development but may involve tasks such as configuations, or hardware setup
+                     new() { Name = ITTicketType.NewDevelopment.ToString() },      // Ticket involves development of a new, un coded solution 
+                     new() { Name = ITTicketType.WorkTask.ToString() },            // Ticket involves development of the specific ticket description 
+                     new() { Name = ITTicketType.Defect.ToString()},               // Ticket involves unexpected development/maintenance on a previously designed feature/functionality
+                     new() { Name = ITTicketType.ChangeRequest.ToString() },       // Ticket involves modification development of a previously designed feature/functionality
+                     new() { Name = ITTicketType.Enhancement.ToString() },         // Ticket involves additional development on a previously designed feature or new functionality
+                     new() { Name = ITTicketType.GeneralTask.ToString() }          // Ticket involves no software development but may involve tasks such as configuration, or hardware setup
                 };
         
                 var dbTicketTypes = context.TicketTypes.Select(c => c.Name).ToList();
@@ -241,7 +228,7 @@ public static class DataUtility
             }
         }
 
-        public static async Task SeedDefaultTicketStatusAsync(ApplicationDbContext context)
+        private static async Task SeedDefaultTicketStatusAsync(ApplicationDbContext context)
         {
             try
             {
@@ -268,7 +255,7 @@ public static class DataUtility
             }
         }
 
-        public static async Task SeedDefaultTicketPriorityAsync(ApplicationDbContext context)
+        private static async Task SeedDefaultTicketPriorityAsync(ApplicationDbContext context)
         {
             try
             {
@@ -281,8 +268,7 @@ public static class DataUtility
 
                 var dbTicketPriorities = context.TicketPriorities.Select(c => c.Name).ToList();
                 await context.TicketPriorities.AddRangeAsync(ticketPriorities.Where(c => !dbTicketPriorities.Contains(c.Name)));
-                context.SaveChanges();
-
+                await context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -357,7 +343,7 @@ public static class DataUtility
         //              {
         //                  CompanyId = company1Id,
         //                  Name = "Issue Tracker Web Application",
-        //                  Description="A custom designed .Net Core application with postgres database.  The application is a multi tennent application designed to track issue tickets' progress.  Implemented with identity and user roles, Tickets are maintained in projects which are maintained by users in the role of projectmanager.  Each project has a team and team members.",
+        //                  Description="A custom designed .Net Core application with postgres database.  The application is a multi tenant application designed to track issue tickets' progress.  Implemented with identity and user roles, Tickets are maintained in projects which are maintained by users in the role of projectmanager.  Each project has a team and team members.",
         //                  // StartDate = new DateTime(2023,5,20),
         //                  StartDate = DateTime.Now.Subtract( new TimeSpan(7, 0, 0 , 0) ),
         //                  EndDate = DateTime.Now.AddDays(12),
