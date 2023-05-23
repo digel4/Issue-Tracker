@@ -4,7 +4,6 @@ using IssueTracker.Models.Enums;
 using IssueTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace IssueTracker.Services;
 
@@ -135,26 +134,25 @@ public class NotificationService : INotificationService
     #region Send Email Notification
     public async Task<bool> SendEmailNotificationAsync(Notification notification, string emailSubject)
     {
-        ITUser itUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == notification.RecipentId);
+        ITUser? itUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == notification.RecipentId);
+        
+        if (itUser?.Email == null)
+            return false;
 
-        if (itUser != null)
+        string itUserEmail = itUser.Email;
+        string message = notification.Message;
+
+        //Send Email
+        try
         {
-            string itUserEmail = itUser.Email;
-            string message = notification.Message;
-
-            //Send Email
-            try
-            {
-                await _emailSender.SendEmailAsync(itUserEmail, emailSubject, message);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"****ERROR**** - Error sending email notification. --->  {e.Message}");
-                throw;
-            }
+            await _emailSender.SendEmailAsync(itUserEmail, emailSubject, message);
+            return true;
         }
-        return false;
+        catch (Exception e)
+        {
+            Console.WriteLine($"****ERROR**** - Error sending email notification. --->  {e.Message}");
+            throw;
+        }
 
     }
     #endregion
@@ -207,13 +205,16 @@ public class NotificationService : INotificationService
     #region Create Invited ToCompany Notification
     public async Task<bool> CreateInvitedToCompanyNotification(ITUser sendingUser, ITUser receivingUser)
     {
+        if (sendingUser.CompanyId == null)
+            return false;
+        
         Notification invitedToCompanyNotification = new Notification
         {
             RecipentId = receivingUser.Id,
             SenderId = sendingUser.Id,
             CompanyId = sendingUser.CompanyId.Value,
             Created = DateTime.Now,
-            Title = $"New invite",
+            Title = "New invite",
             Message = "You've been invited to join a company.",
             NotificationTypeId = (int)NotificationType.CompanyInvite,
         };
@@ -298,16 +299,16 @@ public class NotificationService : INotificationService
     #region Create New Project Notification
 	public async Task<bool> CreateNewProjectNotificationAsync(string userId, Project project)
 	{
-		ITUser? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+		ITUser? itUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-		if (user is null)
+		if (itUser?.CompanyId == null)
 			return false;
 
 		Notification newProjectNotification = new Notification
 		{
 			RecipentId = userId,
             SenderId = userId,
-			CompanyId = user.CompanyId.Value,
+			CompanyId = itUser.CompanyId.Value,
 			Created = DateTime.Now,
             ProjectId = project.Id,
 			Title = "New project",
@@ -326,7 +327,7 @@ public class NotificationService : INotificationService
     {
         ITUser? developer = await _context.Users.FirstOrDefaultAsync(u => u.Id == developerId);
 
-        if (developer is null)
+        if (developer?.CompanyId == null)
             return false;
 
         Notification newTicketNotification = new Notification
@@ -355,7 +356,7 @@ public class NotificationService : INotificationService
         ITUser? commentingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == commentingUserId);
         Ticket? ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
 
-        if (mentionedUser is null || commentingUser is null || ticket is null)
+        if (mentionedUser == null || commentingUser?.CompanyId == null || ticket == null)
             return false;
 
         Notification newMentionNotification = new Notification
