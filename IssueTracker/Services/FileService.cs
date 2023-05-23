@@ -5,7 +5,7 @@ namespace IssueTracker.Services;
 public class FileService : IFileService
 {
     #region Properties
-    private readonly string[] suffixes = { "bytes", "KB", "MB", "GB", "TB", "PB" };
+    private readonly string[] _suffixes = { "bytes", "KB", "MB", "GB", "TB", "PB" };
     #endregion
     
     #region Convert File To Byte Array 
@@ -51,10 +51,7 @@ public class FileService : IFileService
     public string GetFileIcon(string file)
     {
         string ext = Path.GetExtension(file).Replace(".", "");
-        string ext2 = Path.GetExtension(file);
-        // string returnString = $"~/img/ContentType/{ext}.png";
-        string returnString = "/img/ContentType/png.png";
-        return returnString;
+        return $"/img/ContentType/{ext}.png";
     }
     #endregion
     
@@ -69,7 +66,7 @@ public class FileService : IFileService
             counter++;
         }
 
-        return string.Format("{0:n1}{1}", fileSize, suffixes[counter]);
+        return string.Format("{0:n1}{1}", fileSize, _suffixes[counter]);
     }
     #endregion
 }
