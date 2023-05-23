@@ -44,7 +44,7 @@ public class ProjectService : IProjectService
     // I don't think this is working. May start a recursive loop
     public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
     {
-        ITUser currentPM = await GetProjectManagerAsync(projectId);
+        ITUser? currentPM = await GetProjectManagerAsync(projectId);
 
         // Remove the current PM if necessary 
         if (currentPM != null)
@@ -183,7 +183,7 @@ public class ProjectService : IProjectService
 
         projects = await GetAllProjectsByCompany(companyId);
 
-        int priorityId = await LookupProjectPriorityId(priorityName);
+        int? priorityId = await LookupProjectPriorityId(priorityName);
 
         return projects.Where(p => p.ProjectPriorityId == priorityId).ToList();
     }
@@ -344,9 +344,9 @@ public class ProjectService : IProjectService
     
     #region Get Project By Id
     // CRUD - Read 
-    public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
+    public async Task<Project?> GetProjectByIdAsync(int projectId, int companyId)
     {
-        Project project = await _context.Projects
+        Project? project = await _context.Projects
             .Include(p => p.Tickets)
                 .ThenInclude(t => t.TicketPriority)
             .Include(p => p.Tickets)
@@ -399,40 +399,37 @@ public class ProjectService : IProjectService
     #endregion
     
     #region Get User Projects
-    public async Task<List<Project>> GetUserProjectsAsync(string userId)
+    public async Task<List<Project>?> GetUserProjectsAsync(string userId)
     {
         try
         {
-
-                
-                
-            List<Project> userProjects = (await _context.Users
-                .Include(u => u.Projects)
+            List<Project>? userProjects = (await _context.Users
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.ProjectPriority)
-                .Include(u => u.Projects)
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.Company)
-                .Include(u => u.Projects)
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.Members)
-                .Include(u => u.Projects)
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.Tickets)
-                        .ThenInclude(t => t.DeveloperUser)
-                .Include(u => u.Projects)
+                    .ThenInclude(t => t.DeveloperUser)
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.Tickets)
-                        .ThenInclude(t => t.OwnerUser)
-                .Include(u => u.Projects)
+                    .ThenInclude(t => t.OwnerUser)
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.Tickets)
-                        .ThenInclude(t => t.TicketPriority)
-                .Include(u => u.Projects)
+                    .ThenInclude(t => t.TicketPriority)
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.Tickets)
-                        .ThenInclude(t => t.TicketStatus)
-                .Include(u => u.Projects)
+                    .ThenInclude(t => t.TicketStatus)
+                    .Include(u => u.Projects)
                     .ThenInclude(p => p.Tickets)
-                        .ThenInclude(t => t.TicketType)
-                .FirstOrDefaultAsync(u => u.Id == userId))
-                // This returns a user and then we access the projects property of that user through dot notation
-                .Projects.ToList();
+                    .ThenInclude(t => t.TicketType)
+                    .FirstOrDefaultAsync(u => u.Id == userId))
+// This returns a user and then we access the projects property of that user through dot notation
+                ?.Projects.ToList();
             
-            return userProjects.Where(u => u.Archived == false).ToList();
+            return userProjects?.Where(u => u.Archived == false).ToList();
 
         }
         catch (Exception e)
@@ -444,11 +441,11 @@ public class ProjectService : IProjectService
     #endregion
     
     #region Get User Archived Projects
-    public async Task<List<Project>> GetUserArchivedProjectsAsync(string userId)
+    public async Task<List<Project>?> GetUserArchivedProjectsAsync(string userId)
     {
         try
         {
-            List<Project> userProjects = (await _context.Users
+            List<Project>? userProjects = (await _context.Users
                     .Include(u => u.Projects)
                     .ThenInclude(p => p.ProjectPriority)
                     .Include(u => u.Projects)
@@ -472,9 +469,9 @@ public class ProjectService : IProjectService
                     .ThenInclude(t => t.TicketType)
                     .FirstOrDefaultAsync(u => u.Id == userId))
                 // This returns a user and then we access the projects property of that user through dot notation
-                .Projects.ToList();
+                ?.Projects.ToList();
 
-            return userProjects.Where(u => u.Archived == true).ToList();
+            return userProjects?.Where(u => u.Archived).ToList();
 
         }
         catch (Exception e)
@@ -490,7 +487,7 @@ public class ProjectService : IProjectService
     {
         try
         {
-            string projectManagerId = (await GetProjectManagerAsync(projectId))?.Id;
+            string projectManagerId = (await GetProjectManagerAsync(projectId)).Id;
 
             if (projectManagerId == userId)
             {
@@ -509,26 +506,20 @@ public class ProjectService : IProjectService
     #region Is User On Project
     public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
     {
-        Project project = await _context.Projects
+        Project? project = await _context.Projects
             .Include(p => p.Members)
             .FirstOrDefaultAsync(p => p.Id == projectId);
+        if (project == null)
+            return false;
 
-        bool result = false;
-
-        if (project != null)
-        {
-            result = project.Members.Any(m => m.Id == userId);
-        }
-
-        return result;
+        return project.Members.Any(m => m.Id == userId);
     }
     #endregion
     
     #region Lookup Project Priority Id
-    public async Task<int> LookupProjectPriorityId(string priorityName)
+    public async Task<int?> LookupProjectPriorityId(string priorityName)
     {
-        // parenthesis means the first await is done and returns a project. Then simply use dot notation to access the id property on the returned project.
-        int priorityId = (await _context.ProjectPriorities.FirstOrDefaultAsync(p => p.Name == priorityName)).Id;
+        int? priorityId = (await _context.ProjectPriorities.FirstOrDefaultAsync(p => p.Name == priorityName))?.Id;
 
         return priorityId;
     }
@@ -538,11 +529,9 @@ public class ProjectService : IProjectService
     // CRUD - Delete 
     public async Task RemoveProjectManagerAsync(int projectId)
     {
-        Project project = await _context.Projects
+        Project? project = await _context.Projects
             .Include(p => p.Members)
             .FirstOrDefaultAsync(p => p.Id == projectId);
-
-
         try
         {
             // The ? means that if project is null then it won't continue.
@@ -572,13 +561,13 @@ public class ProjectService : IProjectService
         {
             List<ITUser> members = await GetProjectMembersByRoleAsync(projectId,role);
 
-            Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            Project? project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
 
             foreach (ITUser user in members)
             {
                 try
                 {
-                    project.Members.Remove(user);
+                    project?.Members.Remove(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (Exception e)
@@ -601,14 +590,14 @@ public class ProjectService : IProjectService
     {
         try
         {
-            ITUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            ITUser? itUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            Project? project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
 
             try
             {
                 if (await IsUserOnProjectAsync(userId, projectId))
                 {
-                    project.Members.Remove(user);
+                    project?.Members.Remove(itUser);
                     await _context.SaveChangesAsync();
                 }
             }
@@ -630,14 +619,14 @@ public class ProjectService : IProjectService
     {
         ITUser? employee = await _context.Users.FirstOrDefaultAsync(u => u.Id == memberId);
 
-        if (employee is null)
+        if (employee == null)
             return false;
 
         foreach (Project project in await GetAllProjectsByCompany(companyId))
         {
-            ITUser ProjectManager = await GetProjectManagerAsync(project.Id);
+            ITUser projectManager = await GetProjectManagerAsync(project.Id);
             
-            if (ProjectManager.Id == memberId)
+            if (projectManager.Id == memberId)
                 await RemoveProjectManagerAsync(project.Id);
 
             if (project.Members.Contains(employee))
@@ -646,9 +635,9 @@ public class ProjectService : IProjectService
 
         foreach (Project project in await GetArchivedProjectsByCompany(companyId))
         {
-            ITUser ProjectManager = await GetProjectManagerAsync(project.Id);
+            ITUser projectManager = await GetProjectManagerAsync(project.Id);
             
-            if (ProjectManager.Id == memberId)
+            if (projectManager.Id == memberId)
                 await RemoveProjectManagerAsync(project.Id);
 
             if (project.Members.Contains(employee))
