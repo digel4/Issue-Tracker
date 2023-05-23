@@ -10,8 +10,11 @@ public interface ICompanyInfoService
     public Task<List<ITUser>> GetAllMembersAsync(int companyId);
     
     Task<List<ITUser>> GetAllAdminsAsync(int companyId);
+    
     Task<List<ITUser>> GetAllProjectManagersAsync(int companyId);
+    
     Task<List<ITUser>> GetAllDevelopersAsync(int companyId);
+    
     Task<List<ITUser>> GetAllSubmittersAsync(int companyId);
 
     public Task<List<Project>> GetAllProjectsAsync(int companyId);
