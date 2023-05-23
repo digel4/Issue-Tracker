@@ -26,7 +26,7 @@ public class ITUser : IdentityUser
 
     [NotMapped]
     [DataType(DataType.Upload)]
-    public IFormFile AvatarFormFile { get; set; }
+    public IFormFile? AvatarFormFile { get; set; }
 
     [Display(Name= "Avatar")]
     public string? AvatarFileName { get; set; }
