@@ -11,9 +11,9 @@ public interface IInviteService
     public Task<bool> AnyInviteAsync(Guid token, string email, int companyId);
 
     // Params are different which makes the methods different. This is called overloading
-    public Task<Invite> GetInviteAsync(int inviteId, int companyId);
+    public Task<Invite?> GetInviteAsync(int inviteId, int companyId);
     
-    public Task<Invite> GetInviteAsync(Guid token, string email, int companyId);
+    public Task<Invite?> GetInviteAsync(Guid token, string email, int companyId);
     
     public Task<bool> ValidateInviteCodeAsync(Guid? token);
 }

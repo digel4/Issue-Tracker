@@ -16,7 +16,7 @@ public class InviteService : IInviteService
     //            Console.WriteLine($"****ERROR**** - Error sending email. --->  {e.Message}");
     public async Task<bool> AcceptInviteAsync(Guid? token, string userId, int companyId)
     {
-        Invite invite = await _context.Invites.FirstOrDefaultAsync(i => i.CompanyToken == token);
+        Invite? invite = await _context.Invites.FirstOrDefaultAsync(i => i.CompanyToken == token);
 
         if (invite == null)
         {
@@ -68,11 +68,11 @@ public class InviteService : IInviteService
         } 
     }
 
-    public async Task<Invite> GetInviteAsync(int inviteId, int companyId)
+    public async Task<Invite?> GetInviteAsync(int inviteId, int companyId)
     {
         try
         {
-            Invite invite = await _context.Invites.Where(i => i.CompanyId == companyId)
+            Invite? invite = await _context.Invites.Where(i => i.CompanyId == companyId)
                 .Include(i => i.Company)
                 .Include(i => i.Project)
                 .Include(i => i.invitor)
@@ -88,11 +88,11 @@ public class InviteService : IInviteService
     }
 
     // Params are different which makes the methods different. This is called overloading
-    public async Task<Invite> GetInviteAsync(Guid token, string email, int companyId)
+    public async Task<Invite?> GetInviteAsync(Guid token, string email, int companyId)
     {
         try
         {
-            Invite invite = await _context.Invites.Where(i => i.CompanyId == companyId)
+            Invite? invite = await _context.Invites.Where(i => i.CompanyId == companyId)
                 .Include(i => i.Company)
                 .Include(i => i.Project)
                 .Include(i => i.invitor)
@@ -116,7 +116,7 @@ public class InviteService : IInviteService
 
         bool result = false;
 
-        Invite invite = await _context.Invites.FirstOrDefaultAsync(i => i.CompanyToken == token);
+        Invite? invite = await _context.Invites.FirstOrDefaultAsync(i => i.CompanyToken == token);
 
         if (invite != null)
         {
