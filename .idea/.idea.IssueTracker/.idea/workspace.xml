@@ -5,9 +5,19 @@
     <projectFile profileName="https">IssueTracker/IssueTracker.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTickets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTickets.cs" afterDir="false" />
+    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="fix lint warnings and refactor">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/EmailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/FileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/FileService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/InviteService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/InviteService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/NotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/NotificationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ProjectService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/RolesService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/RolesService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/TicketHistoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/TicketHistoryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +34,18 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3cab351b03a847d981ce1b63bd12453ba29600/52/1501d23f/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/764fd1253841467e8fa04b95cc45b02d6ce00/0a/6fdd06e1/UserManager`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/DataUtility.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/DataUtility.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/DataUtility.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Models/ITUser.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Services/EmailService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Services/Interfaces/ICompanyInfoService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Project/Edit.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Views/Shared/_LoginPartial.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -122,6 +142,7 @@
       <workItem from="1684667018070" duration="4837000" />
       <workItem from="1684748326251" duration="5554000" />
       <workItem from="1684765124076" duration="8973000" />
+      <workItem from="1684853575359" duration="1838000" />
     </task>
     <task id="LOCAL-00001" summary="Add data models">
       <created>1679907887407</created>
@@ -151,7 +172,49 @@
       <option name="project" value="LOCAL" />
       <updated>1680115835209</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix lint warning in DataUtility">
+      <created>1684853715330</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1684853715330</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fix lint warning in DataUtility">
+      <created>1684854029809</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1684854029809</updated>
+    </task>
+    <task id="LOCAL-00007" summary="remove commented out code in DataUtility">
+      <created>1684854121129</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1684854121129</updated>
+    </task>
+    <task id="LOCAL-00008" summary="make avatarFormFile nullable">
+      <created>1684855259539</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855259539</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fix lint warnings">
+      <created>1684855269743</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855269743</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fix lint warnings and refactor">
+      <created>1684855312121</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855312121</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,7 +227,12 @@
     <MESSAGE value="Add data models" />
     <MESSAGE value="update db" />
     <MESSAGE value="add controllers and views" />
-    <option name="LAST_COMMIT_MESSAGE" value="add controllers and views" />
+    <MESSAGE value="fix lint warning in DataUtility" />
+    <MESSAGE value="remove commented out code in DataUtility" />
+    <MESSAGE value="make avatarFormFile nullable" />
+    <MESSAGE value="fix lint warnings" />
+    <MESSAGE value="fix lint warnings and refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix lint warnings and refactor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

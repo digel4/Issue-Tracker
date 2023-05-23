@@ -8,7 +8,7 @@ using Microsoft.Identity.Client;
 
 namespace IssueTracker.Services;
 
-public class ITNotificationService : INotificationService
+public class NotificationService : INotificationService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
@@ -17,7 +17,7 @@ public class ITNotificationService : INotificationService
     #endregion
     
     #region Constructor
-    public ITNotificationService(
+    public NotificationService(
         ApplicationDbContext context,
         IEmailSender emailSender,
         IRolesService rolesService

@@ -24,7 +24,7 @@ namespace IssueTracker.Controllers
         #region Properties
         private readonly IProjectService _projectService;
         private readonly IRolesService _rolesService;
-        private readonly IITLookUpService _lookUpService;
+        private readonly ILookUpService _lookUpService;
         private readonly IFileService _fileService;
         private readonly UserManager<ITUser> _userManager;
         private readonly ICompanyInfoService _companyInfoService;
@@ -36,7 +36,7 @@ namespace IssueTracker.Controllers
         public ProjectController(
             IProjectService ProjectService, 
             IRolesService RolesService, 
-            IITLookUpService LookUpService, 
+            ILookUpService LookUpService, 
             IFileService FileService, 
             UserManager<ITUser> userManager, 
             ICompanyInfoService CompanyInfoService,

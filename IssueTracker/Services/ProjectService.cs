@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
-public class ITProjectService : IProjectService
+public class ProjectService : IProjectService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
@@ -17,7 +17,7 @@ public class ITProjectService : IProjectService
     #endregion
     
     #region Contructor
-    public ITProjectService(
+    public ProjectService(
         ApplicationDbContext context,
         IRolesService rolesService,
         UserManager<ITUser> userManager

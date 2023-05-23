@@ -8,11 +8,11 @@ using MimeKit;
 
 namespace IssueTracker.Services;
 
-public class ITEmailService : IEmailSender
+public class EmailService : IEmailSender
 {
     private readonly MailSettings _mailSettings;
 
-    public ITEmailService(IOptions<MailSettings> mailSettings)
+    public EmailService(IOptions<MailSettings> mailSettings)
     {
         _mailSettings = mailSettings.Value;
     }

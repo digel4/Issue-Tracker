@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IssueTracker.Services;
 
 // Deriving or inheriting a child class from a parent class. 
-public class ITCompanyInfoService : ICompanyInfoService
+public class CompanyInfoService : ICompanyInfoService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
@@ -16,7 +16,7 @@ public class ITCompanyInfoService : ICompanyInfoService
     #endregion
 
     #region Constructor
-    public ITCompanyInfoService(
+    public CompanyInfoService(
         ApplicationDbContext context,
         UserManager<ITUser> userManager
     )
@@ -28,9 +28,9 @@ public class ITCompanyInfoService : ICompanyInfoService
     #endregion
 
     #region Get Company Info By Id
-    public async Task<Company> GetCompanyInfoByIdAsync(int? companyId)
+    public async Task<Company?> GetCompanyInfoByIdAsync(int? companyId)
     {
-        Company result = new();
+        Company? result = new();
 
         if (companyId != null)
         {

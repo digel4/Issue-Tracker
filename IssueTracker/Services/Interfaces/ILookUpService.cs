@@ -2,7 +2,7 @@ using IssueTracker.Models;
 
 namespace IssueTracker.Services.Interfaces;
 
-public interface IITLookUpService
+public interface ILookUpService
 {
     public Task<List<TicketPriority>> GetTicketPrioritiesAsync();
     

@@ -167,13 +167,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using IssueTracker.Extensions;
 using IssueTracker.Models;
 using IssueTracker.Models.Enums;
 using IssueTracker.Models.ViewModels;
 using IssueTracker.Services.Interfaces;
-using System.Data;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace IssueTracker.Controllers;
@@ -231,12 +229,15 @@ public class CompanyController : Controller
     [Authorize]
     public async Task<IActionResult> UpdateMemberProfile(ITUser updatedUser)
     {
-        ITUser user = await _userManager.GetUserAsync(User);
+        ITUser? itUser = await _userManager.GetUserAsync(User);
+
+        if (itUser == null)
+            return RedirectToAction(nameof(NotAuthorized)); 
 
         if (ModelState["AvatarFormFile"] != null && ModelState["AvatarFormFile"]!.ValidationState == ModelValidationState.Invalid)
         {
             ModelState.AddModelError(string.Empty, "Profile picture is too large or the wrong extension type.");
-            return View("ViewMember", user);
+            return View("ViewMember", itUser);
         }
 
         if (updatedUser.AvatarFormFile != null)
@@ -246,13 +247,13 @@ public class CompanyController : Controller
         }
         else
         {
-            updatedUser.AvatarFileData = user.AvatarFileData;
-            updatedUser.AvatarContentType = user.AvatarContentType;
+            updatedUser.AvatarFileData = itUser.AvatarFileData;
+            updatedUser.AvatarContentType = itUser.AvatarContentType;
         }
 
         await _companyInfoService.UpdateMemberProfileAsync(updatedUser);
 
-        return RedirectToAction(nameof(ViewMember), new { userId = user.Id });
+        return RedirectToAction(nameof(ViewMember), new { userId = itUser.Id });
     }
     #endregion
     
@@ -261,12 +262,17 @@ public class CompanyController : Controller
     [Authorize]
     public async Task<RedirectToActionResult> DeleteAvatarImage(string userId)
     {
-        if ((await _userManager.GetUserAsync(User)).Id != userId)
+        ITUser? itUser = await _userManager.GetUserAsync(User);
+
+        if (itUser == null)
+            return RedirectToAction(nameof(NotAuthorized));
+           
+        if (itUser.Id != userId)
             return RedirectToAction(nameof(NotAuthorized));
 
         await _companyInfoService.DeleteAvatarImageAsync(userId);
 
-        return RedirectToAction(nameof(ViewMember), new { userId = userId });
+        return RedirectToAction(nameof(ViewMember), new { userId });
     }
     #endregion
     
@@ -276,7 +282,7 @@ public class CompanyController : Controller
     public async Task<ViewResult> ManageMembers()
     {
         int companyId = User.Identity!.GetCompanyId().Value;
-
+        
         List<ITUser> companyMembers = await _companyInfoService.GetAllMembersAsync(companyId);
         return View(companyMembers);
     }
@@ -314,7 +320,10 @@ public class CompanyController : Controller
     {
         ITUser? employeeToEdit = await _userManager.FindByIdAsync(viewModel.Member.Id);
 
-        if (employeeToEdit is null)
+        if (employeeToEdit == null)
+            return View("NotFound");
+        
+        if (employeeToEdit.CompanyId == null)
             return View("NotFound");
 
         if (await _userManager.IsInRoleAsync(employeeToEdit, nameof(Roles.Admin)))
@@ -360,25 +369,27 @@ public class CompanyController : Controller
     [Authorize(Roles = nameof(Roles.Admin))]
     public async Task<IActionResult> ConfirmRemoveMember(string employeeId)
     {
-        ITUser? employeeToRemove = await _userManager.FindByIdAsync(employeeId);
+        ITUser? memberToRemove = await _userManager.FindByIdAsync(employeeId);
 
-        if (employeeToRemove is null)
+        if (memberToRemove == null)
+            return View("NotFound");
+        
+        if (memberToRemove.CompanyId == null)
             return View("NotFound");
 
-        if (await _userManager.IsInRoleAsync(employeeToRemove, nameof(Roles.Admin)))
+        if (await _userManager.IsInRoleAsync(memberToRemove, nameof(Roles.Admin)))
         {
-            List<ITUser> admins = await _companyInfoService.GetAllAdminsAsync(employeeToRemove.CompanyId.Value);
+            List<ITUser> admins = await _companyInfoService.GetAllAdminsAsync(memberToRemove.CompanyId.Value);
 
             if (admins.Count == 1)
             {
                 TempData["Error"] = "You cannot remove the last administrator for your company! You must designate another user as an administrator first.";
-                IEnumerable<IdentityRole> roles = await _rolesService.GetRolesAsync();
-
+                //IEnumerable<IdentityRole> roles = await _rolesService.GetRolesAsync();
                 return RedirectToAction(nameof(ManageMembers));
             }
         }
 
-        return View(employeeToRemove);
+        return View(memberToRemove);
     }
     #endregion
     
@@ -389,6 +400,7 @@ public class CompanyController : Controller
     public async Task<IActionResult> RemoveMemberConfirmed([Bind("Id")] ITUser employee)
     {
         int companyId = User.Identity!.GetCompanyId().Value;
+        
         ITUser? userRemoved = await _userManager.FindByIdAsync(employee.Id);
 
         if (userRemoved is null)
@@ -410,8 +422,10 @@ public class CompanyController : Controller
     public async Task<ViewResult> InviteUserToCompany()
     {
         int companyId = User.Identity!.GetCompanyId().Value;
-        Company? company = await _companyInfoService.GetCompanyInfoByIdAsync(companyId);
-        ViewData["CompanyName"] = company is not null ? company.Name : "your company";
+        
+        Company company = await _companyInfoService.GetCompanyInfoByIdAsync(companyId);
+
+        ViewData["CompanyName"] = company.Name;
       
         return View(new ITUser());
     }
@@ -426,12 +440,14 @@ public class CompanyController : Controller
         ITUser? receivingUser = await _userManager.FindByEmailAsync(user.Email!);
 
         ITUser sendingUser = (await _userManager.GetUserAsync(User))!;
+        
         Company? company = await _companyInfoService.GetCompanyInfoByIdAsync(sendingUser.CompanyId!.Value);
-        ViewData["CompanyName"] = company is not null ? company.Name : "your company";
+        
+        ViewData["CompanyName"] = company.Name;
         
         ViewData["Errors"] = await GetInviteErrors(sendingUser, receivingUser);
 
-        if (ViewData["Errors"] is not null)
+        if (ViewData["Errors"] != null)
             return View();
 
         if (!await _notificationService.CreateInvitedToCompanyNotification(sendingUser, receivingUser!))
@@ -458,7 +474,7 @@ public class CompanyController : Controller
         Company? company = await _companyInfoService.GetCompanyInfoByIdAsync(notification.CompanyId);
         ITUser? appUser = await _userManager.GetUserAsync(User);
 
-        if (appUser is null || company is null)
+        if (appUser == null || company == null)
             return View("NotFound");
 
         IEnumerable<string> currentUserRoles = await _rolesService.GetSingleUserRolesAsync(appUser);

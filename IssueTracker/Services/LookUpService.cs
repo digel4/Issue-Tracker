@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
-public class ITLookUpService : IITLookUpService
+public class LookUpService : ILookUpService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
     #endregion
 
     #region Constructor
-    public ITLookUpService(ApplicationDbContext context)
+    public LookUpService(ApplicationDbContext context)
     {
         _context = context;
     }

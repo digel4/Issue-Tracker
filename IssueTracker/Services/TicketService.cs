@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IssueTracker.Services;
 
-public class ITTicketService : ITicketService
+public class TicketService : ITicketService
 {
     #region Properties
     private readonly ApplicationDbContext _context;
@@ -18,7 +18,7 @@ public class ITTicketService : ITicketService
 
 
     #region Constructor
-     public ITTicketService(
+     public TicketService(
          ApplicationDbContext context,
          IRolesService rolesService,
          IProjectService projectService

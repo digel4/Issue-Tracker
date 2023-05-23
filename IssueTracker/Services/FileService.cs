@@ -2,7 +2,7 @@ using IssueTracker.Services.Interfaces;
 
 namespace IssueTracker.Services;
 
-public class ITFileService : IFileService
+public class FileService : IFileService
 {
     #region Properties
     private readonly string[] suffixes = { "bytes", "KB", "MB", "GB", "TB", "PB" };

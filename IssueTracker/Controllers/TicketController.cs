@@ -24,7 +24,7 @@ namespace IssueTracker.Controllers
         #region Properties
         private readonly UserManager<ITUser> _userManager;
         private readonly IProjectService _projectService;
-        private readonly IITLookUpService _lookUpService;
+        private readonly ILookUpService _lookUpService;
         private readonly ITicketService _ticketService;
         private readonly IFileService _fileService;
         private readonly ITicketHistoryService _historyService;
@@ -38,7 +38,7 @@ namespace IssueTracker.Controllers
         public TicketController( 
             UserManager<ITUser> userManager, 
             IProjectService projectService, 
-            IITLookUpService lookUpService, 
+            ILookUpService lookUpService, 
             ITicketService ticketService, 
             IFileService fileService, 
             ITicketHistoryService historyService,

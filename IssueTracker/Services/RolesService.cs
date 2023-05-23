@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace IssueTracker.Services;
 
 // Deriving or inheriting a child class from a parent class. 
-public class ITRolesService : IRolesService
+public class RolesService : IRolesService
 {
     private readonly ApplicationDbContext _context;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<ITUser> _userManager;
     
     // Constructor
-    public ITRolesService(
+    public RolesService(
         ApplicationDbContext context, 
         RoleManager<IdentityRole> roleManager,
         // Remember that ITUser is an extension of identity user
