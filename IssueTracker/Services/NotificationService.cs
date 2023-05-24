@@ -172,12 +172,13 @@ public class NotificationService : INotificationService
     #region Get Unseen Notifications For User
     public async Task<List<Notification>> GetUnseenNotificationsForUserAsync(ITUser itUser)
     {
-        return await _context.Notifications.Where(n => n.RecipentId == itUser.Id)
+        var notifications =  await _context.Notifications.Where(n => n.RecipentId == itUser.Id)
             .Where(n => n.Viewed == false)
             .OrderByDescending(n => n.Created)
             .Include(n => n.Ticket)
             .Include(n => n.Project)
             .ToListAsync();
+        return notifications;
     }
     #endregion
     

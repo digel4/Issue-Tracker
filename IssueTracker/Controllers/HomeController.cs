@@ -105,7 +105,7 @@ public class HomeController : Controller
             ActiveProjects = projects,
             OpenTickets = tickets,
             CompletedTickets = completedTickets,
-            Notifications = notifications,
+            Notifications = notifications
         };
     }
     
