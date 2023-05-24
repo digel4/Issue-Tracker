@@ -60,6 +60,8 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 
 var app = builder.Build();
 
+// await DataUtility.ManageDataAsync(app);
+
 await DataUtility.ManageDataAsync(app);
 
 // Configure the HTTP request pipeline.

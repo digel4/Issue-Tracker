@@ -1,8 +1,10 @@
+using System.Timers;
 using IssueTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Models.Enums;
 using IssueTracker.Services.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Npgsql;
 
 namespace IssueTracker.Data;
@@ -16,6 +18,8 @@ public static class DataUtility
     // private static int company3Id;
     // private static int company4Id;
     // private static int company5Id;
+
+    private static System.Timers.Timer dataBaseResetTimer;
 
     public static string GetConnectionString(IConfiguration configuration)
     {
@@ -46,6 +50,7 @@ public static class DataUtility
         };
         return builder.ToString();
     }
+    
 
     public static async Task ManageDataAsync(IHost host)
     {
@@ -65,12 +70,40 @@ public static class DataUtility
         //Migration: This is the programmatic equivalent to Update-Database
         await dbContextSvc.Database.MigrateAsync();
 
-        if (dbContextSvc.Companies.FirstOrDefault(p => p.Name == "Asimov Intelligence Systems") == null)
-        {
+
+        List<Company> companies = await dbContextSvc.Companies.ToListAsync();
+        List<Project> projects = await dbContextSvc.Projects.ToListAsync();
+        // List<TicketPriority> ticketPriorities = await dbContextSvc.TicketPriorities.ToListAsync();
+        // List<TicketType> ticketTypes = await dbContextSvc.TicketTypes.ToListAsync();
+        // List<TicketStatus> ticketStatuses = await dbContextSvc.TicketStatuses.ToListAsync();
+        List<Ticket> tickets = await dbContextSvc.Tickets.ToListAsync();
+        List<ITUser> users = await dbContextSvc.Users.ToListAsync();
+        List<Notification> notifications = await dbContextSvc.Notifications.ToListAsync();
+        
+        
+        dbContextSvc.Notifications.RemoveRange(notifications);
+        
+        // dbContextSvc.TicketPriorities.RemoveRange(ticketPriorities);
+        // dbContextSvc.TicketTypes.RemoveRange(ticketTypes);
+        // dbContextSvc.TicketStatuses.RemoveRange(ticketStatuses);
+        
+        dbContextSvc.Tickets.RemoveRange(tickets);
+        dbContextSvc.Projects.RemoveRange(projects);
+        dbContextSvc.Users.RemoveRange(users);
+        dbContextSvc.Companies.RemoveRange(companies);
+        await dbContextSvc.SaveChangesAsync();
+        
             // Custom Issue Tracker Seed Methods
             await SeedRolesAsync(roleManagerSvc);
             await SeedDefaultCompanies.SeedDefaultCompaniesAsync(dbContextSvc);
 
+            
+            
+            
+            
+            
+            
+            
             Company? asimovIntelligenceSystemsCompany = dbContextSvc.Companies
                 .Include(c => c.Members)
                 .FirstOrDefault(p => p.Name == "Asimov Intelligence Systems");
@@ -164,7 +197,7 @@ public static class DataUtility
                 linuxCompany.Id);
             await SeedDefaultTickets.SeedDefaultTicketsAsync(dbContextSvc, projectSvc, companyInfoSvc, ticketSvc,
                 ticketHistorySvc, asimovIntelligenceSystemsCompany.Id, linuxCompany.Id, asimovMembers, linuxMembers);
-        }
+        
     }
 
     private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)

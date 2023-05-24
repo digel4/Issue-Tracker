@@ -42,43 +42,43 @@ public static class SeedDefaultTickets
 
             
             //Get ticket type Ids
-            // int typeNewDev = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.NewDevelopment.ToString()).Id;
-            // int typeWorkTask = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.WorkTask.ToString()).Id;
-            // int typeDefect = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.Defect.ToString()).Id;
-            // int typeEnhancement = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.Enhancement.ToString()).Id;
-            // int typeChangeRequest = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.ChangeRequest.ToString()).Id;
+            int typeNewDev = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.NewDevelopment.ToString()).Id;
+            int typeWorkTask = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.WorkTask.ToString()).Id;
+            int typeDefect = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.Defect.ToString()).Id;
+            int typeEnhancement = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.Enhancement.ToString()).Id;
+            int typeChangeRequest = context.TicketTypes.FirstOrDefault(p => p.Name == ITTicketType.ChangeRequest.ToString()).Id;
             //
             // //Get ticket priority Ids
-            // int priorityLow = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.Low.ToString()).Id;
-            // int priorityMedium = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.Medium.ToString()).Id;
-            // int priorityHigh = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.High.ToString()).Id;
-            // int priorityUrgent = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.Urgent.ToString()).Id;
+            int priorityLow = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.Low.ToString()).Id;
+            int priorityMedium = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.Medium.ToString()).Id;
+            int priorityHigh = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.High.ToString()).Id;
+            int priorityUrgent = context.TicketPriorities.FirstOrDefault(p => p.Name == ITTicketPriority.Urgent.ToString()).Id;
             //
             // //Get ticket status Ids
-            // int statusNew = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.New.ToString()).Id;
-            // int statusDev = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Development.ToString()).Id;
-            // int statusTest = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Testing.ToString()).Id;
-            // int statusResolved = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Resolved.ToString()).Id;
-            // int statusUnassigned = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Unassigned.ToString()).Id;
+            int statusNew = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.New.ToString()).Id;
+            int statusDev = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Development.ToString()).Id;
+            int statusTest = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Testing.ToString()).Id;
+            int statusResolved = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Resolved.ToString()).Id;
+            int statusUnassigned = context.TicketStatuses.FirstOrDefault(p => p.Name == ITTicketStatus.Unassigned.ToString()).Id;
             
-            int typeNewDev = (int)ITTicketType.NewDevelopment;
-            int typeWorkTask = (int)ITTicketType.WorkTask;
-            int typeDefect = (int)ITTicketType.Defect;
-            int typeEnhancement = (int)ITTicketType.Enhancement;
-            int typeChangeRequest = (int)ITTicketType.ChangeRequest;
-
-            //Get ticket priority Ids
-            int priorityLow = (int)ITTicketPriority.Low;
-            int priorityMedium = (int)ITTicketPriority.Medium;
-            int priorityHigh = (int)ITTicketPriority.High;
-            int priorityUrgent = (int)ITTicketPriority.Urgent;
-
-            //Get ticket status Ids
-            int statusNew = (int)ITTicketStatus.New;
-            int statusDev = (int)ITTicketStatus.Development;
-            int statusTest = (int)ITTicketStatus.Testing;
-            int statusResolved = (int)ITTicketStatus.Resolved;
-            int statusUnassigned = (int)ITTicketStatus.Unassigned;
+            // int typeNewDev = (int)ITTicketType.NewDevelopment;
+            // int typeWorkTask = (int)ITTicketType.WorkTask;
+            // int typeDefect = (int)ITTicketType.Defect;
+            // int typeEnhancement = (int)ITTicketType.Enhancement;
+            // int typeChangeRequest = (int)ITTicketType.ChangeRequest;
+            //
+            // //Get ticket priority Ids
+            // int priorityLow = (int)ITTicketPriority.Low;
+            // int priorityMedium = (int)ITTicketPriority.Medium;
+            // int priorityHigh = (int)ITTicketPriority.High;
+            // int priorityUrgent = (int)ITTicketPriority.Urgent;
+            //
+            // //Get ticket status Ids
+            // int statusNew = (int)ITTicketStatus.New;
+            // int statusDev = (int)ITTicketStatus.Development;
+            // int statusTest = (int)ITTicketStatus.Testing;
+            // int statusResolved = (int)ITTicketStatus.Resolved;
+            // int statusUnassigned = (int)ITTicketStatus.Unassigned;
 
 
 

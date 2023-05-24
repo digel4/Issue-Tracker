@@ -6,20 +6,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/vendor/simple-datatables/simple-datatables.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/vendor/simple-datatables/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTickets.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/SeedDefaultTickets.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Ticket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Ticket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/DashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/DashboardViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IProjectService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ProjectService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_LoginPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_LoginPartial.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/js/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +31,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3cab351b03a847d981ce1b63bd12453ba29600/52/1501d23f/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/764fd1253841467e8fa04b95cc45b02d6ce00/0a/6fdd06e1/UserManager`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/de271ccf3ff37986b6d3371645fe3b139cc5e384e759f686d8b2e87c734b0/EntityFrameworkQueryableExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Home/Dashboard.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Project/Edit.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Project/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
@@ -137,7 +132,8 @@
       <workItem from="1684748326251" duration="5554000" />
       <workItem from="1684765124076" duration="8973000" />
       <workItem from="1684853575359" duration="3739000" />
-      <workItem from="1684913465273" duration="8534000" />
+      <workItem from="1684913465273" duration="11801000" />
+      <workItem from="1684936455467" duration="6395000" />
     </task>
     <task id="LOCAL-00001" summary="Add data models">
       <created>1679907887407</created>
@@ -258,7 +254,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684857308966</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="fix delete notification bug">
+      <created>1684922787136</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1684922787136</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,7 +283,8 @@
     <MESSAGE value="fix linx warnings" />
     <MESSAGE value="space out lines" />
     <MESSAGE value="fix lint warnings" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix lint warnings" />
+    <MESSAGE value="fix delete notification bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix delete notification bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
