@@ -164,6 +164,7 @@ public class TicketService : ITicketService
                 .Include(t => t.Comments)
                 .Include(t => t.Attachments)
                 .Include(t => t.History)
+                .Include(t => t.Notifications)
                 .FirstOrDefaultAsync(t => t.Id == ticketId);
 
             // if (ticket == null)
@@ -266,6 +267,11 @@ public class TicketService : ITicketService
     {
         try
         {
+            foreach (Notification notification in ticket.Notifications)
+            {
+                _context.Notifications.Remove(notification);
+            }
+
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
             // return true;

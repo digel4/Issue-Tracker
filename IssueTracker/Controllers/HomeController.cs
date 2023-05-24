@@ -72,7 +72,7 @@ public class HomeController : Controller
         int adminCount = (await _companyInfoService.GetAllAdminsAsync(companyId)).Count();
         int projectManagerCount = (await _companyInfoService.GetAllProjectManagersAsync(companyId)).Count();
         int developerCount = (await _companyInfoService.GetAllDevelopersAsync(companyId)).Count();
-        int memberCount = (await _companyInfoService.GetAllMembersAsync(companyId)).Count();
+        int submitterCount = (await _companyInfoService.GetAllSubmittersAsync(companyId)).Count();
 
         return new DashboardViewModel()
         {
@@ -83,7 +83,7 @@ public class HomeController : Controller
             AdminCount = adminCount,
             ProjectManagerCount = projectManagerCount,
             DeveloperCount = developerCount,
-            MemberCount = memberCount,
+            SubmitterCount = submitterCount
         };
     }
 
@@ -96,7 +96,7 @@ public class HomeController : Controller
         List<Project> projects = await _projectService.GetUserProjectsAsync(user.Id);
         List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(user.Id, companyId);
         List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
-        List<ITUser> Members = await _companyInfoService.GetAllMembersAsync(companyId);
+        // List<ITUser> Submitters = await _companyInfoService.GetAllSubmittersAsync(companyId);
 
         List<Notification> notifications = await _notificationService.GetUnseenNotificationsForUserAsync(user);
 

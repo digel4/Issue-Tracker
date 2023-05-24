@@ -44,6 +44,7 @@
 							<div class="d-flex align-items-center">
 								<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
 									<i class="bi bi-pc-display-horizontal"></i>
+									@* <i class="bi bi-2-circle-fill"></i> *@
 								</div>
 								<div class="ps-3">
 									
@@ -98,7 +99,7 @@
 						<div class="card info-card customers-card">
 
 							<div class="card-body">
-								<h5 class="card-title">Employees <span>| By Role</span></h5>
+								<h5 class="card-title">Members <span>| By Role</span></h5>
 
 								<div class="d-flex align-items-center">
 									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -114,8 +115,8 @@
 										<span class="small pt-1 fw-bold">@Model.DeveloperCount</span> <span class="text-muted small pt-2 ps-1">@(
 										Model.DeveloperCount == 1 ? "developer" : "developers"
 										)</span><br/>
-										<span class="small pt-1 fw-bold">@Model.MemberCount</span> <span class="text-muted small pt-2 ps-1">@(
-										Model.MemberCount == 1 ? "member" : "members"
+										<span class="small pt-1 fw-bold">@Model.SubmitterCount</span> <span class="text-muted small pt-2 ps-1">@(
+										Model.SubmitterCount == 1 ? "submitter" : "submitters"
 										)</span>
 									</div>
 								</div>

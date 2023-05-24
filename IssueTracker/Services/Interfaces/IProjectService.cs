@@ -42,7 +42,7 @@ public interface IProjectService
 
     
 
-    public Task<ITUser> GetProjectManagerAsync(int projectId);
+    public Task<ITUser?> GetProjectManagerAsync(int projectId);
 
     
 

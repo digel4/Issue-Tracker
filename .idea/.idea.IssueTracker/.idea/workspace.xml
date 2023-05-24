@@ -5,19 +5,22 @@
     <projectFile profileName="https">IssueTracker/IssueTracker.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="fix lint warnings and refactor">
+    <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/EmailService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/FileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/FileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/InviteService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/InviteService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/NotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/NotificationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/ProjectController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/IssueTracker.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Ticket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Ticket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/DashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/ViewModels/DashboardViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/IProjectService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Services/ProjectService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/ProjectService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/RolesService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/RolesService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/TicketHistoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/TicketHistoryService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Project/AllProjects.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Shared/_LoginPartial.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Shared/_LoginPartial.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/js/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,18 +37,9 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3cab351b03a847d981ce1b63bd12453ba29600/52/1501d23f/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/764fd1253841467e8fa04b95cc45b02d6ce00/0a/6fdd06e1/UserManager`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/DataUtility.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/DataUtility.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/DataUtility.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Data/SeedDefaultTickets.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Models/ITUser.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Services/EmailService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///home/oliverfox/RiderProjects/IssueTracker/IssueTracker/Services/Interfaces/ICompanyInfoService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Home/Dashboard.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Project/Edit.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/IssueTracker/Views/Project/Index.cshtml" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -142,7 +136,8 @@
       <workItem from="1684667018070" duration="4837000" />
       <workItem from="1684748326251" duration="5554000" />
       <workItem from="1684765124076" duration="8973000" />
-      <workItem from="1684853575359" duration="1838000" />
+      <workItem from="1684853575359" duration="3739000" />
+      <workItem from="1684913465273" duration="8534000" />
     </task>
     <task id="LOCAL-00001" summary="Add data models">
       <created>1679907887407</created>
@@ -214,7 +209,56 @@
       <option name="project" value="LOCAL" />
       <updated>1684855312121</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="change names of services">
+      <created>1684855491057</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855491057</updated>
+    </task>
+    <task id="LOCAL-00012" summary="clear commented out code and fix lint warnings">
+      <created>1684855703003</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855703003</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fix linx warnings">
+      <created>1684855719310</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855719310</updated>
+    </task>
+    <task id="LOCAL-00014" summary="space out lines">
+      <created>1684855737358</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855737358</updated>
+    </task>
+    <task id="LOCAL-00015" summary="fix lint warnings">
+      <created>1684855865906</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1684855865906</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fix lint warnings">
+      <created>1684856291021</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1684856291021</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fix lint warnings">
+      <created>1684857308966</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1684857308966</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,9 +274,13 @@
     <MESSAGE value="fix lint warning in DataUtility" />
     <MESSAGE value="remove commented out code in DataUtility" />
     <MESSAGE value="make avatarFormFile nullable" />
-    <MESSAGE value="fix lint warnings" />
     <MESSAGE value="fix lint warnings and refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix lint warnings and refactor" />
+    <MESSAGE value="change names of services" />
+    <MESSAGE value="clear commented out code and fix lint warnings" />
+    <MESSAGE value="fix linx warnings" />
+    <MESSAGE value="space out lines" />
+    <MESSAGE value="fix lint warnings" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix lint warnings" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -242,27 +290,13 @@
           <line>865</line>
           <properties documentPath="$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs" initialLine="854" containingFunctionPresentation="method 'GenerateEditTicketViewModel'">
             <startOffsets>
-              <option value="36906" />
+              <option value="36902" />
             </startOffsets>
             <endOffsets>
-              <option value="36923" />
+              <option value="36919" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/IssueTracker/Views/Project/CreateOrEditProject.cshtml</url>
-          <line>33</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Views/Project/CreateOrEditProject.cshtml" initialLine="33" isMultiMethodBreakpoint="true">
-            <option name="multiMethodBreakpoint" value="true" />
-            <startOffsets>
-              <option value="-1" />
-            </startOffsets>
-            <endOffsets>
-              <option value="-1" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs</url>
@@ -287,6 +321,19 @@
           <line>339</line>
           <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="339" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'" />
           <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/IssueTracker/Services/TicketService.cs</url>
+          <line>269</line>
+          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" initialLine="268" containingFunctionPresentation="method 'DeleteTicketAsync'">
+            <startOffsets>
+              <option value="8007" />
+            </startOffsets>
+            <endOffsets>
+              <option value="8066" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="42" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

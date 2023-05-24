@@ -303,7 +303,7 @@ public class ProjectService : IProjectService
     #endregion
     
     #region Get Project Manager
-    public async Task<ITUser> GetProjectManagerAsync(int projectId)
+    public async Task<ITUser?> GetProjectManagerAsync(int projectId)
     {
         Project project = await _context.Projects
             .Include(p => p.Members)
@@ -357,6 +357,8 @@ public class ProjectService : IProjectService
                 .ThenInclude(t => t.DeveloperUser)
             .Include(p => p.Tickets)
                 .ThenInclude(t => t.OwnerUser)
+            .Include(p => p.Tickets)
+                .ThenInclude(t => t.Notifications)
             .Include(p => p.Members)
             .Include(p => p.ProjectPriority)
             .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
@@ -487,7 +489,7 @@ public class ProjectService : IProjectService
     {
         try
         {
-            string projectManagerId = (await GetProjectManagerAsync(projectId)).Id;
+            string projectManagerId = (await GetProjectManagerAsync(projectId))?.Id;
 
             if (projectManagerId == userId)
             {
@@ -682,6 +684,20 @@ public class ProjectService : IProjectService
         foreach (ITUser projectMember in project.Members)
             project.Members.Remove(projectMember);
 
+        foreach (Ticket ticket in project.Tickets)
+        {
+            foreach (Notification notification in ticket.Notifications)
+            {
+                _context.Notifications.Remove(notification);
+            }
+                
+            _context.Tickets.Remove(ticket);
+        }
+
+        
+
+        
+        // _context.Tickets
         _context.Projects.Remove(project);
         await _context.SaveChangesAsync();
         return true;

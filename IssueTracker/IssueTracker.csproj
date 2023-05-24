@@ -153,6 +153,11 @@
       <Content Remove="Views\Ticket\UnassignedTickets.cshtml" />
       <Content Remove="Views\Ticket\AssignDeveloper.cshtml" />
       <Content Remove="Views\Project\Edit.cshtml" />
+      <Content Remove="Views\Project\Create.cshtml" />
+      <Content Remove="Views\Project\Index.cshtml" />
+      <Content Remove="Views\Project\MyProjects.cshtml" />
+      <Content Remove="Views\Project\MyArchivedProjects.cshtml" />
+      <Content Remove="Views\Home\Dashboard.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

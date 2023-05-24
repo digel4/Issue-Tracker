@@ -18,5 +18,5 @@ public class DashboardViewModel
     
     public int DeveloperCount { get; set; }
     
-    public int MemberCount { get; set; }
+    public int SubmitterCount { get; set; }
 }

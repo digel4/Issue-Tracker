@@ -298,9 +298,19 @@
     /**
      * Initiate Datatables
      */
+
+    
+    import simpleDatatables from "https://cdn.jsdelivr.net/npm/simple-datatables@latest";
+    
     const datatables = select('.datatable', true)
     datatables.forEach(datatable => {
         new simpleDatatables.DataTable(datatable);
+    })
+
+    const dataTable = new simpleDatatables.DataTable(".datatable", {
+        searchable: false,
+        fixedHeight: true,
+        ...
     })
 
     /**
@@ -316,5 +326,7 @@
             }).observe(mainContainer);
         }, 200);
     }
+
+
 
 })();

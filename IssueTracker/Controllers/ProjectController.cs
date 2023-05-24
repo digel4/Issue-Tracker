@@ -276,7 +276,7 @@ namespace IssueTracker.Controllers
                 ProjectManager = await _projectService.GetProjectManagerAsync(project.Id),
                 Developers = await _projectService.GetDevelopersOnProjectAsync(project.Id),
                 Submitters = await _projectService.GetSubmittersOnProjectAsync(project.Id),
-                Tickets = project.Tickets,
+                Tickets = project.Tickets
             };
 
             return View(viewModel);
@@ -522,9 +522,11 @@ namespace IssueTracker.Controllers
                 return View(nameof(NotFound));
 
             ITUser user = await _userManager.GetUserAsync(User);
-            
 
-            if ( await _projectService.isAssignedProjectManagerAsync(user.Id, projectId) || User.IsInRole(nameof(Roles.Admin))) return View(project);
+            bool isPm = await _projectService.isAssignedProjectManagerAsync(user.Id, projectId);
+            
+            if ( await _projectService.isAssignedProjectManagerAsync(user.Id, projectId) || User.IsInRole(nameof(Roles.Admin))) 
+                return View(project);
                 
             return View( "NotAuthorized" );
             
@@ -643,10 +645,10 @@ namespace IssueTracker.Controllers
 		ITUser selectedProjectManager = await _userManager.FindByIdAsync(viewModel.SelectedManager);
         ITUser projectManager = await _projectService.GetProjectManagerAsync(project.Id);
 
-        if (selectedProjectManager != null && selectedProjectManager.Id != projectManager.Id)
+        if (selectedProjectManager != null && selectedProjectManager.Id != projectManager?.Id)
 			await _notificationService.CreateNewProjectNotificationAsync(selectedProjectManager.Id, project);
 
-		if (projectManager.Id != null)
+		if (projectManager?.Id != null)
 			await _projectService.RemoveProjectManagerAsync(project.Id);
 
         if (selectedProjectManager != null)
