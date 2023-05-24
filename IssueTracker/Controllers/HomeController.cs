@@ -62,28 +62,52 @@ public class HomeController : Controller
 
     private async Task<DashboardViewModel> GenerateAdminDashboard()
     {
-        int companyId = User.Identity!.GetCompanyId().Value;
+        // int companyId = User.Identity!.GetCompanyId().Value;
+        //
+        // List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
+        // List<Ticket> openTickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+        // List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
+        // List<ITUser> employees = await _companyInfoService.GetAllMembersAsync(companyId);
+        //
+        // int adminCount = (await _companyInfoService.GetAllAdminsAsync(companyId)).Count();
+        // int projectManagerCount = (await _companyInfoService.GetAllProjectManagersAsync(companyId)).Count();
+        // int developerCount = (await _companyInfoService.GetAllDevelopersAsync(companyId)).Count();
+        // int submitterCount = (await _companyInfoService.GetAllSubmittersAsync(companyId)).Count();
+        //
+        // return new DashboardViewModel()
+        // {
+        //     ActiveProjects = projects,
+        //     OpenTickets = openTickets,
+        //     CompletedTickets = completedTickets,
+        //     Members = employees,
+        //     AdminCount = adminCount,
+        //     ProjectManagerCount = projectManagerCount,
+        //     DeveloperCount = developerCount,
+        //     SubmitterCount = submitterCount
+        // };
+        
+        // int companyId = User.Identity!.GetCompanyId().Value;
 
-        List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
-        List<Ticket> openTickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
-        List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
-        List<ITUser> employees = await _companyInfoService.GetAllMembersAsync(companyId);
-
-        int adminCount = (await _companyInfoService.GetAllAdminsAsync(companyId)).Count();
-        int projectManagerCount = (await _companyInfoService.GetAllProjectManagersAsync(companyId)).Count();
-        int developerCount = (await _companyInfoService.GetAllDevelopersAsync(companyId)).Count();
-        int submitterCount = (await _companyInfoService.GetAllSubmittersAsync(companyId)).Count();
+        // List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
+        // List<Ticket> openTickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+        // List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
+        // List<ITUser> employees = await _companyInfoService.GetAllMembersAsync(companyId);
+        //
+        // int adminCount = (await _companyInfoService.GetAllAdminsAsync(companyId)).Count();
+        // int projectManagerCount = (await _companyInfoService.GetAllProjectManagersAsync(companyId)).Count();
+        // int developerCount = (await _companyInfoService.GetAllDevelopersAsync(companyId)).Count();
+        // int submitterCount = (await _companyInfoService.GetAllSubmittersAsync(companyId)).Count();
 
         return new DashboardViewModel()
         {
-            ActiveProjects = projects,
-            OpenTickets = openTickets,
-            CompletedTickets = completedTickets,
-            Members = employees,
-            AdminCount = adminCount,
-            ProjectManagerCount = projectManagerCount,
-            DeveloperCount = developerCount,
-            SubmitterCount = submitterCount
+            ActiveProjects = new List<Project>() ,
+            OpenTickets = new List<Ticket>(),
+            CompletedTickets = new List<Ticket>(),
+            Members = new List<ITUser>(),
+            AdminCount = new int() ,
+            ProjectManagerCount = new int() ,
+            DeveloperCount = new int() ,
+            SubmitterCount = new int() 
         };
     }
 
@@ -105,7 +129,7 @@ public class HomeController : Controller
             ActiveProjects = projects,
             OpenTickets = tickets,
             CompletedTickets = completedTickets,
-            Notifications = notifications,
+            Notifications = notifications
         };
     }
     
