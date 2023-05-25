@@ -49,45 +49,90 @@ public class HomeController : Controller
             return Redirect("/Identity/Account/Login");
 
         DashboardViewModel dashboardViewModel;
+        
+        int companyId = User.Identity!.GetCompanyId().Value;
+        
+        Company company = await _companyInfoService.GetCompanyInfoByNoTrackingIdAsync(companyId);
+
+         if (company == null)
+         {
+             _signInManager.SignOutAsync();
+             return Redirect("/Identity/Account/Login");
+         }
+        
+        
 
         if (User.IsInRole(nameof(Roles.Admin)))
-            dashboardViewModel = await GenerateAdminDashboard();
+            dashboardViewModel = await GenerateAdminDashboard(company);
 
         else
-            dashboardViewModel = await GenerateNonAdminDashboard();
+            dashboardViewModel = await GenerateNonAdminDashboard(company);
 
         return View(dashboardViewModel);
     }
     #endregion
 
-    private async Task<DashboardViewModel> GenerateAdminDashboard()
+    private async Task<DashboardViewModel> GenerateAdminDashboard(Company company)
     {
-        // int companyId = User.Identity!.GetCompanyId().Value;
-        //
-        // List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
-        // List<Ticket> openTickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
-        // List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
-        // List<ITUser> employees = await _companyInfoService.GetAllMembersAsync(companyId);
-        //
-        // int adminCount = (await _companyInfoService.GetAllAdminsAsync(companyId)).Count();
-        // int projectManagerCount = (await _companyInfoService.GetAllProjectManagersAsync(companyId)).Count();
-        // int developerCount = (await _companyInfoService.GetAllDevelopersAsync(companyId)).Count();
-        // int submitterCount = (await _companyInfoService.GetAllSubmittersAsync(companyId)).Count();
-        //
-        // return new DashboardViewModel()
-        // {
-        //     ActiveProjects = projects,
-        //     OpenTickets = openTickets,
-        //     CompletedTickets = completedTickets,
-        //     Members = employees,
-        //     AdminCount = adminCount,
-        //     ProjectManagerCount = projectManagerCount,
-        //     DeveloperCount = developerCount,
-        //     SubmitterCount = submitterCount
-        // };
+        
+        List<Project> projects = company.Projects.ToList();
+        List<ITUser> members = company.Members.ToList();
+        List<Ticket> openTickets = new();
+        List<Ticket> completedTickets = new();
+        
+        // List<Project> projects = company.Projects.ToList();
+        // List<ITUser> members = company.Members.ToList();
+        // List<Ticket> openTickets = new();
+        // List<Ticket> completedTickets = new();
+        
+        foreach (var project in projects)
+        {
+            openTickets.AddRange(project.Tickets.Where(t => t.TicketStatusId != (int)ITTicketStatus.Resolved).ToList()); 
+            completedTickets.AddRange(project.Tickets.Where(t => t.TicketStatusId == (int)ITTicketStatus.Resolved).ToList()); 
+        }
+        
+        int adminCount = new();
+        int projectManagerCount = new();
+        int developerCount = new();
+        int submitterCount = new();
+        
+        foreach (var member in members)
+        {
+            if ( _userManager.IsInRoleAsync(member, Enum.GetName(Roles.Admin)).Result )
+            {
+                adminCount++;
+            }
+            if ( _userManager.IsInRoleAsync(member, Enum.GetName(Roles.ProjectManager)).Result )
+            {
+                projectManagerCount++;
+            }
+            if ( _userManager.IsInRoleAsync(member, Enum.GetName(Roles.Developer)).Result )
+            {
+                developerCount++;
+            }
+            if ( _userManager.IsInRoleAsync(member, Enum.GetName(Roles.Submitter)).Result )
+            {
+                submitterCount++;
+            }
+        }
+
+        
+        
+        
+        return new DashboardViewModel()
+        {
+            ActiveProjects = projects,
+            OpenTickets = openTickets,
+            CompletedTickets = completedTickets,
+            Members = members,
+            AdminCount = adminCount,
+            ProjectManagerCount = projectManagerCount,
+            DeveloperCount = developerCount,
+            SubmitterCount = submitterCount
+        };
         
         // int companyId = User.Identity!.GetCompanyId().Value;
-
+        //
         // List<Project> projects = await _projectService.GetAllProjectsByCompany(companyId);
         // List<Ticket> openTickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
         // List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
@@ -111,23 +156,35 @@ public class HomeController : Controller
         };
     }
 
-    private async Task<DashboardViewModel> GenerateNonAdminDashboard()
+    private async Task<DashboardViewModel> GenerateNonAdminDashboard(Company company)
     {
         ITUser user = await _userManager.GetUserAsync(User);
+        //
+        // int companyId = User.Identity!.GetCompanyId().Value;
+        //
+        // List<Project> projects = await _projectService.GetUserProjectsAsync(user.Id);
+        // List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(user.Id, companyId);
+        // List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
+        // // List<ITUser> Submitters = await _companyInfoService.GetAllSubmittersAsync(companyId);
+        //
+         List<Notification> notifications = await _notificationService.GetUnseenNotificationsForUserAsync(user);
+        
+        List<Project> projects = company.Projects.ToList();
+        List<Ticket> openTickets = new();
+        List<Ticket> completedTickets = new();
 
-        int companyId = User.Identity!.GetCompanyId().Value;
-
-        List<Project> projects = await _projectService.GetUserProjectsAsync(user.Id);
-        List<Ticket> tickets = await _ticketService.GetTicketsByUserIdAsync(user.Id, companyId);
-        List<Ticket> completedTickets = await _ticketService.GetArchivedTicketsAsync(companyId);
-        // List<ITUser> Submitters = await _companyInfoService.GetAllSubmittersAsync(companyId);
-
-        List<Notification> notifications = await _notificationService.GetUnseenNotificationsForUserAsync(user);
+        foreach (var project in projects)
+        {
+            openTickets.AddRange(project.Tickets.Where(t => t.TicketStatusId != (int)ITTicketStatus.Resolved && t.DeveloperUserId == user.Id ).ToList()); 
+            completedTickets.AddRange(project.Tickets.Where(t => t.TicketStatusId == (int)ITTicketStatus.Resolved  && t.DeveloperUserId == user.Id ).ToList()); 
+        }
+        
+        
 
         return new DashboardViewModel()
         {
             ActiveProjects = projects,
-            OpenTickets = tickets,
+            OpenTickets = openTickets,
             CompletedTickets = completedTickets,
             Notifications = notifications
         };

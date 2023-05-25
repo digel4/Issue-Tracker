@@ -17,330 +17,372 @@
 	}
 	bool isAdmin = User.IsInRole(nameof(Roles.Admin));
 }
-@* <section class="section dashboard"> *@
-@* </section> *@
-@* *@
-@* <section class="section dashboard"> *@
-@* 	<div class="d-flex row justify-content-center"> *@
-@* 		<div class="col-lg-11"> *@
-@* *@
-@* 			<div class="pagetitle"> *@
-@* 				<h1>Dashboard</h1> *@
-@* 				<nav> *@
-@* 					<ol class="breadcrumb"> *@
-@* 						<li class="breadcrumb-item">Company</li> *@
-@* 						<li class="breadcrumb-item active">Dashboard</li> *@
-@* 					</ol> *@
-@* 				</nav> *@
-@* 			</div> *@
-@* *@
-@* 			<div class="row"> *@
-@* *@
-@* 				<!-- Projects Card --> *@
-@* 				<div class="col-xxl-4 col-md-6"> *@
-@* 					<div class="card info-card sales-card"> *@
-@* *@
-@* 						<div class="card-body"> *@
-@* 							<h5 class="card-title">Projects <span>| Active</span></h5> *@
-@* *@
-@* 							<div class="d-flex align-items-center"> *@
-@* 								<div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> *@
-@* 									<i class="bi bi-pc-display-horizontal"></i> *@
-@* 									$1$ <i class="bi bi-2-circle-fill"></i> #1# *@
-@* 								</div> *@
-@* 								<div class="ps-3"> *@
-@* 									 *@
-@* 									 *@
-@* 									<span class="small pt-1 fw-bold">@Model.ActiveProjects.Count()</span> <span class="text-muted small pt-2 ps-1">active</span><br/> *@
-@* 									 *@
-@* 									$1$ <span class="small pt-1 fw-bold">@Model.ActiveProjects.Where(p => p.ProjectManagerId is null).Count()</span> <span class="text-muted small pt-2 ps-1">no PM assigned</span><br/> #1# *@
-@* *@
-@* 									<span class="small pt-1 fw-bold">@ActiveProjectsWithoutPM.Count()</span> <span class="text-muted small pt-2 ps-1">no PM assigned</span><br/> *@
-@* 									 *@
-@* 									<span class="small pt-1 fw-bold">@Model.ActiveProjects.Where(p => (p.EndDate - DateTime.Now) < new TimeSpan(30, 0, 0, 0)).Count()</span> <span class="text-muted small pt-2 ps-1">deadline &lt; 1 month</span><br/> *@
-@* 									<span class="small pt-1 fw-bold">@Model.ActiveProjects.Where(p => (p.EndDate - DateTime.Now) < new TimeSpan(7, 0, 0, 0)).Count()</span> <span class="text-muted small pt-2 ps-1">deadline &lt; 1 week</span> *@
-@* 								 *@
-@* 								 *@
-@* 									</div> *@
-@* 							</div> *@
-@* 						</div> *@
-@* *@
-@* 					</div> *@
-@* 				</div> *@
-@* *@
-@* 				<!-- Tickets Card --> *@
-@* 				<div class="col-xxl-4 col-md-6"> *@
-@* 					<div class="card info-card revenue-card"> *@
-@* *@
-@* 						<div class="card-body"> *@
-@* 							<h5 class="card-title">Tickets <span>| Outstanding</span></h5> *@
-@* *@
-@* 							<div class="d-flex align-items-center"> *@
-@* 								<div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> *@
-@* 									<i class="bi bi-ticket-detailed-fill"></i> *@
-@* 								</div> *@
-@* 								<div class="ps-3"> *@
-@* 									<span class="small pt-1 fw-bold">@Model.OpenTickets.Count()</span> <span class="text-muted small pt-2 ps-1">open</span><br /> *@
-@* 									<span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.DeveloperUserId == null || t.TicketStatusId == (int)ITTicketStatus.Unassigned || t.TicketStatusId == (int)ITTicketStatus.New )).Count()</span> <span class="text-muted small pt-2 ps-1">action required</span><br /> *@
-@*                                     <span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.TicketPriorityId == (int)ITTicketPriority.High)).Count()</span> <span class="text-muted small pt-2 ps-1">high priority</span><br /> *@
-@* 									$1$ <span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.DeveloperUserId == null || t.TicketStatusId == "hold" || t.TicketStatusId == "pending")).Count()</span> <span class="text-muted small pt-2 ps-1">action required</span><br /> #1# *@
-@* 									$1$ <span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.TicketPriorityId == "high")).Count()</span> <span class="text-muted small pt-2 ps-1">high priority</span><br /> #1# *@
-@* 									<span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => t.TicketStatusId == (int)ITTicketStatus.Resolved).Count()</span> <span class="text-muted small pt-2 ps-1">ready to archive</span><br /> *@
-@* 								</div> *@
-@* 							</div> *@
-@* 						</div> *@
-@* *@
-@* 					</div> *@
-@* 				</div> *@
-@* *@
-@* 				@if (isAdmin) *@
-@* 				{ *@
-@* 					<!-- Employees Card --> *@
-@* 					<div class="col-xxl-4 col-xl-12"> *@
-@* *@
-@* 						<div class="card info-card customers-card"> *@
-@* *@
-@* 							<div class="card-body"> *@
-@* 								<h5 class="card-title">Members <span>| By Role</span></h5> *@
-@* *@
-@* 								<div class="d-flex align-items-center"> *@
-@* 									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> *@
-@* 										<i class="bi bi-people"></i> *@
-@* 									</div> *@
-@* 									<div class="ps-3"> *@
-@* 										<span class="small pt-1 fw-bold">@Model.AdminCount</span> <span class="text-muted small pt-2 ps-1">@( *@
-@* 										Model.AdminCount == 1 ? "administrator" : "administrators" *@
-@* 										)</span><br/> *@
-@* 										<span class="small pt-1 fw-bold">@Model.ProjectManagerCount</span> <span class="text-muted small pt-2 ps-1">@( *@
-@* 										Model.ProjectManagerCount == 1 ? "project manager" : "project managers" *@
-@* 										)</span><br/> *@
-@* 										<span class="small pt-1 fw-bold">@Model.DeveloperCount</span> <span class="text-muted small pt-2 ps-1">@( *@
-@* 										Model.DeveloperCount == 1 ? "developer" : "developers" *@
-@* 										)</span><br/> *@
-@* 										<span class="small pt-1 fw-bold">@Model.SubmitterCount</span> <span class="text-muted small pt-2 ps-1">@( *@
-@* 										Model.SubmitterCount == 1 ? "submitter" : "submitters" *@
-@* 										)</span> *@
-@* 									</div> *@
-@* 								</div> *@
-@* *@
-@* 							</div> *@
-@* 						</div> *@
-@* *@
-@* 					</div> *@
-@* 				} *@
-@* 				else *@
-@* 				{ *@
-@* 					<div class="col-xxl-4 col-md-6"> *@
-@* 						<div class="card info-card customers-card"> *@
-@* *@
-@* 							<div class="card-body"> *@
-@* 								<h5 class="card-title">Notifications <span>| Unseen</span></h5> *@
-@* *@
-@* 								<div class="d-flex align-items-center"> *@
-@* 									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> *@
-@* 										<i class="bi bi-envelope-fill"></i> *@
-@* 									</div> *@
-@* 									<div class="ps-3"> *@
-@* 										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => !n.Viewed).Count()</span> <span class="text-muted small pt-2 ps-1">unread</span><br /> *@
-@* 										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => n.NotificationType == NotificationType.NewProject).Count()</span> <span class="text-muted small pt-2 ps-1">new projects</span><br /> *@
-@* 										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => n.NotificationType == NotificationType.NewTicket).Count()</span> <span class="text-muted small pt-2 ps-1">new tickets</span><br /> *@
-@* 										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => n.NotificationType == NotificationType.Mention).Count()</span> <span class="text-muted small pt-2 ps-1">mentions</span><br /> *@
-@* 									</div> *@
-@* 								</div> *@
-@* 							</div> *@
-@* *@
-@* 						</div> *@
-@* 					</div> *@
-@* 				} *@
-@* *@
-@* 				<!-- Project Status --> *@
-@* 				<div class="col-lg-12"> *@
-@* 					<div class="card recent-sales overflow-auto"> *@
-@* 						<div class="card-body"> *@
-@* 							<h5 class="card-title">@(isAdmin ? "Project Status" : "Your Projects")</h5> *@
-@* 							<div class="table-responsive"> *@
-@* 								<table class="table table-borderless datatable"> *@
-@* 									<thead> *@
-@* 										<tr> *@
-@* 											<th scope="col">Project</th> *@
-@* 											<th scope="col">Manager</th> *@
-@* 											<th scope="col">Deadline</th> *@
-@* 											<th scope="col">Open Tickets</th> *@
-@* 										</tr> *@
-@* 									</thead> *@
-@* 									<tbody> *@
-@* 										@foreach (Project project in Model.ActiveProjects.OrderBy(p => p.EndDate)) *@
-@* 										{ *@
-@* 											ITUser? ProjectManager = await ProjectService.GetProjectManagerAsync(project.Id); *@
-@* *@
-@* 											<tr> *@
-@* 												<td class="align-middle"><a class="link" asp-controller="Project" asp-action="Details" asp-route-projectId="@project.Id">@project.Name</a></td> *@
-@* 												<td class="d-flex align-middle"> *@
-@* 													<div class="d-flex"> *@
-@* 														@if (ProjectManager is null) *@
-@* 														{ *@
-@* 															<div class="flex-shrink-0"> *@
-@* 																<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50"> *@
-@* 															</div> *@
-@* 															<div class="flex-grow-1 align-self-center"> *@
-@* 																<p class="card-text text-danger fw-bold ms-3">Unassigned!</p> *@
-@* 															</div> *@
-@* 														} *@
-@* 														else *@
-@* 														{ *@
-@* 															<div class="flex-shrink-0"> *@
-@* 																@if (ProjectManager.AvatarFileData is not null) *@
-@* 																{ *@
-@* 																	<img src="data:image/*;base64,@(Convert.ToBase64String(ProjectManager.AvatarFileData))" class="rounded-circle" width="50" height="50"> *@
-@* 																} *@
-@* 																else *@
-@* 																{ *@
-@* 																	<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50"> *@
-@* 																} *@
-@* 															</div> *@
-@* 															<div class="flex-grow-1 align-self-center"> *@
-@* 																<p class="card-text ms-3"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@ProjectManager.Id">@ProjectManager.FullName</a></p> *@
-@* 															</div> *@
-@* 														} *@
-@* 													</div> *@
-@* 												</td> *@
-@* 												<td class="align-middle">@project.EndDate.DateTime.ToShortDateString() (@((project.EndDate - DateTime.Now).Days) days)</td> *@
-@* 												<td class="align-middle">@project.Tickets.Where(t => !t.Archived && t.TicketStatusId != (int)ITTicketStatus.Resolved).Count()</td> *@
-@* 											</tr> *@
-@* 										} *@
-@* 									</tbody> *@
-@* 								</table> *@
-@* 							</div> *@
-@* 						</div> *@
-@* 					</div> *@
-@* 				</div> *@
-@* *@
-@* 				<!-- Recent Tickets --> *@
-@* 				<div class="col-12"> *@
-@* 					<div class="card recent-sales overflow-auto"> *@
-@* *@
-@* 						<div class="card-body"> *@
-@* 							<h5 class="card-title">@(isAdmin ? "Recent Tickets" : "Your Tickets")</h5> *@
-@* 							<div class="table-responsive"> *@
-@* 								<table class="table table-borderless datatable"> *@
-@* 									<thead> *@
-@* 										<tr> *@
-@* 											<th scope="col">Ticket Name</th> *@
-@* 											<th scope="col">Project</th> *@
-@* 											<th scope="col">Assigned To</th> *@
-@* 											<th scope="col">Type</th> *@
-@* 											<th scope="col">Priority</th> *@
-@* 											<th scope="col">Status</th> *@
-@* 										</tr> *@
-@* 									</thead> *@
-@* 									<tbody> *@
-@* 										@foreach (Ticket ticket in Model.OpenTickets.OrderByDescending(t => t.Created)) *@
-@* 										{ *@
-@* 											<tr> *@
-@* 												<td class="align-middle"><a asp-controller="Ticket" asp-action="Details" asp-route-ticketId="@ticket.Id"><i class="bi bi-ticket-detailed-fill me-2"></i>@ticket.Title</a></td> *@
-@* 												<td class="align-middle"><a asp-controller="Project" asp-action="Details" asp-route-projectId="@ticket.Project!.Id">@ticket.Project!.Name</a></td> *@
-@* 												<td class="d-flex align-middle"> *@
-@* 													<div class="d-flex"> *@
-@* 														@if (ticket.DeveloperUser == null) *@
-@* 														{ *@
-@* 															<div class="flex-shrink-0"> *@
-@* 																<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50"> *@
-@* 															</div> *@
-@* 															<div class="flex-grow-1 align-self-center"> *@
-@* 																<p class="card-text text-danger fw-bold ms-3">Unassigned!</p> *@
-@* 															</div> *@
-@* 														} *@
-@* 														else *@
-@* 														{ *@
-@* 															<div class="flex-shrink-0"> *@
-@* 																@if (ticket.DeveloperUser.AvatarFileData is not null) *@
-@* 																{ *@
-@* 																	<img src="data:image/*;base64,@(Convert.ToBase64String(ticket.DeveloperUser.AvatarFileData))" class="rounded-circle" width="50" height="50"> *@
-@* 																} *@
-@* 																else *@
-@* 																{ *@
-@* 																	<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50"> *@
-@* 																} *@
-@* 															</div> *@
-@* 															<div class="flex-grow-1 align-self-center"> *@
-@* 																<p class="card-text ms-3"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@ticket.DeveloperUser.Id">@ticket.DeveloperUser.FullName</a></p> *@
-@* 															</div> *@
-@* 														} *@
-@* 													</div> *@
-@* 												</td> *@
-@* 												$1$ <td class="align-middle">@ticket.Type!.Description</td> #1# *@
-@* 												$1$ <td class="align-middle">@ticket.Priority!.Description</td> #1# *@
-@* 												$1$ <td class="align-middle">@ticket.Status!.Description</td> #1# *@
-@* 												$1$ <td class="align-middle">@Enum.GetName(typeof(ITTicketType), ticket.TicketTypeId))</td> #1# *@
-@*             $1$                                     <td class="align-middle">@Enum.GetName(typeof(ITTicketPriority), ticket.TicketPriorityId))</td> #1# *@
-@* 												$1$                                     <td class="align-middle">@Enum.GetName(typeof(ITTicketType), ticket.TicketTypeId))</td> #1# *@
-@* 												<td class="align-middle">@ticket.TicketType.Name</td> *@
-@*                                                 <td class="align-middle">@ticket.TicketPriority.Name</td> *@
-@*                                                 <td class="align-middle">@ticket.TicketStatus.Name</td> *@
-@* 											</tr> *@
-@* 										} *@
-@* 									</tbody> *@
-@* 								</table> *@
-@* 							</div> *@
-@* 						</div> *@
-@* 					</div> *@
-@* 				</div> *@
-@* *@
-@* 				@if (isAdmin) *@
-@* 				{ *@
-@* 					<!-- Workloads --> *@
-@* 					<div class="col-12"> *@
-@* 						<div class="card top-selling overflow-auto"> *@
-@* *@
-@* 							<div class="card-body pb-0"> *@
-@* 								<h5 class="card-title">Workloads</h5> *@
-@* 								<div class="table-responsive"> *@
-@* 									<table class="table table-borderless datatable"> *@
-@* 										<thead> *@
-@* 											<tr> *@
-@* 												<th scope="col">Members</th> *@
-@* 												$1$ <th scope="col">Job Title</th> #1# *@
-@* 												<th scope="col">Active Projects</th> *@
-@* 												<th scope="col">Open Tickets</th> *@
-@* 											</tr> *@
-@* 										</thead> *@
-@* 										<tbody> *@
-@* 											@foreach (ITUser member in Model.Members) *@
-@* 											{ *@
-@* 												<tr> *@
-@* 													<td> *@
-@* 														<div class="d-flex"> *@
-@* 															<div class="flex-shrink-0"> *@
-@* 																@if (member.AvatarFileData is not null) *@
-@* 																{ *@
-@* 																	<img src="data:image/*;base64,@(Convert.ToBase64String(member.AvatarFileData))" class="rounded-circle" width="50" height="50"> *@
-@* 																} *@
-@* 																else *@
-@* 																{ *@
-@* 																	<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50"> *@
-@* 																} *@
-@* 															</div> *@
-@* 															<div class="flex-grow-1 align-self-center"> *@
-@* 																<p class="card-text ms-3"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@member.Id">@member.FullName</a></p> *@
-@* 															</div> *@
-@* 														</div> *@
-@* 													</td> *@
-@* 													$1$ <td>@employee.JobTitle</td> #1# *@
-@* 													<td>@Model.ActiveProjects.Where(p => p.Members.Contains(member)).Count()</td> *@
-@* 													<td>@Model.OpenTickets.Where(t => t.DeveloperUserId == member.Id).Count()</td> *@
-@* 												</tr> *@
-@* 											} *@
-@* 										</tbody> *@
-@* 									</table> *@
-@* 								</div> *@
-@* 							</div> *@
-@* *@
-@* 						</div> *@
-@* 					</div> *@
-@* 				} *@
-@* *@
-@* 			</div> *@
-@* 		</div> *@
-@* *@
+<section class="section dashboard">
+</section>
+
+<section class="section dashboard">
+	<div class="d-flex row justify-content-center">
+		<div class="col-lg-11">
+
+			<div class="pagetitle">
+				<h1>Dashboard</h1>
+				<nav>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">Company</li>
+						<li class="breadcrumb-item active">Dashboard</li>
+					</ol>
+				</nav>
+			</div>
+
+			<div class="row">
+
+				<!-- Projects Card -->
+				<div class="col-xxl-4 col-md-6">
+					<div class="card info-card sales-card">
+
+						<div class="card-body">
+							<h5 class="card-title">Projects <span>| Active</span></h5>
+
+							<div class="d-flex align-items-center">
+								<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+									<i class="bi bi-pc-display-horizontal"></i>
+									@* <i class="bi bi-2-circle-fill"></i> *@
+								</div>
+								<div class="ps-3">
+									
+									
+									<span class="small pt-1 fw-bold">@Model.ActiveProjects.Count()</span> <span class="text-muted small pt-2 ps-1">active</span><br/>
+									
+									@* <span class="small pt-1 fw-bold">@Model.ActiveProjects.Where(p => p.ProjectManagerId is null).Count()</span> <span class="text-muted small pt-2 ps-1">no PM assigned</span><br/> *@
+
+									<span class="small pt-1 fw-bold">@ActiveProjectsWithoutPM.Count()</span> <span class="text-muted small pt-2 ps-1">no PM assigned</span><br/>
+									
+									<span class="small pt-1 fw-bold">@Model.ActiveProjects.Where(p => (p.EndDate - DateTime.Now) < new TimeSpan(30, 0, 0, 0)).Count()</span> <span class="text-muted small pt-2 ps-1">deadline &lt; 1 month</span><br/>
+									<span class="small pt-1 fw-bold">@Model.ActiveProjects.Where(p => (p.EndDate - DateTime.Now) < new TimeSpan(7, 0, 0, 0)).Count()</span> <span class="text-muted small pt-2 ps-1">deadline &lt; 1 week</span>
+								
+								
+									</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<!-- Tickets Card -->
+				<div class="col-xxl-4 col-md-6">
+					<div class="card info-card revenue-card">
+
+						<div class="card-body">
+							<h5 class="card-title">Tickets <span>| Outstanding</span></h5>
+
+							<div class="d-flex align-items-center">
+								<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+									<i class="bi bi-ticket-detailed-fill"></i>
+								</div>
+								<div class="ps-3">
+									<span class="small pt-1 fw-bold">@Model.OpenTickets.Count()</span> <span class="text-muted small pt-2 ps-1">open</span><br />
+									<span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.DeveloperUserId == null || t.TicketStatusId == (int)ITTicketStatus.Unassigned || t.TicketStatusId == (int)ITTicketStatus.New )).Count()</span> <span class="text-muted small pt-2 ps-1">action required</span><br />
+                                    <span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.TicketPriorityId == (int)ITTicketPriority.High)).Count()</span> <span class="text-muted small pt-2 ps-1">high priority</span><br />
+									@* <span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.DeveloperUserId == null || t.TicketStatusId == "hold" || t.TicketStatusId == "pending")).Count()</span> <span class="text-muted small pt-2 ps-1">action required</span><br /> *@
+									@* <span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => (t.TicketPriorityId == "high")).Count()</span> <span class="text-muted small pt-2 ps-1">high priority</span><br /> *@
+									<span class="small pt-1 fw-bold">@Model.OpenTickets.Where(t => t.TicketStatusId == (int)ITTicketStatus.Resolved).Count()</span> <span class="text-muted small pt-2 ps-1">ready to archive</span><br />
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				@if (isAdmin)
+				{
+					<!-- Employees Card -->
+					<div class="col-xxl-4 col-xl-12">
+
+						<div class="card info-card customers-card">
+
+							<div class="card-body">
+								<h5 class="card-title">Members <span>| By Role</span></h5>
+
+								<div class="d-flex align-items-center">
+									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+										<i class="bi bi-people"></i>
+									</div>
+									<div class="ps-3">
+										<span class="small pt-1 fw-bold">@Model.AdminCount</span> <span class="text-muted small pt-2 ps-1">@(
+										Model.AdminCount == 1 ? "administrator" : "administrators"
+										)</span><br/>
+										<span class="small pt-1 fw-bold">@Model.ProjectManagerCount</span> <span class="text-muted small pt-2 ps-1">@(
+										Model.ProjectManagerCount == 1 ? "project manager" : "project managers"
+										)</span><br/>
+										<span class="small pt-1 fw-bold">@Model.DeveloperCount</span> <span class="text-muted small pt-2 ps-1">@(
+										Model.DeveloperCount == 1 ? "developer" : "developers"
+										)</span><br/>
+										<span class="small pt-1 fw-bold">@Model.SubmitterCount</span> <span class="text-muted small pt-2 ps-1">@(
+										Model.SubmitterCount == 1 ? "submitter" : "submitters"
+										)</span>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				}
+				else
+				{
+					<div class="col-xxl-4 col-md-6">
+						<div class="card info-card customers-card">
+
+							<div class="card-body">
+								<h5 class="card-title">Notifications <span>| Unseen</span></h5>
+
+								<div class="d-flex align-items-center">
+									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+										<i class="bi bi-envelope-fill"></i>
+									</div>
+									<div class="ps-3">
+										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => !n.Viewed).Count()</span> <span class="text-muted small pt-2 ps-1">unread</span><br />
+										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => n.NotificationType == NotificationType.NewProject).Count()</span> <span class="text-muted small pt-2 ps-1">new projects</span><br />
+										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => n.NotificationType == NotificationType.NewTicket).Count()</span> <span class="text-muted small pt-2 ps-1">new tickets</span><br />
+										<span class="small pt-1 fw-bold">@Model.Notifications.Where(n => n.NotificationType == NotificationType.Mention).Count()</span> <span class="text-muted small pt-2 ps-1">mentions</span><br />
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				}
+
+				<!-- Project Status -->
+				<div class="col-lg-12">
+					<div class="card recent-sales overflow-auto">
+						<div class="card-body">
+							<h5 class="card-title">@(isAdmin ? "Project Status" : "Your Projects")</h5>
+							<div class="table-responsive">
+								<table class="table table-borderless datatable">
+									<thead>
+										<tr>
+											<th scope="col">Project</th>
+											<th scope="col">Manager</th>
+											<th scope="col">Deadline</th>
+											<th scope="col">Open Tickets</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (Project project in Model.ActiveProjects.OrderBy(p => p.EndDate))
+										{
+											ITUser? ProjectManager = await ProjectService.GetProjectManagerAsync(project.Id);
+
+											<tr>
+												<td class="align-middle"><a class="link" asp-controller="Project" asp-action="Details" asp-route-projectId="@project.Id">@project.Name</a></td>
+												<td class="d-flex align-middle">
+													<div class="d-flex">
+														@if (ProjectManager is null)
+														{
+															<div class="flex-shrink-0">
+																<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50">
+															</div>
+															<div class="flex-grow-1 align-self-center">
+																<p class="card-text text-danger fw-bold ms-3">Unassigned!</p>
+															</div>
+														}
+														else
+														{
+															<div class="flex-shrink-0">
+																@if (ProjectManager.AvatarFileData is not null)
+																{
+																	<img src="data:image/*;base64,@(Convert.ToBase64String(ProjectManager.AvatarFileData))" class="rounded-circle" width="50" height="50">
+																}
+																else
+																{
+																	<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50">
+																}
+															</div>
+															<div class="flex-grow-1 align-self-center">
+																<p class="card-text ms-3"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@ProjectManager.Id">@ProjectManager.FullName</a></p>
+															</div>
+														}
+													</div>
+												</td>
+												<td class="align-middle">@project.EndDate.DateTime.ToShortDateString() (@((project.EndDate - DateTime.Now).Days) days)</td>
+												<td class="align-middle">@project.Tickets.Where(t => !t.Archived && t.TicketStatusId != (int)ITTicketStatus.Resolved).Count()</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Recent Tickets -->
+				<div class="col-12">
+					<div class="card recent-sales overflow-auto">
+
+						<div class="card-body">
+							<h5 class="card-title">@(isAdmin ? "Recent Tickets" : "Your Tickets")</h5>
+							<div class="table-responsive">
+								<table class="table table-borderless datatable">
+									<thead>
+										<tr>
+											<th scope="col">Ticket Name</th>
+											<th scope="col">Project</th>
+											<th scope="col">Assigned To</th>
+											<th scope="col">Type</th>
+											<th scope="col">Priority</th>
+											<th scope="col">Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (Ticket ticket in Model.OpenTickets.OrderByDescending(t => t.Created))
+										{
+											<tr>
+												<td class="align-middle"><a asp-controller="Ticket" asp-action="Details" asp-route-ticketId="@ticket.Id"><i class="bi bi-ticket-detailed-fill me-2"></i>@ticket.Title</a></td>
+												<td class="align-middle"><a asp-controller="Project" asp-action="Details" asp-route-projectId="@ticket.Project!.Id">@ticket.Project!.Name</a></td>
+												<td class="d-flex align-middle">
+													<div class="d-flex">
+														@if (ticket.DeveloperUser == null)
+														{
+															<div class="flex-shrink-0">
+																<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50">
+															</div>
+															<div class="flex-grow-1 align-self-center">
+																<p class="card-text text-danger fw-bold ms-3">Unassigned!</p>
+															</div>
+														}
+														else
+														{
+															<div class="flex-shrink-0">
+																@if (ticket.DeveloperUser.AvatarFileData is not null)
+																{
+																	<img src="data:image/*;base64,@(Convert.ToBase64String(ticket.DeveloperUser.AvatarFileData))" class="rounded-circle" width="50" height="50">
+																}
+																else
+																{
+																	<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50">
+																}
+															</div>
+															<div class="flex-grow-1 align-self-center">
+																<p class="card-text ms-3"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@ticket.DeveloperUser.Id">@ticket.DeveloperUser.FullName</a></p>
+															</div>
+														}
+													</div>
+												</td>
+												@* <td class="align-middle">@ticket.Type!.Description</td> *@
+												@* <td class="align-middle">@ticket.Priority!.Description</td> *@
+												@* <td class="align-middle">@ticket.Status!.Description</td> *@
+												<td class="align-middle">@Enum.GetName( typeof(ITTicketType), ticket.TicketTypeId )</td>
+                                                <td class="align-middle">@Enum.GetName(typeof(ITTicketPriority), ticket.TicketPriorityId)</td>
+												<td class="align-middle">@Enum.GetName(typeof(ITTicketStatus), ticket.TicketStatusId)</td>
+												@* <td class="align-middle">@ticket.TicketType.Name</td> *@
+            @*                                     <td class="align-middle">@ticket.TicketPriority.Name</td> *@
+												@*                                     <td class="align-middle">@ticket.TicketStatus.Name</td> *@
+												
+												@* <td class="align-middle"> @((ITTicketType)ticket.TicketTypeId)</td> *@
+            @*                                     <td class="align-middle"> @((ITTicketPriority)ticket.TicketPriorityId)</td> *@
+            @*                                     <td class="align-middle"> @((ITTicketStatus)ticket.TicketStatusId)</td> *@
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				@if (isAdmin)
+				{
+					<!-- Workloads -->
+					<div class="col-12">
+						<div class="card top-selling overflow-auto">
+
+							<div class="card-body pb-0">
+								<h5 class="card-title">Workloads</h5>
+								<div class="table-responsive">
+									<table class="table table-borderless datatable">
+										<thead>
+											<tr>
+												<th scope="col">Members</th>
+												@* <th scope="col">Job Title</th> *@
+												<th scope="col">Active Projects</th>
+												<th scope="col">Open Tickets</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (ITUser member in Model.Members)
+											{
+												<tr>
+													<td>
+														<div class="d-flex">
+															<div class="flex-shrink-0">
+																@if (member.AvatarFileData is not null)
+																{
+																	<img src="data:image/*;base64,@(Convert.ToBase64String(member.AvatarFileData))" class="rounded-circle" width="50" height="50">
+																}
+																else
+																{
+																	<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50">
+																}
+															</div>
+															<div class="flex-grow-1 align-self-center">
+																<p class="card-text ms-3"><a asp-controller="Company" asp-action="ViewMember" asp-route-userId="@member.Id">@member.FullName</a></p>
+															</div>
+														</div>
+													</td>
+													@* <td>@employee.JobTitle</td> *@
+													<td>@Model.ActiveProjects.Where(p => p.Members.Contains(member)).Count()</td>
+													<td>@Model.OpenTickets.Where(t => t.DeveloperUserId == member.Id).Count()</td>
+												</tr>
+											}
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				}
+
+			</div>
+		</div>
+
+	</div>
+</section>
+
+
+
+
+
+@* <section> *@
+@* <div> *@
+@* 	@foreach( Project project in Model.ActiveProjects ) *@
+@* 	{ *@
+@* 		<p>@project.Name</p> *@
+@* 		<p>@project.ProjectPriority</p> *@
+@* 		<p>@project.EndDate</p> *@
+@* 	} *@
+@* </div> *@
+@* <div> *@
+@* 	@foreach( Ticket ticket in Model.OpenTickets ) *@
+@* 	{ *@
+@* 		<p>@ticket.Title</p> *@
+@* 		<p>@ticket.TicketPriorityId</p> *@
+@* 		<p>@ticket.TicketTypeId</p> *@
+@* 		<p>@ticket.TicketStatusId</p> *@
+@* 	} *@
+@* </div> *@
+@* <div> *@
+@* 		@foreach (ITUser member in Model.Members) *@
+@* 		{ *@
+@* 			<p>@member.FullName</p> *@
+@* 			@if (member.AvatarFileData is not null) *@
+@* 			{ *@
+@* 				<img src="data:image/*;base64,@(Convert.ToBase64String(member.AvatarFileData))" class="rounded-circle" width="50" height="50"> *@
+@* 			} *@
+@* 			else *@
+@* 			{ *@
+@* 				<img src="~/img/defaultUser.png" class="rounded-circle" width="50" height="50"> *@
+@* 			} *@
+@* 		} *@
 @* 	</div> *@
 @* </section> *@

@@ -7,6 +7,8 @@ public interface ICompanyInfoService
     //<> after task is the return type
     public Task<Company?> GetCompanyInfoByIdAsync(int? companyId);
 
+    public Task<Company?> GetCompanyInfoByNoTrackingIdAsync(int? companyId);
+
     public Task<List<ITUser>> GetAllMembersAsync(int companyId);
     
     Task<List<ITUser>> GetAllAdminsAsync(int companyId);

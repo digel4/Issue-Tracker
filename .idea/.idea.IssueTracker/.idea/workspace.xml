@@ -7,7 +7,14 @@
   <component name="ChangeListManager">
     <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITProjectPriority.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITProjectPriority.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketPriority.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketPriority.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/ICompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/ICompanyInfoService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -295,19 +302,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs</url>
-          <line>865</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Controllers/TicketController.cs" initialLine="854" containingFunctionPresentation="method 'GenerateEditTicketViewModel'">
-            <startOffsets>
-              <option value="36902" />
-            </startOffsets>
-            <endOffsets>
-              <option value="36919" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs</url>
           <line>322</line>
           <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/ITTicketHistoryService.cs" initialLine="322" containingFunctionPresentation="method 'AddTicketCreatedEventAsync'" />
@@ -332,32 +326,24 @@
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/IssueTracker/Services/TicketService.cs</url>
-          <line>269</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/TicketService.cs" initialLine="268" containingFunctionPresentation="method 'DeleteTicketAsync'">
+          <url>file://$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs</url>
+          <line>96</line>
+          <properties documentPath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" initialLine="107" containingFunctionPresentation="method 'GenerateAdminDashboard'">
             <startOffsets>
-              <option value="8007" />
+              <option value="3260" />
             </startOffsets>
             <endOffsets>
-              <option value="8066" />
+              <option value="3287" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/IssueTracker/Services/NotificationService.cs</url>
-          <line>180</line>
-          <properties documentPath="$PROJECT_DIR$/IssueTracker/Services/NotificationService.cs" initialLine="174" containingFunctionPresentation="method 'GetUnseenNotificationsForUserAsync'">
-            <startOffsets>
-              <option value="5553" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5559" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="43" />
+          <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="Type#IssueTracker.Models.Project" memberName="ProjectPriorityId" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

@@ -206,7 +206,7 @@ public class CompanyController : Controller
         _fileService = fileService;
     }
     #endregion
-    
+
     #region View Member
     [HttpGet]
     [Authorize]

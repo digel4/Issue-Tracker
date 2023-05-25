@@ -45,6 +45,42 @@ public class CompanyInfoService : ICompanyInfoService
     }
     #endregion
     
+    #region Get Company Info By Id
+    public async Task<Company?> GetCompanyInfoByNoTrackingIdAsync(int? companyId)
+    {
+        Company? result = new();
+
+        if (companyId != null)
+        {
+            result = await _context.Companies
+                .Include(c => c.Members)
+                .Include(c => c.Projects)
+                    .ThenInclude(p => p.Members)
+                // .Include(c => c.Projects)
+                //     .ThenInclude(p => p.Tickets)
+                // .Include(c => c.Projects)
+                //     .ThenInclude(p => p.Tickets)
+                .Include(c => c.Projects)
+                    .ThenInclude(p => p.Tickets)
+                        .ThenInclude(t => t.DeveloperUser)
+                // .Include(c => c.Projects)
+                //     .ThenInclude(p => p.Tickets)
+                //         .ThenInclude(t => t.TicketStatus)
+                // .Include(c => c.Projects)
+                //     .ThenInclude(p => p.Tickets)
+                //         .ThenInclude(t => t.TicketPriority)
+                // .Include(c => c.Projects)
+                //         .ThenInclude(p => p.Tickets)
+                //             .ThenInclude(t => t.TicketType)
+                        //.ThenInclude(t => t.)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == companyId);
+        }
+        
+        return result;
+    }
+    #endregion
+    
     #region Update Member Profile 
     public async Task<ITUser?> UpdateMemberProfileAsync(ITUser updatedUser)
     {
