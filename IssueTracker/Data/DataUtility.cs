@@ -69,172 +69,172 @@ public static class DataUtility
         var userManagerSvc = svcProvider.GetRequiredService<UserManager<ITUser>>();
         //Migration: This is the programmatic equivalent to Update-Database
         await dbContextSvc.Database.MigrateAsync();
-
-
-        List<Company> companies = await dbContextSvc.Companies.ToListAsync();
-        List<Project> projects = await dbContextSvc.Projects.ToListAsync();
-        // List<TicketPriority> ticketPriorities = await dbContextSvc.TicketPriorities.ToListAsync();
-        // List<TicketType> ticketTypes = await dbContextSvc.TicketTypes.ToListAsync();
-        // List<TicketStatus> ticketStatuses = await dbContextSvc.TicketStatuses.ToListAsync();
-        List<Ticket> tickets = await dbContextSvc.Tickets.ToListAsync();
-        List<ITUser> users = await dbContextSvc.Users.ToListAsync();
-        List<Notification> notifications = await dbContextSvc.Notifications.ToListAsync();
-        
-        
-        dbContextSvc.Notifications.RemoveRange(notifications);
-        
-        // dbContextSvc.TicketPriorities.RemoveRange(ticketPriorities);
-        // dbContextSvc.TicketTypes.RemoveRange(ticketTypes);
-        // dbContextSvc.TicketStatuses.RemoveRange(ticketStatuses);
-        
-        dbContextSvc.Tickets.RemoveRange(tickets);
-        dbContextSvc.Projects.RemoveRange(projects);
-        dbContextSvc.Users.RemoveRange(users);
-        dbContextSvc.Companies.RemoveRange(companies);
-        await dbContextSvc.SaveChangesAsync();
-        
-            // Custom Issue Tracker Seed Methods
-            await SeedRolesAsync(roleManagerSvc);
-            await SeedDefaultCompanies.SeedDefaultCompaniesAsync(dbContextSvc);
-
-            
-            
-            
-            
-            
-            
-            
-            Company? asimovIntelligenceSystemsCompany = dbContextSvc.Companies
-                .Include(c => c.Members)
-                .FirstOrDefault(p => p.Name == "Asimov Intelligence Systems");
-            Company? linuxCompany = dbContextSvc.Companies
-                .Include(c => c.Members)
-                .FirstOrDefault(p => p.Name == "GNU/Corporation");
-
-            if (asimovIntelligenceSystemsCompany == null)
-                throw new ArgumentNullException(nameof(asimovIntelligenceSystemsCompany));
-            if (linuxCompany == null)
-                throw new ArgumentNullException(nameof(linuxCompany));
-
-            await SeedDefaultUsers.SeedDefaultUsersAsync(userManagerSvc, companyInfoSvc,
-                asimovIntelligenceSystemsCompany.Id, linuxCompany.Id);
-
-
-
-
-            // List<ITUser> AsimovIntelligenceSystemsAllMembers = await companyInfoSvc.GetAllMembersAsync(company1Id);
-            List<ITUser> asimovIntelligenceSystemsAllMembers = asimovIntelligenceSystemsCompany.Members.ToList();
-            List<ITUser> linuxCompanyAllMembers = linuxCompany.Members.ToList();
-#pragma warning disable CS8602
-            SortedList<string, string> asimovMembers = new SortedList<string, string>()
-            {
-                {
-                    "SusanCalvin", asimovIntelligenceSystemsAllMembers
-                        .FirstOrDefault(m => m.FullName == "Susan Calvin").Id
-                },
-                {
-
-                    "ArronThomas", asimovIntelligenceSystemsAllMembers
-                        .FirstOrDefault(m => m.FullName == "Arron Thomas").Id
-
-                },
-                {
-                    "MathewJacobs", asimovIntelligenceSystemsAllMembers
-                        .FirstOrDefault(m => m.FullName == "Mathew Jacobs").Id
-                },
-                {
-                    "NatashaYobs", asimovIntelligenceSystemsAllMembers
-                        .FirstOrDefault(m => m.FullName == "Natasha Yobs").Id
-                },
-                {
-                    "TonyTownsend", asimovIntelligenceSystemsAllMembers
-                        .FirstOrDefault(m => m.FullName == "Tony Townsend").Id
-                },
-                {
-                    "ScottApple", asimovIntelligenceSystemsAllMembers
-                        .FirstOrDefault(m => m.FullName == "Scott Apple").Id
-                }
-            };
-
-            SortedList<string, string> linuxMembers = new SortedList<string, string>()
-            {
-                {
-                    "JaneRichards", linuxCompanyAllMembers
-                        .FirstOrDefault(m => m.FullName == "Jane Richards").Id
-                },
-                {
-                    "FredHopkins", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Fred Hopkins")
-                        .Id
-                },
-                {
-                    "JamesPeters", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "James Peters")
-                        .Id
-                },
-                {
-                    "CarolSmith", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Carol Smith")
-                        .Id
-                },
-                {
-                    "BruceTurner", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Bruce Turner")
-                        .Id
-
-                },
-                {
-                    "SueLincoln", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Sue Lincoln")
-                        .Id
-
-                }
-            };
-#pragma warning restore CS8602
-
-            // await SeedDemoUsersAsync(userManagerSvc);
-            await SeedDefaultTicketTypeAsync(dbContextSvc);
-            await SeedDefaultTicketStatusAsync(dbContextSvc);
-            await SeedDefaultTicketPriorityAsync(dbContextSvc);
-            await SeedDefaultProjectPriorityAsync(dbContextSvc);
-            await SeedDefaultProjects.SeedDefaultProjectsAsync(dbContextSvc, projectSvc, companyInfoSvc,
-                asimovIntelligenceSystemsCompany.Id,
-                linuxCompany.Id);
-            await SeedDefaultTickets.SeedDefaultTicketsAsync(dbContextSvc, projectSvc, companyInfoSvc, ticketSvc,
-                ticketHistorySvc, asimovIntelligenceSystemsCompany.Id, linuxCompany.Id, asimovMembers, linuxMembers);
-        
-    }
-
-    private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
-    {
-        //Seed Roles
-        await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-        await roleManager.CreateAsync(new IdentityRole(Roles.ProjectManager.ToString()));
-        await roleManager.CreateAsync(new IdentityRole(Roles.Developer.ToString()));
-        await roleManager.CreateAsync(new IdentityRole(Roles.Submitter.ToString()));
-    }
-
-    private static async Task SeedDefaultProjectPriorityAsync(ApplicationDbContext context)
-    {
-        try
-        {
-            IList<ProjectPriority> projectPriorities = new List<ProjectPriority>
-            {
-                new() { Name = ITProjectPriority.Low.ToString() },
-                new() { Name = ITProjectPriority.Medium.ToString() },
-                new() { Name = ITProjectPriority.High.ToString() },
-                new() { Name = ITProjectPriority.Urgent.ToString() }
-            };
-
-            var dbProjectPriorities = context.ProjectPriorities.Select(c => c.Name).ToList();
-            await context.ProjectPriorities.AddRangeAsync(projectPriorities.Where(c =>
-                !dbProjectPriorities.Contains(c.Name)));
-            await context.SaveChangesAsync();
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("*************  ERROR  *************");
-            Console.WriteLine("Error Seeding Project Priorities.");
-            Console.WriteLine(ex.Message);
-            Console.WriteLine("***********************************");
-            throw;
-        }
+//
+//
+//         List<Company> companies = await dbContextSvc.Companies.ToListAsync();
+//         List<Project> projects = await dbContextSvc.Projects.ToListAsync();
+//         // List<TicketPriority> ticketPriorities = await dbContextSvc.TicketPriorities.ToListAsync();
+//         // List<TicketType> ticketTypes = await dbContextSvc.TicketTypes.ToListAsync();
+//         // List<TicketStatus> ticketStatuses = await dbContextSvc.TicketStatuses.ToListAsync();
+//         List<Ticket> tickets = await dbContextSvc.Tickets.ToListAsync();
+//         List<ITUser> users = await dbContextSvc.Users.ToListAsync();
+//         List<Notification> notifications = await dbContextSvc.Notifications.ToListAsync();
+//         
+//         
+//         dbContextSvc.Notifications.RemoveRange(notifications);
+//         
+//         // dbContextSvc.TicketPriorities.RemoveRange(ticketPriorities);
+//         // dbContextSvc.TicketTypes.RemoveRange(ticketTypes);
+//         // dbContextSvc.TicketStatuses.RemoveRange(ticketStatuses);
+//         
+//         dbContextSvc.Tickets.RemoveRange(tickets);
+//         dbContextSvc.Projects.RemoveRange(projects);
+//         dbContextSvc.Users.RemoveRange(users);
+//         dbContextSvc.Companies.RemoveRange(companies);
+//         await dbContextSvc.SaveChangesAsync();
+//         
+//             // Custom Issue Tracker Seed Methods
+//             await SeedRolesAsync(roleManagerSvc);
+//             await SeedDefaultCompanies.SeedDefaultCompaniesAsync(dbContextSvc);
+//
+//             
+//             
+//             
+//             
+//             
+//             
+//             
+//             Company? asimovIntelligenceSystemsCompany = dbContextSvc.Companies
+//                 .Include(c => c.Members)
+//                 .FirstOrDefault(p => p.Name == "Asimov Intelligence Systems");
+//             Company? linuxCompany = dbContextSvc.Companies
+//                 .Include(c => c.Members)
+//                 .FirstOrDefault(p => p.Name == "GNU/Corporation");
+//
+//             if (asimovIntelligenceSystemsCompany == null)
+//                 throw new ArgumentNullException(nameof(asimovIntelligenceSystemsCompany));
+//             if (linuxCompany == null)
+//                 throw new ArgumentNullException(nameof(linuxCompany));
+//
+//             await SeedDefaultUsers.SeedDefaultUsersAsync(userManagerSvc, companyInfoSvc,
+//                 asimovIntelligenceSystemsCompany.Id, linuxCompany.Id);
+//
+//
+//
+//
+//             // List<ITUser> AsimovIntelligenceSystemsAllMembers = await companyInfoSvc.GetAllMembersAsync(company1Id);
+//             List<ITUser> asimovIntelligenceSystemsAllMembers = asimovIntelligenceSystemsCompany.Members.ToList();
+//             List<ITUser> linuxCompanyAllMembers = linuxCompany.Members.ToList();
+// #pragma warning disable CS8602
+//             SortedList<string, string> asimovMembers = new SortedList<string, string>()
+//             {
+//                 {
+//                     "SusanCalvin", asimovIntelligenceSystemsAllMembers
+//                         .FirstOrDefault(m => m.FullName == "Susan Calvin").Id
+//                 },
+//                 {
+//
+//                     "ArronThomas", asimovIntelligenceSystemsAllMembers
+//                         .FirstOrDefault(m => m.FullName == "Arron Thomas").Id
+//
+//                 },
+//                 {
+//                     "MathewJacobs", asimovIntelligenceSystemsAllMembers
+//                         .FirstOrDefault(m => m.FullName == "Mathew Jacobs").Id
+//                 },
+//                 {
+//                     "NatashaYobs", asimovIntelligenceSystemsAllMembers
+//                         .FirstOrDefault(m => m.FullName == "Natasha Yobs").Id
+//                 },
+//                 {
+//                     "TonyTownsend", asimovIntelligenceSystemsAllMembers
+//                         .FirstOrDefault(m => m.FullName == "Tony Townsend").Id
+//                 },
+//                 {
+//                     "ScottApple", asimovIntelligenceSystemsAllMembers
+//                         .FirstOrDefault(m => m.FullName == "Scott Apple").Id
+//                 }
+//             };
+//
+//             SortedList<string, string> linuxMembers = new SortedList<string, string>()
+//             {
+//                 {
+//                     "JaneRichards", linuxCompanyAllMembers
+//                         .FirstOrDefault(m => m.FullName == "Jane Richards").Id
+//                 },
+//                 {
+//                     "FredHopkins", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Fred Hopkins")
+//                         .Id
+//                 },
+//                 {
+//                     "JamesPeters", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "James Peters")
+//                         .Id
+//                 },
+//                 {
+//                     "CarolSmith", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Carol Smith")
+//                         .Id
+//                 },
+//                 {
+//                     "BruceTurner", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Bruce Turner")
+//                         .Id
+//
+//                 },
+//                 {
+//                     "SueLincoln", linuxCompanyAllMembers.FirstOrDefault(m => m.FullName == "Sue Lincoln")
+//                         .Id
+//
+//                 }
+//             };
+// #pragma warning restore CS8602
+//
+//             // await SeedDemoUsersAsync(userManagerSvc);
+//             await SeedDefaultTicketTypeAsync(dbContextSvc);
+//             await SeedDefaultTicketStatusAsync(dbContextSvc);
+//             await SeedDefaultTicketPriorityAsync(dbContextSvc);
+//             await SeedDefaultProjectPriorityAsync(dbContextSvc);
+//             await SeedDefaultProjects.SeedDefaultProjectsAsync(dbContextSvc, projectSvc, companyInfoSvc,
+//                 asimovIntelligenceSystemsCompany.Id,
+//                 linuxCompany.Id);
+//             await SeedDefaultTickets.SeedDefaultTicketsAsync(dbContextSvc, projectSvc, companyInfoSvc, ticketSvc,
+//                 ticketHistorySvc, asimovIntelligenceSystemsCompany.Id, linuxCompany.Id, asimovMembers, linuxMembers);
+//         
+//     }
+//
+//     private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
+//     {
+//         //Seed Roles
+//         await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+//         await roleManager.CreateAsync(new IdentityRole(Roles.ProjectManager.ToString()));
+//         await roleManager.CreateAsync(new IdentityRole(Roles.Developer.ToString()));
+//         await roleManager.CreateAsync(new IdentityRole(Roles.Submitter.ToString()));
+//     }
+//
+//     private static async Task SeedDefaultProjectPriorityAsync(ApplicationDbContext context)
+//     {
+//         try
+//         {
+//             IList<ProjectPriority> projectPriorities = new List<ProjectPriority>
+//             {
+//                 new() { Name = ITProjectPriority.Low.ToString() },
+//                 new() { Name = ITProjectPriority.Medium.ToString() },
+//                 new() { Name = ITProjectPriority.High.ToString() },
+//                 new() { Name = ITProjectPriority.Urgent.ToString() }
+//             };
+//
+//             var dbProjectPriorities = context.ProjectPriorities.Select(c => c.Name).ToList();
+//             await context.ProjectPriorities.AddRangeAsync(projectPriorities.Where(c =>
+//                 !dbProjectPriorities.Contains(c.Name)));
+//             await context.SaveChangesAsync();
+//
+//         }
+//         catch (Exception ex)
+//         {
+//             Console.WriteLine("*************  ERROR  *************");
+//             Console.WriteLine("Error Seeding Project Priorities.");
+//             Console.WriteLine(ex.Message);
+//             Console.WriteLine("***********************************");
+//             throw;
+//         }
     }
 
     private static async Task SeedDefaultTicketTypeAsync(ApplicationDbContext context)
