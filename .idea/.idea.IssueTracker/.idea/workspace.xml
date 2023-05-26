@@ -7,15 +7,27 @@
   <component name="ChangeListManager">
     <list default="true" id="4e04b738-41bb-4a43-9087-a2d73f03bf53" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.IssueTracker/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/CompanyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Controllers/HomeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/Areas/Identity/Pages/Account/_LoginLayout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Areas/Identity/Pages/Account/_LoginLayout.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Data/DataUtility.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITProjectPriority.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITProjectPriority.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketPriority.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketPriority.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Models/Enums/ITTicketStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/CompanyInfoService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/ICompanyInfoService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Services/Interfaces/ICompanyInfoService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/Isaac Asimov.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/Isaac Asimov.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/Richard Stallman.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/Richard Stallman.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/Susan Calvin.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/Susan Calvin.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Arron Thomas.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Bruce Turner.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Carol Smith.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Fred Hopkins.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Isaac Asimov.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/James Peters.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Jane Richards.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Mathew Jacobs.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Natasha Yobs.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Richard Stallman.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Scott Apple.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Sue Lincoln.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Susan Calvin.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProfilePics/backup/Tony Townsend.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProjectPics/Issue Tracker Web Application.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProjectPics/Issue Tracker Web Application.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProjectPics/Portfolio Website.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/IssueTracker/wwwroot/img/ProjectPics/Portfolio Website.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +152,8 @@
       <workItem from="1684936455467" duration="6395000" />
       <workItem from="1684944992304" duration="2177000" />
       <workItem from="1684992647241" duration="1534000" />
+      <workItem from="1685026028764" duration="525000" />
+      <workItem from="1685083048616" duration="1793000" />
     </task>
     <task id="LOCAL-00001" summary="Add data models">
       <created>1679907887407</created>
@@ -274,7 +288,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684947156193</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="fix mem issues final">
+      <created>1685026327607</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1685026327607</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,7 +319,8 @@
     <MESSAGE value="fix lint warnings" />
     <MESSAGE value="fix delete notification bug" />
     <MESSAGE value="pos mem fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="pos mem fix" />
+    <MESSAGE value="fix mem issues final" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix mem issues final" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
